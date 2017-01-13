@@ -29,10 +29,6 @@
 			$max = 100;
 		}
 		$min = 0;
-		$getalrange = array(
-		"getal1" => range($min, $max),
-		"getal2" => range($min, $max)
-		);
 		$getal1 = mt_rand($min, $max);
 		$getal2 = mt_rand($min, $max);
 		if ($rekundigeoperator == "+") {
