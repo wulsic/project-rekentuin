@@ -70,7 +70,6 @@
 		$getal2 = $getal1;
 		$getal1 = $temp;
 	}
-//	if ($getal1 % $getal2 !== 0){ //Check of er een heel getal uitkomt
 		$counter = 0;
 		for ($x=1;$x<=$getal1;$x++){
 			$divisioncheck = $getal1 / $x;
@@ -80,10 +79,6 @@
 			}
 		}
 		return array($getal1, $divisionarray[rand(1, $counter -1)]); //Fix offset met counter -1;
-//	}
-	/*else{
-		return array($getal1, $getal2);
-	}*/
 }
 
 ?>
