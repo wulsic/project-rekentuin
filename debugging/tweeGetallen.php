@@ -58,7 +58,7 @@
 			$uitkomst = $getal1 / $getal2;
 			$som = "$getal1 : $getal2";
 		}
-		$somEnuitkomst = array ($som, $uitkomst);
+		$somEnuitkomst = array ("som" => $som, "uitkomst" => $uitkomst);
 		return $somEnuitkomst;
 	}
 ?>
@@ -67,6 +67,19 @@
 		$gebruikerSelectie = ":";
 		$operator = rekundigeOperator($gebruikerSelectie);
 		echo "<br/>";
-		print_r(sommenGenerator(6 , $operator));
+		//print_r(sommenGenerator(6 , $operator));
+		
+		for ($i=1;$i<=20;$i++){
+			echo "Som $i <br />";
+			${'som' . '$i'} = sommenGenerator(6, $operator);
+			print_r(${'som' . '$i'});
+
+		}
+		
+
 	?>
+	<form action="" method="POST">
+		<input type="text" name="answer">
+		<input type="submit" name="submit">
+	</form>
 </pre>
