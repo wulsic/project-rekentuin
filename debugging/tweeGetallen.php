@@ -28,10 +28,6 @@
 			$max = 100;
 		}
 		$min = 0;
-		$getalrange = array(
-		"getal1" => range($min, $max),
-		"getal2" => range($min, $max)
-		);
 		$getal1 = mt_rand($min, $max);
 		$getal2 = mt_rand($min, $max);
 		if ($rekundigeoperator == "+") {
@@ -52,25 +48,19 @@
 			$som = "$getal1 x $getal2";
 		}
 		else {
-			if ($getal1 == 0){
+			$min = 1;
+			$getal1 = mt_rand($min, $max);
+			$getal2 = mt_rand($min, $max);			
+			while (!is_int($getal1/$getal2)){
 				$getal1 = mt_rand($min, $max);
+				$getal2 = mt_rand($min, $max);
 			}
 			$uitkomst = $getal1 / $getal2;
-				while (!is_int($uitkomst)){
-						$getal1 = mt_rand($min, $max);
-						$getal2 = mt_rand($min, $max);
-						$uitkomst = $getal1 / $getal2;
-
-				}
-						$uitkomst = $getal1 / $getal2;
-				$som = "$getal1 : $getal2";
+			$som = "$getal1 : $getal2";
 		}
 		$somEnuitkomst = array ($som, $uitkomst);
 		return $somEnuitkomst;
 	}
-	
-
-	
 ?>
 <pre>
 	<?php
