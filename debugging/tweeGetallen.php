@@ -1,4 +1,13 @@
 <?php
+	// Global Section 1 - Login System
+	function loginSysteem(){
+		if (isset($_POST["submit"])){
+			$_SESSION["naam"] = $_POST["naam"];
+		}
+	}
+	// End Global Section 1 - Login System
+	
+	// Global Section 2 - Assignment generator
 	function rekundigeOperator($gebruikerSelectie){
 		$operator = array("+", "-", "x", "");
 		if ($gebruikerSelectie == "+") {
@@ -17,7 +26,8 @@
 			return $operator[mt_rand(0,3)];			
 		}
 	}
-	function getalEnsommenGenerator($niveau, $rekundigeoperator) {
+	function getalEnopdrachtGenerator($niveau, $rekundigeoperator) {
+		// Section 1 - Number Generator
 		if ($niveau == 4){
 			$max = 10;
 		}
@@ -33,6 +43,8 @@
 		$min = 0;
 		$getal1 = mt_rand($min, $max);
 		$getal2 = mt_rand($min, $max);
+		// End Section 1 - Number Generator
+		// Section 2 - Operator Picker
 		if ($rekundigeoperator == "+") {
 			$uitkomst = $getal1 + $getal2;
 			$som = "$getal1 + $getal2";
@@ -61,14 +73,24 @@
 			$uitkomst = $getal1 / $getal2;
 			$som = "$getal1 : $getal2";
 		}
+		// End Section 2 - Operator Picker
 		$somUitkomstGetallen = array ($som, $uitkomst, $getal1, $getal2);
 		return $somUitkomstGetallen;
 	}
+	// Global End Section 2 - Opdracht Generator
+	// Section 3 - Assignment Checker
+	function sommenControleren($ingevoerd){
+		
+	}
+	
 ?>
 <pre>
 	<?php
 		$gebruikerSelectie = "/";
 		$operator = rekundigeOperator($gebruikerSelectie);
+		if (isset($_POST["submit"])){
+			sommenControleren($ingevoerd);
+		}		
 		echo "<br/>";
 		print_r(getalEnsommenGenerator(6 , $operator));
 	?>
