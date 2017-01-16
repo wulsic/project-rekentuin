@@ -10,22 +10,25 @@
 		elseif ($gebruikerSelectie == "x") {
 			return $operator[2];
 		}
-		elseif ($gebruikerSelectie == ":") {
+		elseif ($gebruikerSelectie == "/") {
 			return $operator[3];
 		}
 		else {
 			return $operator[mt_rand(0,3)];			
 		}
 	}
-	function sommenGenerator($niveau, $rekundigeoperator) {
+	function getalEnsommenGenerator($niveau, $rekundigeoperator) {
 		if ($niveau == 4){
 			$max = 10;
 		}
 		elseif ($niveau == 5) {
 			$max = 20;
 		}
-		else {
+		elseif ($niveau == 6) {
 			$max = 100;
+		}
+		else {
+			return false;
 		}
 		$min = 0;
 		$getal1 = mt_rand($min, $max);
@@ -58,15 +61,15 @@
 			$uitkomst = $getal1 / $getal2;
 			$som = "$getal1 : $getal2";
 		}
-		$somEnuitkomst = array ($som, $uitkomst);
-		return $somEnuitkomst;
+		$somUitkomstGetallen = array ($som, $uitkomst, $getal1, $getal2);
+		return $somUitkomstGetallen;
 	}
 ?>
 <pre>
 	<?php
-		$gebruikerSelectie = ":";
+		$gebruikerSelectie = "/";
 		$operator = rekundigeOperator($gebruikerSelectie);
 		echo "<br/>";
-		print_r(sommenGenerator(6 , $operator));
+		print_r(getalEnsommenGenerator(6 , $operator));
 	?>
 </pre>
