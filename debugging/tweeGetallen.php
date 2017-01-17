@@ -26,7 +26,7 @@
 			return $operator[mt_rand(0,3)];			
 		}
 	}
-	function getalEnopdrachtGenerator($niveau, $rekundigeoperator) {
+	function opdrachtGenerator($niveau, $rekundigeoperator) {
 		// Section 1 - Number Generator
 		if ($niveau == 4){
 			$max = 10;
@@ -56,7 +56,7 @@
 				$getal2 = $tmpgetal;
 			}
 			$uitkomst = $getal1 - $getal2;
-			$som = "$getal1 - $getal2";			
+			$som = "$getal1 - $getal2";	
 		}
 		elseif ($rekundigeoperator == "x") {
 			$uitkomst = $getal1 * $getal2;
@@ -74,7 +74,7 @@
 			$som = "$getal1 : $getal2";
 		}
 		// End Section 2 - Operator Picker
-		$somUitkomstGetallen = array ($som, $uitkomst, $getal1, $getal2);
+		$somUitkomstGetallen = array ($som, $uitkomst);
 		return $somUitkomstGetallen;
 	}
 	// Global End Section 2 - Opdracht Generator
@@ -88,10 +88,7 @@
 	<?php
 		$gebruikerSelectie = "/";
 		$operator = rekundigeOperator($gebruikerSelectie);
-		if (isset($_POST["submit"])){
-			sommenControleren($ingevoerd);
-		}		
-		echo "<br/>";
-		print_r(getalEnsommenGenerator(6 , $operator));
+		//echo "<br/>";
+		//print_r(getalEnopdrachtGenerator(6 , $operator));
 	?>
 </pre>
