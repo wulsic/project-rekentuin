@@ -79,8 +79,13 @@
 	}
 	// Global End Section 2 - Opdracht Generator
 	// Section 3 - Assignment Checker
-	function sommenControleren($ingevoerd){
-		
+	function opdrachtControleren($antwoord, $uitkomst ){
+		if ($antwoord == $uitkomst){
+			return "antwoord is goed";
+		}
+		else {
+			return "antwoord is fout";
+		}
 	}
 	
 ?>

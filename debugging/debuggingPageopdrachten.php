@@ -9,10 +9,13 @@
 		<h1> <?php  echo $getalEnopdrachtArray[0]; ?> </h1>
 		<form method="post" action="">
 			<input type="hidden" name="uitkomst" value="<?php echo $getalEnopdrachtArray[1] ?>">
-			<input type="submit" name="gebruikersantwoord">
+			<input type="text" name="antwoord">
+			<input type="submit" name="antwoordSubmit">
 		</form>
 		<?php
-		if (isset($_POST["gebruikersantwoord"])){
+		if (isset($_POST["antwoordSubmit"])){
+			$controle = opdrachtControleren($_POST["antwoord"], $_POST["uitkomst"]);
+			echo $controle;
 			print_r($_POST);
 			print_r($getalEnopdrachtArray);
 		}
