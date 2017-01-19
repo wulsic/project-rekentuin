@@ -1,13 +1,19 @@
 <?php
-	// Global Section 1 - Login System
-	function loginSysteem(){
-		if (isset($_POST["submit"])){
-			$_SESSION["naam"] = $_POST["naam"];
+		$gebruikerSelectie = "/";
+		$operator = rekundigeOperator($gebruikerSelectie);
+	// Global Section 1 - Ajax
+	if (isset($_POST["functions"]))  {
+		if ($_POST["functions"] == "opdrachtGenerator") {
+			echo json_encode(opdrachtGenerator(6, $operator));
 		}
 	}
+	// Global Section 2 - Login System
+	if (isset($_POST["gebruikersNaamsubmit"])){
+		echo $_POST["gebruikersNaam"];
+	}		
 	// End Global Section 1 - Login System
 	
-	// Global Section 2 - Assignment generator
+	// Global Section 3 - Assignment generator
 	function rekundigeOperator($gebruikerSelectie){
 		$operator = array("+", "-", "x", "");
 		if ($gebruikerSelectie == "+") {
@@ -78,22 +84,13 @@
 		return $somUitkomstGetallen;
 	}
 	// Global End Section 2 - Opdracht Generator
-	// Section 3 - Assignment Checker
-	function opdrachtControleren($antwoord, $uitkomst ){
+	// Section 4 - Assignment Checker
+	function opdrachtControleren($antwoord, $uitkomst){
 		if ($antwoord == $uitkomst){
-			return "antwoord is goed";
+			return array(true, "antwoord is goed");
 		}
 		else {
-			return "antwoord is fout";
+			return array(false, "antwoord is fout");
 		}
 	}
-	
 ?>
-<pre>
-	<?php
-		$gebruikerSelectie = "/";
-		$operator = rekundigeOperator($gebruikerSelectie);
-		//echo "<br/>";
-		//print_r(getalEnopdrachtGenerator(6 , $operator));
-	?>
-</pre>
