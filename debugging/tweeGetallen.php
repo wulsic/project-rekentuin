@@ -9,7 +9,7 @@
 	}
 	// Global Section 2 - Login System
 	if (isset($_POST["gebruikersNaamsubmit"])){
-		echo $_POST["gebruikersNaam"];
+		$array = $_POST["gebruikersNaamsubmit"];
 	}		
 	// End Global Section 1 - Login System
 	

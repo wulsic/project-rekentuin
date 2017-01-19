@@ -12,19 +12,16 @@
 				<h1> Rekentuin </h1>
 					<form id="startpaginaForm" method="post" action="" onsubmit="send()">
 						Voer hier je naam <br />
-						<input type="text" name="gebruikersNaam">
+						<input type="text" name="gebruikersNaam" required>
 						<input type="submit" id="submit" name="gebruikersNaamsubmit">
 					</form>
 				<div class="flex-direction-column">
 					<button>Over school</button>
 					<button>Klik hier voor uitleg :)</button>
 				</div>
-
 			</div>
-				<?php
-				echo $array;
-				print_r($_POST);
-				?>
+			<div id="Groepen">
+			</div>
 		<!--End Section 1-->
 	</body>
 
