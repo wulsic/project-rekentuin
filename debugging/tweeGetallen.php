@@ -11,7 +11,7 @@
 	if (isset($_POST["gebruikersNaamsubmit"])){
 		$array = $_POST["gebruikersNaamsubmit"];
 	}		
-	// End Global Section 1 - Login System
+	// End Global Section 2 - Login System
 	
 	// Global Section 3 - Assignment generator
 	function rekundigeOperator($gebruikerSelectie){
