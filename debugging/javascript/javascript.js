@@ -24,16 +24,15 @@ function control(){
 function send() {
 	var form = $("form"),
 		term = form.find('input[name="gebruikersNaam"]').val();
-	console.log(form);
-	console.log(term);
 			$("#startpagina").fadeOut("slow", function(){
-				$("body").append("<h1>" + term + "</h1>");
+				$("#groepen").append("<h1 class='text-center'>" + term + "</h1>");
+				
 			});
-	
+		
 	    $.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {gebruikersNaamsubmit: term},
+           data: {functions: "gebruikersNaam", gebruikersNaam: term}
          });
 	event.preventDefault();
 }

@@ -7,18 +7,21 @@ body {
 }
 .flex-direction-column{
 	display: inline-flex;
-	flex-direction: column;
+	flex-direction: row;
 }
-#startpagina {	
+.text-center{
+	text-align: center;
+}
+.div-center {
+	margin: auto;
+}
+#startpagina, #groepen{	
 	display: flex;
 	flex-flow: column nowrap;
 	margin: 0;
 	width: 100%;
 	height: 100%;
 
-}
-#startpagina h1 {
-	text-align: center;
 }
 #startpagina form {
 	align-items: center;
@@ -33,5 +36,8 @@ body {
 }
 #startpagina button:last-child {
 	margin-bottom: 25px;
-
+}
+#groepen button {
+	width: 250px;
+	height: 250px;
 }

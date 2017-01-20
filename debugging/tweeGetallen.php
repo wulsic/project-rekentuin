@@ -1,4 +1,5 @@
 <?php
+	session_start();
 		$gebruikerSelectie = "/";
 		$operator = rekundigeOperator($gebruikerSelectie);
 	// Global Section 1 - Ajax
@@ -6,11 +7,10 @@
 		if ($_POST["functions"] == "opdrachtGenerator") {
 			echo json_encode(opdrachtGenerator(6, $operator));
 		}
+		elseif ($_POST["functions"] == "gebruikersNaam"){
+			$_SESSION["gebruikersNaam"] = $_POST["gebruikersNaam"];
+		}
 	}
-	// Global Section 2 - Login System
-	if (isset($_POST["gebruikersNaamsubmit"])){
-		$array = $_POST["gebruikersNaamsubmit"];
-	}		
 	// End Global Section 1 - Login System
 	
 	// Global Section 3 - Assignment generator

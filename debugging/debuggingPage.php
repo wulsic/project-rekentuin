@@ -5,11 +5,12 @@
 		<title> Debugging Page - Opdrachten </title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script src="javascript/javascript.js"></script>
+		<?php session_start(); ?>
 	</head>
 	<body>
 		<!--Section 1 - Startpagina -->
 			<div id="startpagina">
-				<h1> Rekentuin </h1>
+				<h1 class="text-center"> Rekentuin </h1>
 					<form id="startpaginaForm" method="post" action="" onsubmit="send()">
 						Voer hier je naam <br />
 						<input type="text" name="gebruikersNaam" required>
@@ -20,9 +21,11 @@
 					<button>Klik hier voor uitleg :)</button>
 				</div>
 			</div>
-			<div id="Groepen">
-			</div>
 		<!--End Section 1-->
+			<div id="groepen">
+				
+			</div>
+
 	</body>
 
 </html>
