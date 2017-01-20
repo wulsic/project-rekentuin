@@ -1,25 +1,32 @@
 <?php
 	session_start();
-	$counter = 1;
 		$gebruikerSelectie = "/";
 		$operator = rekundigeOperator($gebruikerSelectie);
 	// Global Section 1 - Ajax
-
 	if (isset($_POST["functions"]))  {
 		if ($_POST["functions"] == "gebruikersNaam"){
 			$_SESSION["gebruikersNaam"] = $_POST["gebruikersNaam"];
 		}
 		elseif ($_POST["functions"] == "opdrachtGenerator") {
-		if ($_POST["functions"] == "antwoord"){
-			$timeStop = time();
-			$timeDifference = $timeStop - $opdracht[2];
-			$opdrachtControlle = opdrachtControleren($_POST["antwoord"], $opdracht[1]);
-			$opdrachtOpslaan = opdrachtOpslaan($opdracht[0], $opdrachtControlle[1], $timeDifference);
-			$testArray = array($opdrachtControlle, $opdrachtOpslaan);
-			echo json_encode($testArray) . $opdrachtControlle[0] . $opdracht[0] . $opdracht[1] ;
+			$_SESSION["opdracht"] = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
+			echo $_SESSION["opdracht"][0];
 		}
-			$opdracht = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
-			echo $opdracht[0];
+		elseif ($_POST["functions"] == "antwoord"){
+			if ($_SESSION["counter"] == null){
+				$_SESSION["counter"] = 1;
+			}
+			elseif ($_SESSION["counter"] < 20) {
+				$_SESSION["counter"]++;
+			}
+			else {
+				$_SESSION["counter"] = 1;
+			}
+			$timeStop = time();
+			$timeDifference = $timeStop - $_SESSION["opdracht"][2];
+			$opdrachtControlle = opdrachtControleren($_POST["antwoord"], $_SESSION["opdracht"][1]);
+			$opdrachtOpslaan = opdrachtOpslaan($_SESSION["counter"] ,$_SESSION["opdracht"][0], $_SESSION["opdracht"][1], $opdrachtControlle[1], $timeDifference);
+			$returnArray = array($_SESSION["counter"], $opdrachtControlle[0]);
+			echo json_encode($returnArray);
 		}
 	}
 	// End Global Section 1 - Login System
@@ -96,13 +103,12 @@
 	}
 	// Global End Section 2 - Opdracht Generator
 	// Section 3 - Save Assignment
-	function opdrachtOpslaan($opdracht, $opdrachtGoedofFout, $opdrachtTimer) {
-		return array($counter, $opdracht, $opdrachtGoedofFout, $opdrachtTimer);
+	function opdrachtOpslaan($counter, $opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer) {
 		if ($counter == 1){
-			
+			$_SESSION["opdrachtOpslaan"][$counter] = array($opdracht, $opdrachtGoedofFout, $opdrachtTimer);
 		}
 		else {
-			$counter++;
+			$_SESSION["opdrachtOpslaan"][$counter] = array($opdracht, $opdrachtGoedofFout, $opdrachtTimer);
 		}
 	}
 	// End Section 3

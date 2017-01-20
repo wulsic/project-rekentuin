@@ -1,6 +1,5 @@
 var tmpMemory = [];
 console.log(tmpMemory);
-
 function send() {
 	var form = $("form"),
 		term = form.find('input[name="gebruikersNaam"]').val();
@@ -36,7 +35,9 @@ function assignmentGenerator(){
            data: {functions: "opdrachtGenerator", groep: tmpMemory[0], operator: tmpMemory[1], antwoord: antwoord},
            success: function(data)
            {
-			$("#opdrachten").children("h1").text(data);
+			$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
+				$("#opdrachten").children("form").children("h1").text(data).fadeIn("slow");
+			});
             console.log(data);
            }
     });
@@ -48,16 +49,20 @@ function answerSend(){
 		$.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {functions: "antwoord", antwoord: antwoord},
+           data: {functions: "antwoord", antwoord: antwoord, operator: tmpMemory[1]},
 		   dataType: "JSON",
 		   success: function(data)
            {
             console.log(data);
-			if (data[0] == true) {
-				console.log("hello");
+			if (data[1] == true) {
+				// ToDo: Popup here.
 			}
+			if (data[0] == 20){
+					$("#opdrachten").fadeOut("slow");
+				// ToDo: A way to itterate the session : opdrachtOpslaan. Couple possible ways: Javascript or PHP function call via javascript.
+			}
+			assignmentGenerator();
            }
          });
-		 assignmentGenerator();
-		 event.preventDefault();
+		event.preventDefault();
 }

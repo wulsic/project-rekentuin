@@ -13,12 +13,12 @@ h1 {
 	font-size: 5em;
 }
 
-#startpaginaform input {
+input {
 	padding: 10px;
     background-color: white;
     border-style: hidden;
 }
-#startpaginaform label {
+label {
 	padding: 10px;
 }
 
@@ -43,7 +43,7 @@ h1 {
     justify-content: center;
 	margin: auto;
 }
-#startpagina, #groepen, #operators{	
+#startpagina, #groepen, #operators, #opdrachten{	
 	display: inline-flex;
 	flex-flow: column nowrap;
 	margin: 0;
@@ -51,7 +51,7 @@ h1 {
 	height: 100%;
 
 }
-#groepen, #operators, #opdrachten {
+#groepen, #operators, #opdrachten, #opdrachten h1{
 	display: none;
 }
 #startpagina form {

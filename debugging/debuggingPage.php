@@ -12,7 +12,7 @@
 		<!--Section 1 - Startpagina -->
 			<div id="startpagina">
 				<h1 class="text-center"> Rekentuin </h1>
-					<form id="startpaginaForm" method="post" action="" onsubmit="send()">
+					<form method="post" action="" onsubmit="send()">
 						<label>Voer hier je naam in</label><br />
 						<input type="text" name="gebruikersNaam" maxlength="16" required>
 						<input type="submit" id="submit" name="gebruikersNaamsubmit">
@@ -48,8 +48,8 @@
 		<!--End Section 3-->
 		<!--Section 4 - Opdracht Pagina-->
 			<div id="opdrachten">
-				<h1 class="text-center"></h1>
-					<form id="startpaginaForm" method="post" action="" onsubmit="answerSend()">
+					<form class="div-center" method="post" action="" onsubmit="answerSend()">
+						<h1 class="text-center"></h1>
 						<input type="number" name="antwoord" required>
 						<input type="submit" id="submit" name="antwoordSubmit">
 					</form>
