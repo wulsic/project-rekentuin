@@ -74,7 +74,12 @@ h1 {
 }
 #groepen button, #operators button {
 	margin: 20px;
+    font-family: Dyslexie;
+    color: white;
+    background-color: black;
+    font-size: 4em;
     width: 250px;
     height: 250px;
+    border-radius: 50px;
 }
 }
