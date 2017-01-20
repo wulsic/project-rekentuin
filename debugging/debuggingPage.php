@@ -3,7 +3,8 @@
 		<meta charset="UTF-8">
 		<link href="css/style.php" rel="stylesheet" type="text/css">
 		<title> Debugging Page - Opdrachten </title>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<!-- jquery version 3.1.1-->
+		<script src="jquery.min.js"></script>
 		<script src="javascript/javascript.js"></script>
 		<?php session_start(); ?>
 	</head>

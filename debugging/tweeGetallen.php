@@ -12,8 +12,8 @@
 		}
 	}
 	// End Global Section 1 - Login System
-	
-	// Global Section 3 - Assignment generator
+
+	// Global Section 2 - Assignment generator
 	function rekundigeOperator($gebruikerSelectie){
 		$operator = array("+", "-", "x", "");
 		if ($gebruikerSelectie == "+") {
@@ -84,7 +84,7 @@
 		return $somUitkomstGetallen;
 	}
 	// Global End Section 2 - Opdracht Generator
-	// Section 4 - Assignment Checker
+	// Section 3 - Assignment Checker
 	function opdrachtControleren($antwoord, $uitkomst){
 		if ($antwoord == $uitkomst){
 			return array(true, "antwoord is goed");
