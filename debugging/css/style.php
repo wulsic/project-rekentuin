@@ -4,7 +4,29 @@
 ?>
 body {
 	margin: 0;
+	font-family: Dyslexie;
+	background-color: #F44333;
+	color: white;
 }
+
+h1 {
+	font-size: 5em;
+}
+
+#startpaginaform input {
+	padding: 10px;
+    background-color: white;
+    border-style: hidden;
+}
+#startpaginaform label {
+	padding: 10px;
+}
+
+@font-face {
+	font-family: "Dyslexie";
+	src: url("../fonts/Dyslexie Regular LP199232.ttf");
+}
+
 .flex-direction-row {
 	display: flex;
 	flex-direction: row;

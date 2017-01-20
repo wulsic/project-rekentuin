@@ -13,7 +13,7 @@
 			<div id="startpagina">
 				<h1 class="text-center"> Rekentuin </h1>
 					<form id="startpaginaForm" method="post" action="" onsubmit="send()">
-						Voer hier je naam <br />
+						<label>Voer hier je naam in</label><br />
 						<input type="text" name="gebruikersNaam" required>
 						<input type="submit" id="submit" name="gebruikersNaamsubmit">
 					</form>
