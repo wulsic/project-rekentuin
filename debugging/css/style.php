@@ -5,8 +5,12 @@
 body {
 	margin: 0;
 }
-.flex-direction-column{
-	display: inline-flex;
+.flex-direction-row {
+	display: flex;
+	flex-direction: row;
+}
+.flex-direction-column {
+	display: flex;
 	flex-direction: row;
 }
 .text-center{
@@ -16,7 +20,7 @@ body {
 	margin: auto;
 }
 #startpagina, #groepen{	
-	display: flex;
+	display: inline-flex;
 	flex-flow: column nowrap;
 	margin: 0;
 	width: 100%;
@@ -27,6 +31,10 @@ body {
 	align-items: center;
     justify-content: center;
     margin: auto;
+}
+#buttons {
+	display: flex;
+    flex-direction: column;
 }
 #startpagina button {
 	width: 140px;

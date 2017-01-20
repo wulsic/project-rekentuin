@@ -17,7 +17,7 @@
 						<input type="text" name="gebruikersNaam" required>
 						<input type="submit" id="submit" name="gebruikersNaamsubmit">
 					</form>
-				<div class="flex-direction-column">
+				<div id="buttons">
 					<button>Over school</button>
 					<button>Klik hier voor uitleg :)</button>
 				</div>
