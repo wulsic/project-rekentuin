@@ -17,15 +17,20 @@ body {
 	text-align: center;
 }
 .div-center {
+	align-items: center;
+    justify-content: center;
 	margin: auto;
 }
-#startpagina, #groepen{	
+#startpagina, #groepen, #operators{	
 	display: inline-flex;
 	flex-flow: column nowrap;
 	margin: 0;
 	width: 100%;
 	height: 100%;
 
+}
+#groepen, #operators, #opdrachten {
+	display: none;
 }
 #startpagina form {
 	align-items: center;
@@ -45,7 +50,9 @@ body {
 #startpagina button:last-child {
 	margin-bottom: 25px;
 }
-#groepen button {
-	width: 250px;
-	height: 250px;
+#groepen button, #operators button {
+	margin: 20px;
+    width: 250px;
+    height: 250px;
+}
 }

@@ -1,14 +1,25 @@
 <?php
 	session_start();
+	$counter = 1;
 		$gebruikerSelectie = "/";
 		$operator = rekundigeOperator($gebruikerSelectie);
 	// Global Section 1 - Ajax
+
 	if (isset($_POST["functions"]))  {
-		if ($_POST["functions"] == "opdrachtGenerator") {
-			echo json_encode(opdrachtGenerator(6, $operator));
-		}
-		elseif ($_POST["functions"] == "gebruikersNaam"){
+		if ($_POST["functions"] == "gebruikersNaam"){
 			$_SESSION["gebruikersNaam"] = $_POST["gebruikersNaam"];
+		}
+		elseif ($_POST["functions"] == "opdrachtGenerator") {
+			$opdracht = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
+			echo $opdracht[0];
+		}
+		elseif ($_POST["functions"] == "antwoord"){
+			$timeStop = time();
+			$timeDifference = $timeStop - $opdracht[2];
+			$opdrachtControlle = opdrachtControleren($_POST["antwoord"], $opdracht[1]);
+			$opdrachtOpslaan = opdrachtOpslaan($opdracht[0], $opdrachtControlle[1], $timeDifference);
+			$testArray = array($opdrachtControlle, $opdrachtOpslaan);
+			echo json_encode($testArray) . $opdrachtControlle[0] . $opdracht[0] . $opdracht[1] ;
 		}
 	}
 	// End Global Section 1 - Login System
@@ -80,17 +91,29 @@
 			$som = "$getal1 : $getal2";
 		}
 		// End Section 2 - Operator Picker
-		$somUitkomstGetallen = array ($som, $uitkomst);
+		$somUitkomstGetallen = array ($som, $uitkomst, time());
 		return $somUitkomstGetallen;
 	}
 	// Global End Section 2 - Opdracht Generator
-	// Section 3 - Assignment Checker
-	function opdrachtControleren($antwoord, $uitkomst){
-		if ($antwoord == $uitkomst){
-			return array(true, "antwoord is goed");
+	// Section 3 - Save Assignment
+	function opdrachtOpslaan($opdracht, $opdrachtGoedofFout, $opdrachtTimer) {
+		return array($counter, $opdracht, $opdrachtGoedofFout, $opdrachtTimer);
+		if ($counter == 1){
+			
 		}
 		else {
-			return array(false, "antwoord is fout");
+			$counter++;
 		}
 	}
+	// End Section 3
+	//Section 3 - Assignment Checker
+	function opdrachtControleren($antwoord, $uitkomst){
+		if ($antwoord == $uitkomst){
+			return array(true, "goed");
+		}
+		else {
+			return array(false, "fout");
+		}
+	}
+
 ?>

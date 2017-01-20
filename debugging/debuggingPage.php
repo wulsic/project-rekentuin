@@ -4,7 +4,7 @@
 		<link href="css/style.php" rel="stylesheet" type="text/css">
 		<title> Debugging Page - Opdrachten </title>
 		<!-- jquery version 3.1.1-->
-		<script src="jquery.min.js"></script>
+		<script src="javascript/jquery.min.js"></script>
 		<script src="javascript/javascript.js"></script>
 		<?php session_start(); ?>
 	</head>
@@ -23,10 +23,38 @@
 				</div>
 			</div>
 		<!--End Section 1-->
+		<!--Section 2 - Groepen Selectie Pagina -->
 			<div id="groepen">
-				
+				<h1 class="text-center"></h1>
+				<h1 class="text-center"> kies je groep </h1>
+				<div class="text-center div-center">
+					<button onclick="groepen('4')">groep 4</button>
+					<button onclick="groepen('5')">groep 5</button>
+					<button onclick="groepen('6')">groep 6</button>
+				</div>
 			</div>
-
+		<!--End Section 2-->
+		<!--Section 3 - Operator Selectie Pagina -->
+			<div id="operators">
+				<h1 class="text-center"> kies je oefening </h1>
+				<div class="text-center div-center">
+					<button onclick="operators('+')"> + </button>
+					<button onclick="operators('-')"> - </button>
+					<button onclick="operators(':')"> : </button>
+					<button onclick="operators('x')"> x </button>
+					<button onclick="operators('')"> Toets </button>
+				</div>
+			</div>
+		<!--End Section 3-->
+		<!--Section 4 - Opdracht Pagina-->
+			<div id="opdrachten">
+				<h1 class="text-center"></h1>
+					<form id="startpaginaForm" method="post" action="" onsubmit="answerSend()">
+						<input type="number" name="antwoord" required>
+						<input type="submit" id="submit" name="antwoordSubmit">
+					</form>
+			</div>
+		<!--End Section 4-->
 	</body>
 
 </html>
