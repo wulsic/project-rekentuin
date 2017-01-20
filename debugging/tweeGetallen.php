@@ -10,16 +10,16 @@
 			$_SESSION["gebruikersNaam"] = $_POST["gebruikersNaam"];
 		}
 		elseif ($_POST["functions"] == "opdrachtGenerator") {
-			$opdracht = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
-			echo $opdracht[0];
-		}
-		elseif ($_POST["functions"] == "antwoord"){
+		if ($_POST["functions"] == "antwoord"){
 			$timeStop = time();
 			$timeDifference = $timeStop - $opdracht[2];
 			$opdrachtControlle = opdrachtControleren($_POST["antwoord"], $opdracht[1]);
 			$opdrachtOpslaan = opdrachtOpslaan($opdracht[0], $opdrachtControlle[1], $timeDifference);
 			$testArray = array($opdrachtControlle, $opdrachtOpslaan);
 			echo json_encode($testArray) . $opdrachtControlle[0] . $opdracht[0] . $opdracht[1] ;
+		}
+			$opdracht = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
+			echo $opdracht[0];
 		}
 	}
 	// End Global Section 1 - Login System

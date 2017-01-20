@@ -29,10 +29,11 @@ function operators(operator){
 	});
 }
 function assignmentGenerator(){
+	var antwoord = $("#opdrachten").find('input[name="antwoord"]').val();
 	$.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {functions: "opdrachtGenerator", groep: tmpMemory[0], operator: tmpMemory[1]},
+           data: {functions: "opdrachtGenerator", groep: tmpMemory[0], operator: tmpMemory[1], antwoord: antwoord},
            success: function(data)
            {
 			$("#opdrachten").children("h1").text(data);
