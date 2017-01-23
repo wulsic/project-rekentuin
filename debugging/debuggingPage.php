@@ -48,7 +48,7 @@
 		<!--End Section 3-->
 		<!--Section 4 - Assigment Select Page -->
 		<div id="opdrachtenSelectie">
-			<div class="="text-center div-center">
+			<div class="text-center div-center">
 				 <?php
 					for ($a = 1; $a < 21; $a++){
 						echo "<button onclick='select($a)'> $a </button>";
