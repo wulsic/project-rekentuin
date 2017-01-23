@@ -19,6 +19,7 @@
 		elseif ($_POST["functions"] == "antwoord"){
 			$timeStop = time();
 			$index = $_POST["indexNumber"];
+			$index = $_POST["indexNumber"];
 			$antwoord = $_POST["antwoord"];
 			$operator = $_POST["operator"];
 			$som = $_SESSION["opdracht"][$_POST["indexNumber"]][0];
@@ -29,6 +30,9 @@
 			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $opdrachtControlle[1], $timeDifference);
 			$returnArray = array($som, $opdrachtControlle[0], $_SESSION["opdrachtOpslaan"]);
 			echo json_encode($returnArray);
+		}
+		elseif ($_POST["functions"] == "results") {
+			echo json_encode($_SESSION["opdrachtOpslaan"]);
 		}
 	}
 	// End Global Section 1 - Login System

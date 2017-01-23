@@ -67,7 +67,12 @@ function select(index){
 }
 function answerSend(){
 		var antwoord = $("#opdrachten").find('input[name="antwoord"]').val();
+		if (tmpMemory[2] == 20){
+			results();
+		}
+		else {
 		tmpMemory[2] += 1;
+		}
 		console.log(tmpMemory[2]);
 		console.log(antwoord);
 		$.ajax({
@@ -84,4 +89,16 @@ function answerSend(){
            }
          });
 		event.preventDefault();
+}
+function results(){
+	$.ajax({
+           type: "POST",
+           url: "tweeGetallen.php",
+           data: {functions: "results"},
+		   dataType: "JSON",
+		   success: function(data)
+           {
+            console.log(data);
+           }
+         });
 }
