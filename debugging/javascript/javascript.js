@@ -29,50 +29,42 @@ function groepen(groep){
 }
 function operators(operator){
 	tmpMemory[1] = operator;
-	assignmentGenerator();
 	$("#operators").fadeOut("slow", function(){
 		$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
 	});
 }
-function assignmentGenerator(){
+function assignmentGenerator(index){
 	$.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {functions: "opdrachtGenerator", groep: tmpMemory[0], operator: tmpMemory[1]},
+           data: {functions: "opdrachtGenerator", indexNumber: index, groep: tmpMemory[0], operator: tmpMemory[1]},
+		   dataType: "text",
            success: function(data)
            {
             console.log(data);
+			if ($("#opdrachtenSelectie").css("display") == "none"){
+				$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
+					$("#opdrachten").children("form").children("h1").text(data).fadeIn("slow");
+				});
+			}
+			else {
+				$("#opdrachtenSelectie").fadeOut("slow", function(){
+					$("#opdrachten").children("form").children("h1").text(tmpMemory[3]);
+					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+				});
+			}
+			tmpMemory[3] = data;
            }
     });
-	
 }
 function select(index){
 	tmpMemory[2] = index;
 	console.log(tmpMemory[2])
 	console.log(index);
-		$.ajax({
-           type: "POST",
-           url: "tweeGetallen.php",
-           data: {functions: "opdrachtSelectie", indexNumber: index},
-		   success: function(data)
-           {
-            console.log(data);
-			$("#opdrachtenSelectie").fadeOut("slow", function(){
-				$("#opdrachten").children("form").children("h1").text(data);
-				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-			});
-			
-           }
-         });
+	assignmentGenerator(tmpMemory[2]);
 }
 function answerSend(){
-		var antwoord = $("#opdrachten").find('input[name="antwoord"]').val();
-		if (tmpMemory[2] == 20){
-			results();
-		}
-		else {
-		tmpMemory[2] += 1;
-		}
+		var antwoord = $('input[name="antwoord"]').val();
 		console.log(tmpMemory[2]);
 		console.log(antwoord);
 		$.ajax({
@@ -83,9 +75,15 @@ function answerSend(){
 		   success: function(data)
            {
             console.log(data);
-			$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
-				$("#opdrachten").children("form").children("h1").text(data[0]).fadeIn("slow");
-			});
+			console.log(data.length);
+			if (tmpMemory[2] == 20){
+				results();
+			}
+			else {
+			tmpMemory[2] += 1;
+			}
+			assignmentGenerator(tmpMemory[2]);
+			$('input[name="antwoord"]').val("").focus();
            }
          });
 		event.preventDefault();
@@ -95,7 +93,7 @@ function results(){
            type: "POST",
            url: "tweeGetallen.php",
            data: {functions: "results"},
-		   dataType: "JSON",
+		   //dataType: "JSON",
 		   success: function(data)
            {
             console.log(data);

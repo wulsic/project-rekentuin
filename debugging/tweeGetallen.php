@@ -9,12 +9,11 @@
 			echo $_SESSION["gebruikersNaam"];
 		}
 		elseif ($_POST["functions"] == "opdrachtGenerator") {
-			for ($a = 1; $a < 21; $a++){
-				$_SESSION["opdracht"][$a] = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
-			}
+				$_SESSION["opdracht"][$_POST["indexNumber"]] = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
+				echo $_SESSION["opdracht"][$_POST["indexNumber"]][0];
 		}
 		elseif ($_POST["functions"] == "opdrachtSelectie"){
-			echo $_SESSION["opdracht"][$_POST["indexNumber"]][0];
+
 		}
 		elseif ($_POST["functions"] == "antwoord"){
 			$timeStop = time();
@@ -22,17 +21,29 @@
 			$index = $_POST["indexNumber"];
 			$antwoord = $_POST["antwoord"];
 			$operator = $_POST["operator"];
+			$timestart = $_SESSION["opdrachtTijd"];
 			$som = $_SESSION["opdracht"][$_POST["indexNumber"]][0];
 			$uitkomst = $_SESSION["opdracht"][$_POST["indexNumber"]][1];
-			$timestart = $_SESSION["opdracht"][$_POST["indexNumber"]][2];
 			$timeDifference = $timeStop - $timestart;
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
-			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $opdrachtControlle[1], $timeDifference);
+			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle[1], date("i:s",$timeDifference));
 			$returnArray = array($som, $opdrachtControlle[0], $_SESSION["opdrachtOpslaan"]);
 			echo json_encode($returnArray);
 		}
 		elseif ($_POST["functions"] == "results") {
-			echo json_encode($_SESSION["opdrachtOpslaan"]);
+			foreach ($_SESSION["opdrachtOpslaan"] as $key => $value) {
+				echo
+				"<tr>
+					<td> $key</td>";
+				foreach ($value as $key2 => $value2 ){
+					echo "
+					<td> $key2</td>";
+					foreach ($value2 as $key3) {
+						echo "<td> $key3 </td>";
+					}
+				}
+				echo "</tr>";
+			}
 		}
 	}
 	// End Global Section 1 - Login System
@@ -109,12 +120,12 @@
 	}
 	// Global End Section 2 - Opdracht Generator
 	// Section 3 - Save Assignment
-	function opdrachtOpslaan($operator, $counter, $opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer) {
-		if ($counter == 1){
-			$_SESSION["opdrachtOpslaan"][$operator][$counter] = array($opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer);
+	function opdrachtOpslaan($operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer) {
+		if ($index == 1){
+			$_SESSION["opdrachtOpslaan"][$operator][$index] = array($opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 		}
 		else {
-			$_SESSION["opdrachtOpslaan"][$operator][$counter] = array($opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer);
+			$_SESSION["opdrachtOpslaan"][$operator][$index] = array($opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 		}
 	}
 	// End Section 3
