@@ -15,7 +15,7 @@
 					<form method="post" action="" onsubmit="send()">
 						<label>Voer hier je naam in</label><br />
 						<input type="text" name="gebruikersNaam" maxlength="16" autocomplete="off" required>
-						<input type="submit" id="submit" name="gebruikersNaamsubmit">
+						<input type="submit" id="submit" name="gebruikersNaamsubmit" value="Submit">
 					</form>
 				<div id="buttons">
 					<button>Over school</button>
