@@ -33,7 +33,7 @@ label {
 }
 .flex-direction-column {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 }
 .text-center{
 	text-align: center;
@@ -43,16 +43,16 @@ label {
     justify-content: center;
 	margin: auto;
 }
-#startpagina, #groepen, #operators, #opdrachten{	
+.div-center-justify{
+	justify-content: center
+}
+#startpagina, #groepen, #operators, #opdrachtenSelectie, #opdrachten{	
 	display: inline-flex;
+	justify-content: center;
 	flex-flow: column nowrap;
 	margin: 0;
 	width: 100%;
 	height: 100%;
-
-}
-#groepen, #operators, #opdrachten, #opdrachten h1{
-	display: none;
 }
 #startpagina form {
 	align-items: center;
@@ -82,4 +82,7 @@ label {
     height: 250px;
     border-radius: 50px;
 }
+#opdrachtenSelectie button {
+	width: 50px;
+	height: 50px;
 }

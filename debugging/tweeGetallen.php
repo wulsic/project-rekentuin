@@ -6,26 +6,26 @@
 	if (isset($_POST["functions"]))  {
 		if ($_POST["functions"] == "gebruikersNaam"){
 			$_SESSION["gebruikersNaam"] = $_POST["gebruikersNaam"];
+			echo $_SESSION["gebruikersNaam"];
 		}
 		elseif ($_POST["functions"] == "opdrachtGenerator") {
-			$_SESSION["opdracht"] = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
-			echo $_SESSION["opdracht"][0];
+			for ($a = 1; $a < 21; $a++){
+				$_SESSION["opdracht"][$a] = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
+			}
+		}
+		elseif ($_POST["functions"] == "opdrachtSelectie"){
+			echo $_SESSION["opdracht"][$_POST["indexNumber"]][0];
 		}
 		elseif ($_POST["functions"] == "antwoord"){
-			if ($_SESSION["counter"] == null){
-				$_SESSION["counter"] = 1;
-			}
-			elseif ($_SESSION["counter"] < 20) {
-				$_SESSION["counter"]++;
-			}
-			else {
-				$_SESSION["counter"] = 1;
-			}
 			$timeStop = time();
-			$timeDifference = $timeStop - $_SESSION["opdracht"][2];
-			$opdrachtControlle = opdrachtControleren($_POST["antwoord"], $_SESSION["opdracht"][1]);
-			$opdrachtOpslaan = opdrachtOpslaan($_SESSION["counter"] ,$_SESSION["opdracht"][0], $_SESSION["opdracht"][1], $opdrachtControlle[1], $timeDifference);
-			$returnArray = array($_SESSION["counter"], $opdrachtControlle[0]);
+			$timeDifference = $timeStop - $_SESSION["opdracht"][$_POST["indexNumber"]][2];
+			$opdrachtControlle = opdrachtControleren($_POST["antwoord"], $_SESSION["opdracht"][$_POST["indexNumber"]][1]);
+			$opdrachtOpslaan = opdrachtOpslaan($_POST["operator"], $_POST["indexNumber"] ,$_SESSION["opdracht"][$_POST["indexNumber"]][0], $_SESSION["opdracht"][$_POST["indexNumber"]][1], $opdrachtControlle[1], $timeDifference);
+			$returnArray = array($_SESSION["opdracht"][$_POST["indexNumber"]][0], $opdrachtControlle[0], $_SESSION["opdrachtOpslaan"]);
+			echo json_encode($returnArray);
+		}
+		elseif ($_POST["functions"] == "memory"){
+			$returnArray = array ($_SESSION["opdrachtOpslaan"][$_POST["operator"]][$_POST["indexN"]][0], $_SESSION["opdrachtOpslaan"][$_POST["operator"]][$_POST["indexN"]][1]);
 			echo json_encode($returnArray);
 		}
 	}
@@ -103,12 +103,12 @@
 	}
 	// Global End Section 2 - Opdracht Generator
 	// Section 3 - Save Assignment
-	function opdrachtOpslaan($counter, $opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer) {
+	function opdrachtOpslaan($operator, $counter, $opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer) {
 		if ($counter == 1){
-			$_SESSION["opdrachtOpslaan"][$counter] = array($opdracht, $opdrachtGoedofFout, $opdrachtTimer);
+			$_SESSION["opdrachtOpslaan"][$operator][$counter] = array($opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer);
 		}
 		else {
-			$_SESSION["opdrachtOpslaan"][$counter] = array($opdracht, $opdrachtGoedofFout, $opdrachtTimer);
+			$_SESSION["opdrachtOpslaan"][$operator][$counter] = array($opdracht, $uitkomst, $opdrachtGoedofFout, $opdrachtTimer);
 		}
 	}
 	// End Section 3
@@ -121,5 +121,4 @@
 			return array(false, "fout");
 		}
 	}
-
 ?>

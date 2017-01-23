@@ -23,7 +23,7 @@
 				</div>
 			</div>
 		<!--End Section 1-->
-		<!--Section 2 - Groepen Selectie Pagina -->
+		<!--Section 2 - Groepen Select Page -->
 			<div id="groepen">
 				<h1 class="text-center"></h1>
 				<h1 class="text-center"> kies je groep </h1>
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 		<!--End Section 2-->
-		<!--Section 3 - Operator Selectie Pagina -->
+		<!--Section 3 - Operator Select Page -->
 			<div id="operators">
 				<h1 class="text-center"> kies je oefening </h1>
 				<div class="text-center div-center">
@@ -46,15 +46,26 @@
 				</div>
 			</div>
 		<!--End Section 3-->
-		<!--Section 4 - Opdracht Pagina-->
-			<div id="opdrachten">
-					<form class="div-center" method="post" action="" onsubmit="answerSend()">
-						<h1 class="text-center"></h1>
-						<input type="number" name="antwoord" required>
-						<input type="submit" id="submit" name="antwoordSubmit">
-					</form>
+		<!--Section 4 - Assigment Select Page -->
+		<div id="opdrachtenSelectie">
+			<div class="flex-direction-row">
+				 <?php
+					for ($a = 1; $a < 21; $a++){
+						echo "<button onclick='select($a)'> $a </button>";
+					}
+				 ?>
 			</div>
+		</div>
 		<!--End Section 4-->
+		<!--Section 5 - Assignment Page-->
+			<div id="opdrachten">
+				<form class="div-center" method="post" action="" onsubmit="answerSend()">
+					<h1 class="text-center"></h1>
+					<input type="number" name="antwoord" required>
+					<input type="submit" id="submit" name="antwoordSubmit">
+				</form>
+			</div>
+		<!--End Section 5-->
 	</body>
 
 </html>

@@ -1,16 +1,23 @@
+$( "document" ).ready(function() {
+  $("#startpagina").fadeIn("slow").css("display", "inline-flex");
+});
 var tmpMemory = [];
 console.log(tmpMemory);
+var index = 0;
+
 function send() {
 	var form = $("form"),
 		term = form.find('input[name="gebruikersNaam"]').val();
-			$("#startpagina").fadeOut("slow", function(){
-				$("#groepen").children("h1:first-child").text("hallo " + term);
-				$("#groepen").fadeIn("slow").css("display", "inline-flex");
-			});
 	    $.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {functions: "gebruikersNaam", gebruikersNaam: term}
+           data: {functions: "gebruikersNaam", gebruikersNaam: term},
+		   success: function(data){
+			$("#startpagina").fadeOut("slow", function(){
+				$("#groepen").children("h1:first-child").text("hallo " + data);
+				$("#groepen").fadeIn("slow").css("display", "inline-flex");
+			});
+		   }
          });
 	event.preventDefault();
 }
@@ -24,44 +31,56 @@ function operators(operator){
 	tmpMemory[1] = operator;
 	assignmentGenerator();
 	$("#operators").fadeOut("slow", function(){
-		$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+		$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
 	});
 }
 function assignmentGenerator(){
-	var antwoord = $("#opdrachten").find('input[name="antwoord"]').val();
 	$.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {functions: "opdrachtGenerator", groep: tmpMemory[0], operator: tmpMemory[1], antwoord: antwoord},
+           data: {functions: "opdrachtGenerator", groep: tmpMemory[0], operator: tmpMemory[1]},
            success: function(data)
            {
-			$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
-				$("#opdrachten").children("form").children("h1").text(data).fadeIn("slow");
-			});
             console.log(data);
            }
     });
 	
 }
+function select(index){
+	tmpMemory[2] = index;
+	console.log(tmpMemory[2])
+	console.log(index);
+		$.ajax({
+           type: "POST",
+           url: "tweeGetallen.php",
+           data: {functions: "opdrachtSelectie", indexNumber: index},
+		   success: function(data)
+           {
+            console.log(data);
+			$("#opdrachtenSelectie").fadeOut("slow", function(){
+				$("#opdrachten").children("form").children("h1").text(data);
+				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+			});
+			
+           }
+         });
+}
 function answerSend(){
 		var antwoord = $("#opdrachten").find('input[name="antwoord"]').val();
+		tmpMemory[2] += 1;
+		console.log(tmpMemory[2]);
 		console.log(antwoord);
 		$.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {functions: "antwoord", antwoord: antwoord, operator: tmpMemory[1]},
+           data: {functions: "antwoord", indexNumber: tmpMemory[2], antwoord: antwoord, operator: tmpMemory[1]},
 		   dataType: "JSON",
 		   success: function(data)
            {
             console.log(data);
-			if (data[1] == true) {
-				// ToDo: Popup here.
-			}
-			if (data[0] == 20){
-					$("#opdrachten").fadeOut("slow");
-				// ToDo: A way to itterate the session : opdrachtOpslaan. Couple possible ways: Javascript or PHP function call via javascript.
-			}
-			assignmentGenerator();
+			$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
+				$("#opdrachten").children("form").children("h1").text(data[0]).fadeIn("slow");
+			});
            }
          });
 		event.preventDefault();
