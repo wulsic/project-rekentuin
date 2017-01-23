@@ -40,7 +40,7 @@
 				<div class="text-center div-center">
 					<button onclick="operators('+')"> + </button>
 					<button onclick="operators('-')"> - </button>
-					<button onclick="operators(':')"> : </button>
+					<button onclick="operators('/')"> : </button>
 					<button onclick="operators('x')"> x </button>
 					<button onclick="operators('')"> Toets </button>
 				</div>
