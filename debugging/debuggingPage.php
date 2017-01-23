@@ -14,7 +14,7 @@
 				<h1 class="text-center"> Rekentuin </h1>
 					<form method="post" action="" onsubmit="send()">
 						<label>Voer hier je naam in</label><br />
-						<input type="text" name="gebruikersNaam" maxlength="16" required>
+						<input type="text" name="gebruikersNaam" maxlength="16" autocomplete="off" required>
 						<input type="submit" id="submit" name="gebruikersNaamsubmit">
 					</form>
 				<div id="buttons">
