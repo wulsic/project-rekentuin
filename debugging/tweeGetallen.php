@@ -18,14 +18,16 @@
 		}
 		elseif ($_POST["functions"] == "antwoord"){
 			$timeStop = time();
-			$timeDifference = $timeStop - $_SESSION["opdracht"][$_POST["indexNumber"]][2];
-			$opdrachtControlle = opdrachtControleren($_POST["antwoord"], $_SESSION["opdracht"][$_POST["indexNumber"]][1]);
-			$opdrachtOpslaan = opdrachtOpslaan($_POST["operator"], $_POST["indexNumber"] ,$_SESSION["opdracht"][$_POST["indexNumber"]][0], $_SESSION["opdracht"][$_POST["indexNumber"]][1], $opdrachtControlle[1], $timeDifference);
-			$returnArray = array($_SESSION["opdracht"][$_POST["indexNumber"]][0], $opdrachtControlle[0], $_SESSION["opdrachtOpslaan"]);
-			echo json_encode($returnArray);
-		}
-		elseif ($_POST["functions"] == "memory"){
-			$returnArray = array ($_SESSION["opdrachtOpslaan"][$_POST["operator"]][$_POST["indexN"]][0], $_SESSION["opdrachtOpslaan"][$_POST["operator"]][$_POST["indexN"]][1]);
+			$index = $_POST["indexNumber"]
+			$antwoord = $_POST["antwoord"];
+			$operator = $_POST["operator"];
+			$som = $_SESSION["opdracht"][$_POST["indexNumber"]][0];
+			$uitkomst = $_SESSION["opdracht"][$_POST["indexNumber"]][1];
+			$timestart = $_SESSION["opdracht"][$_POST["indexNumber"]][2];
+			$timeDifference = $timeStop - $timestart;
+			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
+			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $opdrachtControlle[1], $timeDifference);
+			$returnArray = array($som, $opdrachtControlle[0], $_SESSION["opdrachtOpslaan"]);
 			echo json_encode($returnArray);
 		}
 	}
