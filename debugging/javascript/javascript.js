@@ -29,9 +29,18 @@ function groepen(groep){
 }
 function operators(operator){
 	tmpMemory[1] = operator;
-	$("#operators").fadeOut("slow", function(){
-		$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
-	});
+	if (operator == ""){
+		tmpMemory[2] = 1;
+		$("#operators").fadeOut("slow", function(){
+			assignmentGenerator(tmpMemory[2]);
+			$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+		});		
+	}
+	else {
+		$("#operators").fadeOut("slow", function(){
+			$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
+		});		
+	}
 }
 function assignmentGenerator(index){
 	$.ajax({
@@ -70,16 +79,24 @@ function answerSend(){
 		$.ajax({
            type: "POST",
            url: "tweeGetallen.php",
-           data: {functions: "antwoord", indexNumber: tmpMemory[2], antwoord: antwoord, operator: tmpMemory[1]},
+           data: {functions: "antwoord", indexNumber: tmpMemory[2], antwoord: antwoord},
 		   dataType: "JSON",
 		   success: function(data)
            {
             console.log(data);
 			console.log(data.length);
-			if (tmpMemory[2] == 20){
-				results();
-			}
+			if (tmpMemory[2] == data[1]){
+				if (data[1] == 0){
+					results();
+				}
+			} 
 			else {
+				if (tmpMemory[2] == data[1]){
+
+				}
+				else {
+					tmpMemory[2] = 1;
+				}
 			tmpMemory[2] += 1;
 			}
 			assignmentGenerator(tmpMemory[2]);
@@ -93,7 +110,7 @@ function results(){
            type: "POST",
            url: "tweeGetallen.php",
            data: {functions: "results"},
-		   //dataType: "JSON",
+		   dataType: "text",
 		   success: function(data)
            {
             console.log(data);

@@ -5,11 +5,14 @@
 	// Global Section 1 - Ajax
 	if (isset($_POST["functions"]))  {
 		if ($_POST["functions"] == "gebruikersNaam"){
+			$_SESSION["numbers"] = range(1,20);
 			$_SESSION["gebruikersNaam"] = $_POST["gebruikersNaam"];
 			echo $_SESSION["gebruikersNaam"];
 		}
 		elseif ($_POST["functions"] == "opdrachtGenerator") {
-				$_SESSION["opdracht"][$_POST["indexNumber"]] = opdrachtGenerator($_POST["groep"], $_POST["operator"]);
+				unset($_SESSION["numbers"][$_POST["indexNumber"] - 1]);
+				$_SESSION["operator"] = rekundigeOperator($_POST["operator"]);
+				$_SESSION["opdracht"][$_POST["indexNumber"]] = opdrachtGenerator($_POST["groep"], $operator);
 				echo $_SESSION["opdracht"][$_POST["indexNumber"]][0];
 		}
 		elseif ($_POST["functions"] == "opdrachtSelectie"){
@@ -20,28 +23,25 @@
 			$index = $_POST["indexNumber"];
 			$index = $_POST["indexNumber"];
 			$antwoord = $_POST["antwoord"];
-			$operator = $_POST["operator"];
+			$operator = $_SESSION["operator"];
 			$timestart = $_SESSION["opdrachtTijd"];
 			$som = $_SESSION["opdracht"][$_POST["indexNumber"]][0];
 			$uitkomst = $_SESSION["opdracht"][$_POST["indexNumber"]][1];
 			$timeDifference = $timeStop - $timestart;
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle[1], date("i:s",$timeDifference));
-			$returnArray = array($som, $opdrachtControlle[0], $_SESSION["opdrachtOpslaan"]);
+			$returnArray = array($som, end($_SESSION["numbers"]));
 			echo json_encode($returnArray);
 		}
 		elseif ($_POST["functions"] == "results") {
 			foreach ($_SESSION["opdrachtOpslaan"] as $key => $value) {
-				echo
-				"<tr>
-					<td> $key</td>";
-				foreach ($value as $key2 => $value2 ){
-					echo "
-					<td> $key2</td>";
-					foreach ($value2 as $key3) {
-						echo "<td> $key3 </td>";
+				echo "<tr> <td> $key</td>";
+					foreach ($value as $key2 => $value2 ){
+						echo "<td> $key2</td>";
+						foreach ($value2 as $key3) {
+							echo "<td> $key3 </td>";
+						}
 					}
-				}
 				echo "</tr>";
 			}
 		}
