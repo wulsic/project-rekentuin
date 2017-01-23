@@ -48,7 +48,7 @@
 		<!--End Section 3-->
 		<!--Section 4 - Assigment Select Page -->
 		<div id="opdrachtenSelectie">
-			<div class="flex-direction-row">
+			<div class="="text-center div-center">
 				 <?php
 					for ($a = 1; $a < 21; $a++){
 						echo "<button onclick='select($a)'> $a </button>";
@@ -62,7 +62,7 @@
 				<h1 class="text-center"></h1>
 				<div class="text-center">
 					<input type="number" name="antwoord" required>
-					<input type="submit" id="submit" name="antwoordSubmit">
+					<input type="submit" id="submit" name="antwoordSubmit" value="Submit">
 				</div>
 			</form>
 		</div>

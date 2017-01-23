@@ -20,10 +20,17 @@
 		background-color:white;
 		padding:8px;
 	}
+	#opdrachtenSelectie button {
+		margin:20px;
+		font-size:2em;
+		width:75px;
+		height:75px;
+		border-radius:20px;
+	}
 	
 }
 
-@media only screen and (min-width:768px){
+@media only screen and (min-width:910px){
 	h1 {font-size:4em;}
 	label {padding:9px;}
 	#groepen button, #operators button {
@@ -35,6 +42,12 @@
 	button{transition: all .2s ease-in-out;}
 	button:hover {
 		transform:scale(1.1);
+	}
+	#opdrachtenSelectie button {
+		margin:20px;
+		font-size:3em;
+		width:125px;
+		height:125px;
 	}
 }
 
@@ -104,6 +117,7 @@ input {
 #buttons {
 	display: flex;
     flex-direction: column;
+	margin-bottom:10px;
 }
 #startpagina button {
 	width: 140px;
@@ -121,6 +135,7 @@ input {
     border-radius: 50px;
 }
 #opdrachtenSelectie button {
-	width: 50px;
-	height: 50px;
+	font-family: Dyslexie;
+	color: white;
+	background-color:black;
 }
