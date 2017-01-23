@@ -6,12 +6,21 @@
 @media only screen and (min-width:368px){
 	h1 {font-size:4em;margin:0px;}
 	label {padding:7px;}
+	#submit {cursor:pointer;}
 	#groepen button, #operators button {
 		margin:6px;
 		font-size:2em;
 		width:500px;
 		height:125px;
 	}
+	#startpagina button {
+		border-radius:5px;
+		border-style:hidden;
+		margin:5px;
+		background-color:white;
+		padding:8px;
+	}
+	
 }
 
 @media only screen and (min-width:768px){
