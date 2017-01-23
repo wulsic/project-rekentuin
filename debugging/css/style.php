@@ -11,6 +11,11 @@ body {
 
 button {
 	cursor: pointer;
+	transition: all .2s ease-in-out;
+}
+
+button:hover {
+	transform:scale(1.1);
 }
 
 :focus {
