@@ -18,7 +18,7 @@
 		}
 		elseif ($_POST["functions"] == "antwoord"){
 			$timeStop = time();
-			$index = $_POST["indexNumber"]
+			$index = $_POST["indexNumber"];
 			$antwoord = $_POST["antwoord"];
 			$operator = $_POST["operator"];
 			$som = $_SESSION["opdracht"][$_POST["indexNumber"]][0];
