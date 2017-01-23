@@ -2,6 +2,38 @@
     header("Content-type: text/css; charset: UTF-8");
 	require_once "../tweeGetallen.php";
 ?>
+
+@media only screen and (min-width:368px){
+	h1 {font-size:4em;margin:0px;}
+	label {padding:7px;}
+	#groepen button, #operators button {
+		margin:6px;
+		font-size:2em;
+		width:500px;
+		height:125px;
+	}
+}
+
+@media only screen and (min-width:768px){
+	h1 {font-size:4em;}
+	label {padding:9px;}
+	#groepen button, #operators button {
+		margin:20px;
+		font-size:4em;
+		width:250px;
+		height:250px;
+	}
+	button{transition: all .2s ease-in-out;}
+	button:hover {
+		transform:scale(1.1);
+	}
+}
+
+
+@media only screen and (min-width:1024px){
+	h1 {font-size:5em;}
+	label {padding:10px;}
+}
 body {
 	margin: 0;
 	font-family: Dyslexie;
@@ -11,28 +43,16 @@ body {
 
 button {
 	cursor: pointer;
-	transition: all .2s ease-in-out;
-}
-
-button:hover {
-	transform:scale(1.1);
 }
 
 :focus {
 	outline: none;
 }
 
-h1 {
-	font-size: 5em;
-}
-
 input {
 	padding: 10px;
     background-color: white;
     border-style: hidden;
-}
-label {
-	padding: 10px;
 }
 
 @font-face {
@@ -86,13 +106,9 @@ label {
 	margin-bottom: 25px;
 }
 #groepen button, #operators button {
-	margin: 20px;
     font-family: Dyslexie;
     color: white;
     background-color: black;
-    font-size: 4em;
-    width: 250px;
-    height: 250px;
     border-radius: 50px;
 }
 }
