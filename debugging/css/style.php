@@ -9,6 +9,14 @@ body {
 	color: white;
 }
 
+button {
+	cursor: pointer;
+}
+
+:focus {
+	outline: none;
+}
+
 h1 {
 	font-size: 5em;
 }

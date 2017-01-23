@@ -50,8 +50,10 @@
 			<div id="opdrachten">
 					<form class="div-center" method="post" action="" onsubmit="answerSend()">
 						<h1 class="text-center"></h1>
-						<input type="number" name="antwoord" required>
-						<input type="submit" id="submit" name="antwoordSubmit">
+						<div class="text-center">
+							<input type="number" name="antwoord" required>
+							<input type="submit" id="submit" name="antwoordSubmit">
+						</div>
 					</form>
 			</div>
 		<!--End Section 4-->
