@@ -14,7 +14,7 @@
 				<h1 class="text-center"> Rekentuin </h1>
 					<form method="post" action="" onsubmit="send()">
 						<label>Voer hier je naam in</label><br />
-						<input type="text" name="gebruikersNaam" maxlength="16" required>
+						<input type="text" name="gebruikersNaam" maxlength="16" autocomplete="off" required>
 						<input type="submit" id="submit" name="gebruikersNaamsubmit">
 					</form>
 				<div id="buttons">
@@ -56,15 +56,16 @@
 				 ?>
 			</div>
 		</div>
-		<!--End Section 4-->
 		<!--Section 5 - Assignment Page-->
-			<div id="opdrachten">
-				<form class="div-center" method="post" action="" onsubmit="answerSend()">
-					<h1 class="text-center"></h1>
+		<div id="opdrachten">
+			<form class="div-center" method="post" action="" onsubmit="answerSend()">
+				<h1 class="text-center"></h1>
+				<div class="text-center">
 					<input type="number" name="antwoord" required>
 					<input type="submit" id="submit" name="antwoordSubmit">
-				</form>
-			</div>
+				</div>
+			</form>
+		</div>
 		<!--End Section 5-->
 	</body>
 
