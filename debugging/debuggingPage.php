@@ -12,9 +12,9 @@
 		<!--Section 1 - Startpagina -->
 			<div id="startpagina">
 				<h1 class="text-center"> Rekentuin </h1>
-					<form method="post" action="" onsubmit="send()">
+					<form method="post" action="">
 						<label>Voer hier je naam in</label><br />
-						<input type="text" name="gebruikersNaam" maxlength="16" autocomplete="off" required autofocus>
+						<input type="text" name="input" maxlength="16" autocomplete="off" required autofocus>
 						<input type="submit" id="submit" name="gebruikersNaamsubmit" value="Submit">
 					</form>
 				<div id="buttons">
@@ -28,9 +28,9 @@
 				<h1 class="text-center"></h1>
 				<h1 class="text-center"> kies je groep </h1>
 				<div class="text-center div-center">
-					<button onclick="groepen('4')">groep 4</button>
-					<button onclick="groepen('5')">groep 5</button>
-					<button onclick="groepen('6')">groep 6</button>
+					<button>groep 4</button>
+					<button>groep 5</button>
+					<button>groep 6</button>
 				</div>
 			</div>
 		<!--End Section 2-->
@@ -38,11 +38,11 @@
 			<div id="operators">
 				<h1 class="text-center"> kies je oefening </h1>
 				<div class="text-center div-center">
-					<button onclick="operators('+')"> + </button>
-					<button onclick="operators('-')"> - </button>
-					<button onclick="operators('/')"> : </button>
-					<button onclick="operators('x')"> x </button>
-					<button onclick="operators('')"> Toets </button>
+					<button>+</button>
+					<button>-</button>
+					<button>:</button>
+					<button>x</button>
+					<button>Toets</button>
 				</div>
 			</div>
 		<!--End Section 3-->
@@ -51,17 +51,17 @@
 			<div class="text-center div-center">
 				 <?php
 					for ($a = 1; $a < 21; $a++){
-						echo "<button onclick='select($a)'> $a </button>";
+						echo "<button>$a</button>";
 					}
 				 ?>
 			</div>
 		</div>
 		<!--Section 5 - Assignment Page-->
 		<div id="opdrachten">
-			<form class="div-center" method="post" action="" onsubmit="answerSend()">
+			<form class="div-center" method="post" action="" >
 				<h1 class="text-center"></h1>
 				<div class="text-center">
-					<input type="number" name="antwoord" required>
+					<input type="number" name="input" required>
 					<input type="submit" id="submit" name="antwoordSubmit" value="Submit">
 				</div>
 			</form>

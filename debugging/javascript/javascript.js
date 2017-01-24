@@ -1,119 +1,105 @@
-$( "document" ).ready(function() {
-  $("#startpagina").fadeIn("slow").css("display", "inline-flex");
-});
-var tmpMemory = [];
-console.log(tmpMemory);
-var index = 0;
-
-function send() {
-	var form = $("form"),
-		term = form.find('input[name="gebruikersNaam"]').val();
-	    $.ajax({
-           type: "POST",
-           url: "tweeGetallen.php",
-           data: {functions: "gebruikersNaam", gebruikersNaam: term},
-		   success: function(data){
-			$("#startpagina").fadeOut("slow", function(){
-				$("#groepen").children("h1:first-child").text("hallo " + data);
-				$("#groepen").fadeIn("slow").css("display", "inline-flex");
-			});
-		   }
-         });
-	event.preventDefault();
-}
-function groepen(groep){
-	tmpMemory[0] = groep;
-	$("#groepen").fadeOut("slow", function(){
-		$("#operators").fadeIn("slow").css("display", "inline-flex");
-	});	
-}
-function operators(operator){
-	tmpMemory[1] = operator;
-	if (operator == ""){
-		tmpMemory[2] = 1;
-		$("#operators").fadeOut("slow", function(){
-			assignmentGenerator(tmpMemory[2]);
-			$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-		});		
-	}
-	else {
-		$("#operators").fadeOut("slow", function(){
-			$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
-		});		
-	}
-}
-function assignmentGenerator(index){
-	$.ajax({
-           type: "POST",
-           url: "tweeGetallen.php",
-           data: {functions: "opdrachtGenerator", indexNumber: index, groep: tmpMemory[0], operator: tmpMemory[1]},
-		   dataType: "text",
-           success: function(data)
-           {
-            console.log(data);
-			if ($("#opdrachtenSelectie").css("display") == "none"){
-				$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
-					$("#opdrachten").children("form").children("h1").text(data).fadeIn("slow");
-				});
-			}
-			else {
-				$("#opdrachtenSelectie").fadeOut("slow", function(){
-					$("#opdrachten").children("form").children("h1").text(tmpMemory[3]);
-					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-				});
-			}
-			tmpMemory[3] = data;
-           }
-    });
-}
-function select(index){
-	tmpMemory[2] = index;
-	console.log(tmpMemory[2])
-	console.log(index);
-	assignmentGenerator(tmpMemory[2]);
-}
-function answerSend(){
-		var antwoord = $('input[name="antwoord"]').val();
-		console.log(tmpMemory[2]);
-		console.log(antwoord);
-		$.ajax({
-           type: "POST",
-           url: "tweeGetallen.php",
-           data: {functions: "antwoord", indexNumber: tmpMemory[2], antwoord: antwoord},
-		   dataType: "JSON",
-		   success: function(data)
-           {
-            console.log(data);
-			console.log(data.length);
-			if (tmpMemory[2] == data[1]){
-				if (data[1] == 0){
-					results();
-				}
-			} 
-			else {
-				if (tmpMemory[2] == data[1]){
-
-				}
-				else {
-					tmpMemory[2] = 1;
-				}
-			tmpMemory[2] += 1;
-			}
-			assignmentGenerator(tmpMemory[2]);
-			$('input[name="antwoord"]').val("").focus();
-           }
-         });
+$(document).ready(function(){
+	$("#startpagina").fadeIn("slow").css("display", "inline-flex");
+	$("form").submit(function(){
 		event.preventDefault();
-}
-function results(){
+		post($(this).find("input[name='input']").val());
+	});
+	$("button").click(function(){
+		post($(this).text());
+	})
+});
+function post(val) {
+	var data = "";
+	var dataType = "";
+	var success = "";
+	if ($("#startpagina").css("display") != "none"){
+		dataSend = {
+			functions: "callLoginsystem",
+			username: val
+		}
+		dataType = "text";
+		success = function success(data){
+					$("#startpagina").fadeOut("slow", function(){
+						$("#groepen").children("h1:first-child").text("hallo " + data);
+						$("#groepen").fadeIn("slow").css("display", "inline-flex");
+					});
+				}
+	}
+	if ($("#groepen").css("display") != "none"){
+		dataSend = {
+			functions: "group", 
+			group: val.replace(/[^0-9]/g, "")
+		}
+		success = function success(){
+					$("#groepen").fadeOut("slow", function(){
+						$("#operators").fadeIn("slow").css("display", "inline-flex");
+					});
+				}
+	}
+	if ($("#operators").css("display") != "none"){
+		if (val == ":"){
+			var val = val.replace(":", "/");
+		}
+		else {
+			if (val == "x"){
+				var val = val.replace("x", "*");
+			}
+			else {
+				if (val == "Toets"){
+					var val = val.replace("Toets", "");
+				}
+			}
+		}
+		dataSend = {
+			functions: "callRekundigeoperator", 
+			operator: val
+		}
+		success = function success(){
+					if (val == ""){
+						$("#operators").fadeOut("slow", function(){
+							assignmentGenerator(1);
+							$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+						});		
+					}
+					else {
+						$("#operators").fadeOut("slow", function(){
+							$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
+						});
+					}
+				}
+	}
+	if ($("#opdrachtenSelectie").css("display") != "none"){
+		dataSend = {
+			functions: "callAssignmentindexCheckerandGenerator",
+			index: val
+		}
+		dataType = "JSON";
+		success = function success(data){
+					console.log(data);
+					$("#opdrachtenSelectie").fadeOut("slow", function(){
+						$("#opdrachten").children("form").children("h1").text(data[0]);
+						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+					});
+				}
+	}
+	if ($("#opdrachten").css("display") != "none"){
+		dataSend = {
+			functions: "callControlsaveAndassignmentGenerator",
+			antwoord: val
+		}
+		dataType = "JSON";
+		success = function success(data){
+					console.log(data);
+					$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
+						$("#opdrachten").children("form").children("h1").text(data[1][0]).fadeIn("slow");
+					});
+				}		
+	}
 	$.ajax({
-           type: "POST",
-           url: "tweeGetallen.php",
-           data: {functions: "results"},
-		   dataType: "text",
-		   success: function(data)
-           {
-            console.log(data);
-           }
-         });
+	   type: "POST",
+	   url: "tweeGetallen.php",
+	   data: dataSend,
+	   dataType: dataType,
+	   success: success
+	});
 }
