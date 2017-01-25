@@ -12,13 +12,15 @@
 			$_SESSION["group"] = $_POST["group"];
 		}
 		elseif ($_POST["functions"] == "callRekundigeoperator"){
-			$_SESSION["operator"] = rekundigeOperator($_POST["operator"]);
-			$_SESSION["opdracht"] = assignmentIndexcheckerAndGenerator($_POST["index"], $_SESSION["operator"]);
-			echo json_encode($_SESSION["opdracht"][0]);
+			$_SESSION["operator"] = $_POST["operator"];
+			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], rekundigeOperator($_SESSION["operator"]));
+			echo $_SESSION["opdracht"][0];
 			
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
-			echo json_encode(assignmentIndexcheckerAndGenerator($_POST["index"], $_SESSION["operator"]));
+			//echo json_encode(assignmentIndexcheckerAndGenerator($_POST["index"], $_SESSION["operator"]));
+			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $_SESSION["operator"]);
+			echo $_SESSION["opdracht"][0];
 		}
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			$timeStop = time();
@@ -31,7 +33,9 @@
 			$timeDifference = $timeStop - $timestart;
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle[1], date("i:s",$timeDifference));
-			$returnArray = array($som, assignmentIndexcheckerAndGenerator("") , allAssignmentChecker());
+			$newOperator = rekundigeOperator($_SESSION["operator"]);
+			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
+			$returnArray = array($_SESSION["opdracht"][0], assignmentIndexcheckerAndGenerator("") , allAssignmentChecker());
 			echo json_encode($returnArray);
 		}
 		elseif ($_POST["functions"] == "results") {
@@ -63,7 +67,7 @@
 	// Global Section 3 - Assignment generator
 	function rekundigeOperator($userSelection){
 		// Section 1 - Operator Picker
-		$operator = array("+", "-", "x", "");
+		$operator = array("+", "-", "*", "");
 		if ($userSelection == "+") {
 			return $operator[0];
 		}
@@ -144,9 +148,7 @@
 				$_SESSION["index"] = array($index - 1 => $index);
 				$_SESSION["counter"] = $index;
 			}
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $_SESSION["operator"]);
-				$testArray = array($_SESSION["opdracht"][0], $_SESSION["index"]);
-				return $testArray;
+
 	}
 	// Global Section 4 - END
 	// Global Section 4 - Save Assignment

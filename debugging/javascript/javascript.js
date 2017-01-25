@@ -43,12 +43,13 @@ function post(val) {
 		}
 		else if (val == "Toets"){
 			var val = val.replace("Toets", "");
+			console.log(val);
 		}
 		dataSend = {
 			functions: "callRekundigeoperator", 
 			operator: val
 		}
-		dataType = "JSON"
+		dataType = "text"
 		success = function success(data){
 					if (val == ""){
 						$("#operators").fadeOut("slow", function(){
@@ -68,7 +69,7 @@ function post(val) {
 			functions: "callAssignmentindexCheckerandGenerator",
 			index: val
 		}
-		dataType = "JSON";
+		//dataType = "JSON";
 		success = function success(data){
 					console.log(data);
 					$("#opdrachtenSelectie").fadeOut("slow", function(){
@@ -86,8 +87,9 @@ function post(val) {
 		success = function success(data){
 					console.log(data);
 					$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
-						$("#opdrachten").children("form").children("h1").text(data[1][0]).fadeIn("slow");
+						$("#opdrachten").children("form").children("h1").text(data[0]).fadeIn("slow");
 					});
+				$('input[name="input"]').val("").focus();
 				}		
 	}
 	$.ajax({
