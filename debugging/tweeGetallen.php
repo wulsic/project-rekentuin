@@ -16,7 +16,7 @@
 			
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
-			echo json_encode(assignmentIndexcheckerAndGenerator($_POST["index"]));
+			echo json_encode(assignmentIndexcheckerAndGenerator($_POST["index"], $_SESSION["operator"]));
 		}
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			$timeStop = time();
