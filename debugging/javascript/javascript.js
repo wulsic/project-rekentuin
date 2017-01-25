@@ -38,15 +38,11 @@ function post(val) {
 		if (val == ":"){
 			var val = val.replace(":", "/");
 		}
-		else {
-			if (val == "x"){
-				var val = val.replace("x", "*");
-			}
-			else {
-				if (val == "Toets"){
-					var val = val.replace("Toets", "");
-				}
-			}
+		else if (val == "x"){
+			var val = val.replace("x", "*");
+		}
+		else if (val == "Toets"){
+			var val = val.replace("Toets", "");
 		}
 		dataSend = {
 			functions: "callRekundigeoperator", 
