@@ -4,12 +4,17 @@ $(document).ready(function(){
 		event.preventDefault();
 		post($(this).find("input[name='input']").val());
 	});
-	$("button").click(function(){
-		post($(this).text());
-	})
+
 });
 function post(val) {
 	var dataType = "";
+	
+	if (val !== undefined || val !== null){
+		$("button").click(function(){
+		post($(this).text());
+		})
+	}
+
 	if ($("#startpagina").css("display") != "none"){
 		dataSend = {
 			functions: "callLoginsystem",
@@ -40,10 +45,6 @@ function post(val) {
 		}
 		else if (val == "x"){
 			var val = val.replace("x", "*");
-		}
-		else if (val == "Toets"){
-			var val = val.replace("Toets", "");
-			console.log(val);
 		}
 		dataSend = {
 			functions: "callRekundigeoperator", 
