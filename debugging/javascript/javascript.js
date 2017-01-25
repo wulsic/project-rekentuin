@@ -8,14 +8,12 @@ $(document).ready(function(){
 });
 function post(val) {
 	var dataType = "";
-	
-	if (val !== undefined || val !== null){
+
+	if ($("#startpagina").css("display") != "none"){
 		$("button").click(function(){
 		post($(this).text());
 		})
-	}
-
-	if ($("#startpagina").css("display") != "none"){
+		
 		dataSend = {
 			functions: "callLoginsystem",
 			username: val
