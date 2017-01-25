@@ -9,9 +9,7 @@ $(document).ready(function(){
 	})
 });
 function post(val) {
-	var data = "";
 	var dataType = "";
-	var success = "";
 	if ($("#startpagina").css("display") != "none"){
 		dataSend = {
 			functions: "callLoginsystem",
