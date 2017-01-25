@@ -52,7 +52,7 @@ function post(val) {
 		}
 		dataType = "text"
 		success = function success(data){
-			if (val == ""){
+			if (val == "Toets"){
 				$("#operators").fadeOut("slow", function(){
 					$("#opdrachten").children("form").children("h1").text(data);
 					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
