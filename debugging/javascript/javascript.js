@@ -73,7 +73,7 @@ function post(val) {
 		success = function success(data){
 					console.log(data);
 					$("#opdrachtenSelectie").fadeOut("slow", function(){
-						$("#opdrachten").children("form").children("h1").text(data[0]);
+						$("#opdrachten").children("form").children("h1").text(data);
 						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 					});
 				}
