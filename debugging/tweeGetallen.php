@@ -13,6 +13,8 @@
 		}
 		elseif ($_POST["functions"] == "callRekundigeoperator"){
 			$_SESSION["operator"] = rekundigeOperator($_POST["operator"]);
+			$_SESSION["opdracht"] = assignmentIndexcheckerAndGenerator($_POST["index"], $_SESSION["operator"]);
+			echo json_encode($_SESSION["opdracht"][0]);
 			
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {

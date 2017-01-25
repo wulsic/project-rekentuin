@@ -48,10 +48,11 @@ function post(val) {
 			functions: "callRekundigeoperator", 
 			operator: val
 		}
-		success = function success(){
+		dataType = "JSON"
+		success = function success(data){
 					if (val == ""){
 						$("#operators").fadeOut("slow", function(){
-							assignmentGenerator(1);
+							$("#opdrachten").children("form").children("h1").text(data);
 							$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 						});		
 					}
