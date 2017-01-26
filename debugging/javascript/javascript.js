@@ -2,18 +2,47 @@ $(document).ready(function(){
 	$("#startpagina").fadeIn("slow").css("display", "inline-flex");
 	$("form").submit(function(){
 		event.preventDefault();
+		console.log("click");
 		post($(this).find("input[name='input']").val());
 	});
-
+	$("button").click(function(){
+		if ($(this).text() == "Ga terug"){
+			previous(this);
+		}
+		else if ($("#startpagina").css("display") != "none"){
+			popup();
+		}
+		else{
+			post($(this).text());			
+		}
+	});
 });
+function previous(val){
+	if ($("#operators").find(val) && $("#operators").css("display") != "none"){
+		$("#operators").fadeOut("slow", function(){
+			$("#groepen").fadeIn("slow");
+		});
+	}
+	else if ($("#opdrachtenSelectie").find(val) && $("#opdrachtenSelectie").css("display") != "none"){
+		$("#opdrachtenSelectie").fadeOut("slow", function(){
+			$("#operators").fadeIn("slow");
+		});
+	}
+	else if ($("#opdrachten").find(val) && $("#opdrachten").css("display") != "none"){
+		$("#opdrachten").fadeOut("slow", function(){
+			$("#opdrachtenSelectie").fadeIn("slow");
+		});
+	}
+	else if ($("#uitslag").find(val) && $("#uitslag").css("display") != "none"){
+		$("#uitslag").fadeOut("slow", function(){
+			$("#operators").fadeIn("slow");
+		});
+	}
+}
 function post(val) {
 	var dataType = "";
 
 	if ($("#startpagina").css("display") != "none"){
-		$("button").click(function(){
-		post($(this).text());
-		})
-		
 		dataSend = {
 			functions: "callLoginsystem",
 			username: val
@@ -38,6 +67,7 @@ function post(val) {
 		}
 	}
 	if ($("#operators").css("display") != "none"){
+	
 		if (val == ":"){
 			var val = val.replace(":", "/");
 		}
@@ -71,7 +101,7 @@ function post(val) {
 		//dataType = "JSON";
 		success = function success(data){
 			console.log(data);
-				$("#opdrachtenSelectie").fadeOut("slow", function(){
+			$("#opdrachtenSelectie").fadeOut("slow", function(){
 				$("#opdrachten").children("form").children("h1").text(data);
 				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 			});
@@ -104,10 +134,10 @@ function post(val) {
 	if ($("#uitslag").css("display") != "none"){
 		dataSend = {
 			functions: "results",
-			antwoord: val
 		}
 		dataType: "html",
 		success = function success(data){
+			console.log(data);
 			$("#uitslag").append(data);
 		}
 	}

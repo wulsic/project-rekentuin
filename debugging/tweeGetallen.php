@@ -48,7 +48,8 @@
 		}
 		elseif ($_POST["functions"] == "results") {
 			foreach ($_SESSION["opdrachtOpslaan"] as $key => $value) {
-				echo "<table>
+				echo 
+					"<table>
 						<tr>
 							<td> $key </td>
 						</tr>
@@ -61,13 +62,14 @@
 							<td> Jouw tijd per som </td>
 						</tr>";
 					foreach ($value as $key2 => $value2 ){
-						echo "<tr>";
-						echo "<td> $key2</td>";
+						echo "<tr>
+								<td> $key2</td>";
 						foreach ($value2 as $key3) {
-							echo "<td> $key3 </td>";
+							echo"<td> $key3 </td>";
 						}
+						echo "<tr>";
 					}
-				echo "</tr> </table>";
+				echo"</table>";
 			}
 		}
 	}

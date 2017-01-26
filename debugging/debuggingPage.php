@@ -72,6 +72,7 @@
 		<!--End Section 5-->
 		<!--Section 6 - Results Page-->
 		<div id="uitslag">
+			<button>Ga terug</button>
 		</div>
 		<!--End Section 6-->
 	</body>
