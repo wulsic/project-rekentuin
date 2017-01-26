@@ -12,13 +12,16 @@
 			$_SESSION["group"] = $_POST["group"];
 		}
 		elseif ($_POST["functions"] == "callRekundigeoperator"){
+			if (!empty($_SESSION["operator"])){
+				$_SESSION["oldOperator"] = $_SESSION["operator"];
+			}
 			$_SESSION["operator"] = $_POST["operator"];
 			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], rekundigeOperator($_SESSION["operator"]));
 			echo $_SESSION["opdracht"][0];
 			
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
-			if (empty($_SESSION["numbers"])){
+			if (empty($_SESSION["numbers"]) || $_SESSION["oldOperator"] != $_SESSION["operator"] ){
 				$_SESSION["numbers"] = range(1,20);
 			}
 			indexChecker($_POST["index"]);
@@ -47,41 +50,32 @@
 			}
 		}
 		elseif ($_POST["functions"] == "results") {
-			foreach ($_SESSION["opdrachtOpslaan"] as $key => $value) {
-				echo 
-					"<table>
-						<tr>
-							<td> $key </td>
-						</tr>
-						<tr>
-							<td> Opdracht Nummer</td>
-							<td> Som </td>
-							<td> Uitkomst </td>
-							<td> Jouw Antwoord </td>
-							<td> Goed of Fout </td>
-							<td> Jouw tijd per som </td>
-						</tr>";
-					foreach ($value as $key2 => $value2 ){
-						echo "<tr>
-								<td> $key2</td>";
-						foreach ($value2 as $key3) {
-							echo"<td> $key3 </td>";
-						}
-						echo "<tr>";
-					}
-				echo"</table>";
+			$operator = $_SESSION["operator"];
+			echo "<table>
+					<tr>
+						<td> $operator </td>
+						<td> Opdracht Nummer</td>
+						<td> Som </td>
+						<td> Uitkomst </td>
+						<td> Jouw Antwoord </td>
+						<td> Goed of Fout </td>
+						<td> Jouw tijd per som </td> 
+					</tr>";
+			foreach ($_SESSION["opdrachtOpslaan"][$operator] as $key => $value) {
+				echo "<tr>
+						<td> $key</td>";
+				foreach ($value as $key2) {
+					echo"<td> $key2 </td>";
+				}
+				echo "</tr>";
 			}
+			echo "</table>";
 		}
 	}
 	// Global Section 2 - Login System
 	function loginSystem($username){
-		if (!empty($_SESSION["username"])){
-			session_destroy();
-			$_SESSION["username"] = $username;
-		}
-		else {
-			$_SESSION["username"] = $username;
-		}
+		session_destroy();
+		$_SESSION["username"] = $username;
 		return $username;
 	}
 	// End Global Section 2 - Login System
@@ -191,6 +185,7 @@
 		if (count($_SESSION["opdrachtOpslaan"][$operator]) == 20) {
 			ksort ($_SESSION["opdrachtOpslaan"][$operator]);
 		}
+		return array($operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 	}
 	// Global End Section 4
 	

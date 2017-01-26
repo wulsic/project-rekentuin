@@ -112,14 +112,11 @@ function post(val) {
 			functions: "callControlsaveAndassignmentGenerator",
 			antwoord: val
 		}
-		dataType: "JSON",
 		success = function success(data){
 				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
-						$("body").append("<div id='uitslag'></div>");
-						$("#uitslag").fadeIn("slow", function(){
-							post("results");
-						})
+						post("");
+						$("#uitslag").fadeIn("slow");
 					});
 				}
 				else {
@@ -135,10 +132,10 @@ function post(val) {
 		dataSend = {
 			functions: "results",
 		}
-		dataType: "html",
 		success = function success(data){
+		$("#uitslag").append(data);
 			console.log(data);
-			$("#uitslag").append(data);
+
 		}
 	}
 	$.ajax({
