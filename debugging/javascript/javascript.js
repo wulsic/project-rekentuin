@@ -83,14 +83,34 @@ function post(val) {
 			functions: "callControlsaveAndassignmentGenerator",
 			antwoord: val
 		}
-		dataType = "JSON";
+		dataType: "JSON",
 		success = function success(data){
-					console.log(data);
-					$("#opdrachten").children("form").children("h1").fadeOut("slow", function(){
-						$("#opdrachten").children("form").children("h1").text(data[0]).fadeIn("slow");
+				if (data == true){
+					$("#opdrachten").fadeOut("slow", function(){
+						$("body").append("<div id='uitslag'></div>");
+						$("#uitslag").fadeIn("slow", function(){
+							post("results");
+						})
 					});
-				$('input[name="input"]').val("").focus();
-				}		
+				}
+				else {
+					console.log(data);
+					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+						$("#opdrachten").children("form").children("h1").text(data).fadeIn("fast");
+					});
+					$('input[name="input"]').val("").focus();					
+				}
+		}
+	}
+	if ($("#uitslag").css("display") != "none"){
+		dataSend = {
+			functions: "results",
+			antwoord: val
+		}
+		dataType: "html",
+		success = function success(data){
+			$("#uitslag").append(data);
+		}
 	}
 	$.ajax({
 	   type: "POST",
