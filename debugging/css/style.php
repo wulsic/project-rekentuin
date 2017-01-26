@@ -101,7 +101,7 @@ input {
 .div-center-justify{
 	justify-content: center
 }
-#startpagina, #groepen, #operators, #opdrachtenSelectie, #opdrachten{	
+#startpagina, #groepen, #operators, #opdrachtenSelectie, #opdrachten, #uitslag{	
 	display: none;
 	justify-content: center;
 	flex-flow: column nowrap;
