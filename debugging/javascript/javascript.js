@@ -149,3 +149,15 @@ function post(val) {
 	   success: success
 	});
 }
+function usernameVerify(txt) {
+    if (txt.value == '') {
+        txt.setCustomValidity('Vul je naam in');
+    }
+    else if(txt.validity.patternMismatch){
+        txt.setCustomValidity('Gebruik alleen letters');
+    }
+    else {
+        txt.setCustomValidity('');
+    }
+    return true;
+}

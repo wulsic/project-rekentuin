@@ -14,7 +14,7 @@
 				<h1 class="text-center"> Rekentuin </h1>
 					<form method="post" action="">
 						<label>Voer hier je naam in</label><br />
-						<input type="text" name="input" maxlength="16" autocomplete="off" required autofocus>
+						<input type="text" name="input" maxlength="15" autocomplete="off" required autofocus pattern="[A-Za-z]{1,15}" oninvalid="usernameVerify(this);" oninput="usernameVerify(this);">
 						<input type="submit" id="submit" name="gebruikersNaamsubmit" value="Submit">
 					</form>
 				<div id="buttons">
