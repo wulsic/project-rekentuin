@@ -4,24 +4,27 @@ $(document).ready(function(){
 		event.preventDefault();
 		post($(this).find("input[name='input']").val());
 	});
-	$("button").click(function(){
-		post($(this).text());
-	})
+
 });
 function post(val) {
 	var dataType = "";
+
 	if ($("#startpagina").css("display") != "none"){
+		$("button").click(function(){
+		post($(this).text());
+		})
+		
 		dataSend = {
 			functions: "callLoginsystem",
 			username: val
 		}
 		dataType = "text";
 		success = function success(data){
-					$("#startpagina").fadeOut("slow", function(){
-						$("#groepen").children("h1:first-child").text("hallo " + data);
-						$("#groepen").fadeIn("slow").css("display", "inline-flex");
-					});
-				}
+			$("#startpagina").fadeOut("slow", function(){
+				$("#groepen").children("h1:first-child").text("hallo " + data);
+				$("#groepen").fadeIn("slow").css("display", "inline-flex");
+			});
+		}
 	}
 	if ($("#groepen").css("display") != "none"){
 		dataSend = {
@@ -29,10 +32,10 @@ function post(val) {
 			group: val.replace(/[^0-9]/g, "")
 		}
 		success = function success(){
-					$("#groepen").fadeOut("slow", function(){
-						$("#operators").fadeIn("slow").css("display", "inline-flex");
-					});
-				}
+			$("#groepen").fadeOut("slow", function(){
+				$("#operators").fadeIn("slow").css("display", "inline-flex");
+			});
+		}
 	}
 	if ($("#operators").css("display") != "none"){
 		if (val == ":"){
@@ -41,28 +44,24 @@ function post(val) {
 		else if (val == "x"){
 			var val = val.replace("x", "*");
 		}
-		else if (val == "Toets"){
-			var val = val.replace("Toets", "");
-			console.log(val);
-		}
 		dataSend = {
 			functions: "callRekundigeoperator", 
 			operator: val
 		}
 		dataType = "text"
 		success = function success(data){
-					if (val == ""){
-						$("#operators").fadeOut("slow", function(){
-							$("#opdrachten").children("form").children("h1").text(data);
-							$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-						});		
-					}
-					else {
-						$("#operators").fadeOut("slow", function(){
-							$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
-						});
-					}
-				}
+			if (val == "Toets"){
+				$("#operators").fadeOut("slow", function(){
+					$("#opdrachten").children("form").children("h1").text(data);
+					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+				});		
+			}
+			else {
+				$("#operators").fadeOut("slow", function(){
+					$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
+				});
+			}
+		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
 		dataSend = {
@@ -71,12 +70,12 @@ function post(val) {
 		}
 		//dataType = "JSON";
 		success = function success(data){
-					console.log(data);
-					$("#opdrachtenSelectie").fadeOut("slow", function(){
-						$("#opdrachten").children("form").children("h1").text(data);
-						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-					});
-				}
+			console.log(data);
+				$("#opdrachtenSelectie").fadeOut("slow", function(){
+				$("#opdrachten").children("form").children("h1").text(data);
+				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+			});
+		}
 	}
 	if ($("#opdrachten").css("display") != "none"){
 		dataSend = {
