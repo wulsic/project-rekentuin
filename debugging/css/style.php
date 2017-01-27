@@ -27,7 +27,11 @@
 		height:75px;
 		border-radius:20px;
 	}
-	
+	#backwards {
+		margin: -15px !important;
+		font-size: 1.5em !important;
+	}
+
 }
 
 @media only screen and (min-width:910px){
@@ -48,6 +52,10 @@
 		font-size:3em;
 		width:125px;
 		height:125px;
+	}
+	#backwards {
+		margin: 20px !important;
+		font-size: 2em !important;
 	}
 }
 
@@ -101,7 +109,7 @@ input {
 .div-center-justify{
 	justify-content: center
 }
-#startpagina, #groepen, #operators, #opdrachtenSelectie, #opdrachten, #uitslag{	
+#startpagina, #groepen, #operators, #opdrachtenSelectie, #opdrachten, #uitslag{
 	display: none;
 	justify-content: center;
 	flex-flow: column nowrap;
@@ -117,8 +125,19 @@ input {
 #buttons {
 	display: flex;
     flex-direction: column;
-	margin-bottom:10px;
+	margin-bottom: 10px;
 }
+
+#backwards{
+	font-family: Dyslexie;
+    color: white;
+    background-color: black;
+    border-radius: 50px;
+    width: 190px !important;
+    height: 75px !important;
+	border-radius: 15px !important;
+}
+
 #startpagina button {
 	width: 140px;
 	align-self: flex-end;
