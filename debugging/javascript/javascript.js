@@ -10,11 +10,17 @@ $(document).ready(function(){
 			previous(this);
 		}
 		else if ($("#startpagina").css("display") != "none"){
-			popup();
+			//popup modal
+			if ($(this).text() == "Over school"){
+				modal("over");
+			}
+			else if ($(this).text() == "Klik hier voor uitleg :)"){
+				modal("uitleg");
+			}
 		}
 		else{
-			console.log($(this).text());
-			post($(this).text());			
+			console.log($(this).text()); 
+			post($(this).text());
 		}
 	});
 });
@@ -167,4 +173,21 @@ function usernameVerify(txt) {
         txt.setCustomValidity('');
     }
     return true;
+}
+
+function modal(name) {
+	var modal = document.getElementById(name+'Modal');
+	var btn = document.getElementById(name);
+	var span = document.getElementsByClassName("close")[0];
+	modal.style.display = "block";
+
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
 }

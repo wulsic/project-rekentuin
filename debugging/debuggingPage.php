@@ -5,20 +5,36 @@
 		<title> Debugging Page - Opdrachten </title>
 		<!-- jquery version 3.1.1-->
 		<script src="javascript/jquery.min.js"></script>
-		<script src="javascript/javascript.js"></script>
+		<script src="javascript/javascript.js>"></script>
 	</head>
 	<body>
 		<!--Section 1 - Startpagina -->
 			<div id="startpagina">
 				<h1 class="text-center"> Rekentuin </h1>
-					<form method="post" action="">
-						<label>Voer hier je naam in</label><br />
-						<input type="text" name="input" maxlength="15" autocomplete="off" required autofocus pattern="[A-Za-z]{1,15}" oninvalid="usernameVerify(this);" oninput="usernameVerify(this);">
-						<input type="submit" id="submit" name="gebruikersNaamsubmit" value="Submit">
-					</form>
+				<form method="post" action="">
+					<label>Voer hier je naam in</label><br />
+					<input type="text" name="input" maxlength="15" autocomplete="off" required autofocus pattern="[A-Za-z]{1,15}" oninvalid="usernameVerify(this);" oninput="usernameVerify(this);">
+					<input type="submit" id="submit" name="gebruikersNaamsubmit" value="Submit">
+				</form>
 				<div id="buttons">
-					<button>Over school</button>
-					<button>Klik hier voor uitleg :)</button>
+					<button id="over">Over school</button>
+					<button id="uitleg">Klik hier voor uitleg :)</button>
+				</div>
+				
+				<!-- Over Section -->
+				<div id="overModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<p>Text over school</p>
+					</div>
+				</div>
+				
+				<!-- Uitleg Section -->
+				<div id="uitlegModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<p>Text over uitleg</p>
+					</div>
 				</div>
 			</div>
 		<!--End Section 1-->
@@ -75,5 +91,4 @@
 		</div>
 		<!--End Section 6-->
 	</body>
-
 </html>
