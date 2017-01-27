@@ -124,6 +124,7 @@ function post(val) {
 					$("#opdrachtenSelectie").fadeOut("slow", function(){
 						$("#opdrachten").children("form").children("h1").text(data);
 						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+						$('input[name="input"]').val("").focus();
 					});					
 				}
 		}
@@ -137,6 +138,7 @@ function post(val) {
 			console.log(data);
 				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
+						$("#uitslag").children("table").remove();
 						post("");
 						$("#uitslag").fadeIn("slow");
 					});
@@ -146,7 +148,7 @@ function post(val) {
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
 						$("#opdrachten").children("form").children("h1").text(data).fadeIn("fast");
 					});
-					$('input[name="input"]').val("").focus();					
+					$('input[name="input"]').val("").focus();			
 				}
 		}
 	}
@@ -156,11 +158,7 @@ function post(val) {
 			functions: "results",
 		}
 		success = function success(data){
-			if ($("uitslag").children("table").length == 0){
-				$("uitslag").children("table").remove();
-			}
 			$("#uitslag").append(data);
-
 			console.log(data);
 		}
 	}
