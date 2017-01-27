@@ -1,3 +1,4 @@
+var tmpMemory;
 $(document).ready(function(){
 	$("#startpagina").fadeIn("slow").css("display", "inline-flex");
 	$("form").submit(function(){
@@ -6,7 +7,13 @@ $(document).ready(function(){
 		post($(this).find("input[name='input']").val());
 	});
 	$("button").click(function(){
-		if ($(this).text() == "Ga terug"){
+					console.log(tmpMemory);
+		if ($(this).text() == "Ga terug" && tmpMemory == "Toets"){
+			$("#opdrachten").fadeOut("slow", function(){
+				$("#operators").fadeIn("slow");
+			});
+		}
+		else if($(this).text() == "Ga terug"){
 			previous(this);
 		}
 		else if ($("#startpagina").css("display") != "none"){
@@ -21,6 +28,8 @@ $(document).ready(function(){
 		else{
 			console.log($(this).text()); 
 			post($(this).text());
+			tmpMemory = $(this).text();
+			console.log(tmpMemory);
 		}
 	});
 });
@@ -109,7 +118,7 @@ function post(val) {
 		//dataType = "JSON";
 		success = function success(data){
 			console.log(data);
-				if (data == "eSave"){
+				if (data == true){
 					alert("Opdracht gemaakt");
 				}
 				else {
@@ -126,7 +135,7 @@ function post(val) {
 			antwoord: val
 		}
 		success = function success(data){
-				if (data == "eNumber"){
+				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
 						post("");
 					});
