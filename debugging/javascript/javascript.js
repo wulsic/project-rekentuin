@@ -3,11 +3,9 @@ $(document).ready(function(){
 	$("#startpagina").fadeIn("slow").css("display", "inline-flex");
 	$("form").submit(function(){
 		event.preventDefault();
-		console.log("click");
 		post($(this).find("input[name='input']").val());
 	});
 	$("button").click(function(){
-					console.log(tmpMemory);
 		if ($(this).text() == "Ga terug" && tmpMemory == "Toets"){
 			$("#opdrachten").fadeOut("slow", function(){
 				$("#operators").fadeIn("slow");
@@ -29,7 +27,6 @@ $(document).ready(function(){
 			console.log($(this).text()); 
 			post($(this).text());
 			tmpMemory = $(this).text();
-			console.log(tmpMemory);
 		}
 	});
 });
@@ -56,8 +53,10 @@ function previous(val){
 	}
 }
 function post(val) {
+	var success = "";
 	var dataType = "";
-
+	var dataSend = "";
+	
 	if ($("#startpagina").css("display") != "none"){
 		dataSend = {
 			functions: "callLoginsystem",
@@ -135,9 +134,11 @@ function post(val) {
 			antwoord: val
 		}
 		success = function success(data){
+			console.log(data);
 				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
 						post("");
+						$("#uitslag").fadeIn("slow");
 					});
 				}
 				else {
@@ -150,6 +151,7 @@ function post(val) {
 		}
 	}
 	if ($("#uitslag").css("display") != "none"){
+		console.log("test");
 		dataSend = {
 			functions: "results",
 		}
@@ -158,9 +160,8 @@ function post(val) {
 				$("uitslag").children("table").remove();
 			}
 			$("#uitslag").append(data);
-			$("#uitslag").fadeIn("slow");
-			console.log(data);
 
+			console.log(data);
 		}
 	}
 	$.ajax({
