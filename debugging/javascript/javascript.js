@@ -185,9 +185,9 @@ function usernameVerify(txt) {
 }
 
 function modal(name) {
-	var modal = document.getElementById(name+'Modal');
+	var modal = document.getElementById(name+"Modal");
 	var btn = document.getElementById(name);
-	var span = document.getElementsByClassName("close")[0];
+	var span = document.getElementsByClassName(name+"close")[0];
 	modal.style.display = "block";
 
 	span.onclick = function() {

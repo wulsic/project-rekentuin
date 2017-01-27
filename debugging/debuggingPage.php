@@ -24,7 +24,7 @@
 				<!-- Over Section -->
 				<div id="overModal" class="modal">
 					<div class="modal-content">
-						<span class="close">&times;</span>
+						<span class="overclose close">&times;</span>
 						<p>Text over school</p>
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 				<!-- Uitleg Section -->
 				<div id="uitlegModal" class="modal">
 					<div class="modal-content">
-						<span class="close">&times;</span>
+						<span class="uitlegclose close">&times;</span>
 						<p>Text over uitleg</p>
 					</div>
 				</div>
