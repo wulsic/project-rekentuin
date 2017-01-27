@@ -27,7 +27,7 @@
 		height:75px;
 		border-radius:20px;
 	}
-	#backwards {
+	.backwards {
 		margin: -15px !important;
 		font-size: 1.5em !important;
 	}
@@ -53,7 +53,7 @@
 		width:125px;
 		height:125px;
 	}
-	#backwards {
+	.backwards {
 		margin: 20px !important;
 		font-size: 2em !important;
 	}
@@ -128,7 +128,7 @@ input {
 	margin-bottom: 10px;
 }
 
-#backwards{
+.backwards{
 	font-family: Dyslexie;
     color: white;
     background-color: black;

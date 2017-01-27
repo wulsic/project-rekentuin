@@ -51,7 +51,7 @@
 		<!--End Section 2-->
 		<!--Section 3 - Operator Select Page -->
 			<div id="operators">
-				<button>Ga terug</button>
+				<button class="backwards">Ga terug</button>
 				<h1 class="text-center"> kies je oefening </h1>
 				<div class="text-center div-center">
 					<button>+</button>
@@ -64,7 +64,7 @@
 		<!--End Section 3-->
 		<!--Section 4 - Assigment Select Page -->
 		<div id="opdrachtenSelectie">
-			<button>Ga terug</button>
+			<button class="backwards">Ga terug</button>
 			<div class="text-center div-center">
 				 <?php
 					for ($a = 1; $a < 21; $a++){
@@ -75,7 +75,7 @@
 		</div>
 		<!--Section 5 - Assignment Page-->
 		<div id="opdrachten">
-			<button>Ga terug</button>
+			<button class="backwards">Ga terug</button>
 			<form class="div-center" method="post" action="" >
 				<h1 class="text-center"></h1>
 				<div class="text-center">
@@ -87,7 +87,7 @@
 		<!--End Section 5-->
 		<!--Section 6 - Results Page-->
 		<div id="uitslag">
-			<button>Ga terug</button>
+			<button class="backwards">Ga terug</button>
 		</div>
 		<!--End Section 6-->
 	</body>
