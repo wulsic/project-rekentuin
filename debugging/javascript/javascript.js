@@ -7,6 +7,7 @@ $(document).ready(function(){
 	});
 	$("button").click(function(){
 		if ($(this).text() == "Ga terug" && tmpMemory == "Toets"){
+			$("#uitslag").fadeOut("slow");
 			$("#opdrachten").fadeOut("slow", function(){
 				$("#operators").fadeIn("slow");
 			});
@@ -116,17 +117,16 @@ function post(val) {
 		}
 		//dataType = "JSON";
 		success = function success(data){
-			console.log(data);
-				if (data == true){
-					alert("Opdracht gemaakt");
-				}
-				else {
-					$("#opdrachtenSelectie").fadeOut("slow", function(){
-						$("#opdrachten").children("form").children("h1").text(data);
-						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-						$('input[name="input"]').val("").focus();
-					});					
-				}
+			if (data == true){
+				alert("Opdracht gemaakt");
+			}
+			else {
+				$("#opdrachtenSelectie").fadeOut("slow", function(){
+					$("#opdrachten").children("form").children("h1").text(data);
+					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+					$('input[name="input"]').val("").focus();
+				});					
+			}
 		}
 	}
 	if ($("#opdrachten").css("display") != "none"){
