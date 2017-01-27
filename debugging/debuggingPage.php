@@ -79,7 +79,7 @@
 			<form class="div-center" method="post" action="" >
 				<h1 class="text-center"></h1>
 				<div class="text-center">
-					<input type="number" name="input" required>
+					<input type="number" name="input" autocomplete="off" required>
 					<input type="submit" id="submit" name="antwoordSubmit" value="Submit">
 				</div>
 			</form>
