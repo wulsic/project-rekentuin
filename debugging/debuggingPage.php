@@ -5,7 +5,7 @@
 		<title> Debugging Page - Opdrachten </title>
 		<!-- jquery version 3.1.1-->
 		<script src="javascript/jquery.min.js"></script>
-		<script src="javascript/javascript.js>"></script>
+		<script src="javascript/javascript.js?rv=<timestamp+random_value>"></script>
 	</head>
 	<body>
 		<!--Section 1 - Startpagina -->
