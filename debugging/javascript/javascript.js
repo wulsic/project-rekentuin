@@ -13,6 +13,7 @@ $(document).ready(function(){
 			popup();
 		}
 		else{
+			console.log($(this).text());
 			post($(this).text());			
 		}
 	});
@@ -78,7 +79,7 @@ function post(val) {
 			functions: "callRekundigeoperator", 
 			operator: val
 		}
-		dataType = "text"
+		dataType = "text";
 		success = function success(data){
 			if (val == "Toets"){
 				$("#operators").fadeOut("slow", function(){
@@ -94,6 +95,7 @@ function post(val) {
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
+		console.log(val);
 		dataSend = {
 			functions: "callAssignmentindexCheckerandGenerator",
 			index: val
@@ -101,10 +103,15 @@ function post(val) {
 		//dataType = "JSON";
 		success = function success(data){
 			console.log(data);
-			$("#opdrachtenSelectie").fadeOut("slow", function(){
-				$("#opdrachten").children("form").children("h1").text(data);
-				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-			});
+				if (data == "eSave"){
+					alert("Opdracht gemaakt");
+				}
+				else {
+					$("#opdrachtenSelectie").fadeOut("slow", function(){
+						$("#opdrachten").children("form").children("h1").text(data);
+						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+					});					
+				}
 		}
 	}
 	if ($("#opdrachten").css("display") != "none"){
@@ -113,10 +120,9 @@ function post(val) {
 			antwoord: val
 		}
 		success = function success(data){
-				if (data == true){
+				if (data == "eNumber"){
 					$("#opdrachten").fadeOut("slow", function(){
 						post("");
-						$("#uitslag").fadeIn("slow");
 					});
 				}
 				else {
@@ -133,7 +139,11 @@ function post(val) {
 			functions: "results",
 		}
 		success = function success(data){
-		$("#uitslag").append(data);
+			if ($("uitslag").children("table").length == 0){
+				$("uitslag").children("table").remove();
+			}
+			$("#uitslag").append(data);
+			$("#uitslag").fadeIn("slow");
 			console.log(data);
 
 		}

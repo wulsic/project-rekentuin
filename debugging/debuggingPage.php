@@ -6,7 +6,6 @@
 		<!-- jquery version 3.1.1-->
 		<script src="javascript/jquery.min.js"></script>
 		<script src="javascript/javascript.js"></script>
-		<?php session_start(); ?>
 	</head>
 	<body>
 		<!--Section 1 - Startpagina -->
