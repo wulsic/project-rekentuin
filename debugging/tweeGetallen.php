@@ -11,37 +11,18 @@
 		}
 		elseif ($_POST["functions"] == "callRekundigeoperator"){
 			if ($_POST["operator"] == "Toets"){
-				$_SESSION["numbers"] = range(1,20);
 				$_SESSION["operator"] = $_POST["operator"];
-				$indexChecker = indexChecker(1);
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], rekundigeOperator($_SESSION["operator"]));
-				echo $_SESSION["opdracht"][0];	
+				echo AssignmentindexCheckerandGenerator(1);
 			}
 			else {
 			if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
 					$_SESSION["oldOperator"] = $_SESSION["operator"];
 				}
-				$_SESSION["operator"] = $_POST["operator"];
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], rekundigeOperator($_SESSION["operator"]));
-				echo $_SESSION["opdracht"][0];				
+				$_SESSION["operator"] = $_POST["operator"];				
 			}
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
-			if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"]){
-				$_SESSION["numbers"] = range(1,20);
-			}
-			else {
-				$_SESSION["numbers"] = range(1,20);
-			}
-			$indexChecker = indexChecker($_POST["index"]);	
-			$newOperator = rekundigeOperator($_SESSION["operator"]);
-			if ($indexChecker == "eSave"){
-				echo $indexChecker;
-			}
-			else {
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
-				echo $_SESSION["opdracht"][0];
-			}
+			echo AssignmentindexCheckerandGenerator($_POST["index"]);
 		}
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			$timeStop = time();
@@ -57,7 +38,7 @@
 			$newOperator = rekundigeOperator($_SESSION["operator"]);
 			$indexChecker = indexChecker("");
 			if ($indexChecker == "eNumber"){
-				echo $indexChecker;
+				echo true;
 			}
 			else {
 				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
@@ -69,6 +50,8 @@
 			echo "<table>
 					<tr>
 						<td> $operator </td>
+					</tr>
+					<tr>
 						<td> Opdracht Nummer</td>
 						<td> Som </td>
 						<td> Uitkomst </td>
@@ -169,6 +152,23 @@
 		return $somUitkomstGetallen;
 	}
 	// Global Section 3 - END
+	function AssignmentindexCheckerandGenerator($index){
+			if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"]){
+				$_SESSION["numbers"] = range(1,20);
+			}
+			else {
+				$_SESSION["numbers"] = range(1,20);
+			}
+			$indexChecker = indexChecker($index);	
+			$newOperator = rekundigeOperator($_SESSION["operator"]);
+			if ($indexChecker == "eSave"){
+				return true;
+			}
+			else {
+				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
+				return $_SESSION["opdracht"][0];
+			}		
+	}
 	// Global Section 4 - Index Comparison
 	function indexComparison($index){
 		if (empty($_SESSION["index"])){
@@ -191,7 +191,7 @@
 						$_SESSION["index"] = $index;
 				}
 				else {
-					if ($_SESSION["index"] == 20 && empty($_SESSION["operator"])){
+					if ($_SESSION["index"] == 20 || empty($_SESSION["operator"])){
 						$_SESSION["index"] = 1;
 					}
 					else {
