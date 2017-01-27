@@ -90,6 +90,15 @@ input {
 	src: url("../fonts/Dyslexie Regular LP199232.ttf");
 }
 
+table {
+	background-color: black;
+    color: white;
+    border: 1px;
+    border-radius: 50px;
+    padding: 25px;
+    margin: auto;
+}
+
 .flex-direction-row {
 	display: flex;
 	flex-direction: row;
