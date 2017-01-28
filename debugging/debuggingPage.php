@@ -37,6 +37,7 @@
 					</div>
 				</div>
 			</div>
+			
 		<!--End Section 1-->
 		<!--Section 2 - Groepen Select Page -->
 			<div id="groepen">
@@ -67,7 +68,7 @@
 			<div class="flex-direction-row flex-justify-space-between">
 				<button class="backwards">Ga terug</button>
 				<button class="backwards">Opnieuw beginnen</button>
-				<button class="backwards">resultaten</button>
+				<button class="backwards">Resultaten</button>
 			</div>
 			<div class="text-center div-center flex-direction-row flex-justify-space-around">
 				 <?php
@@ -100,6 +101,14 @@
 					<input type="submit" id="submit" name="antwoordSubmit" value="Submit">
 				</div>
 			</form>
+			<!-- Answer Control Section -->
+			<div id="controlModal" class="modal">
+				<div class="modal-content">
+					<span class="overclose close">&times;</span>
+					<p>Text over school</p>
+				</div>
+			</div>
+			<!-- Answer Control Section - END -->
 		</div>
 		<!--End Section 5-->
 		<!--Section 6 - Results Page-->
