@@ -15,18 +15,19 @@
 				echo AssignmentindexCheckerandGenerator(1);
 			}
 			else {
-			if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
-					$_SESSION["oldOperator"] = $_SESSION["operator"];
+				if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
+						$_SESSION["oldOperator"] = $_SESSION["operator"];
+					}
+					$_SESSION["operator"] = $_POST["operator"];				
 				}
-				$_SESSION["operator"] = $_POST["operator"];				
-			}
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
 			echo AssignmentindexCheckerandGenerator($_POST["index"]);
 		}
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			$timeStop = time();
-			$index = $_SESSION["index"] ;
+			$username = $_SESSION["username"];
+			$index = $_SESSION["index"];
 			$antwoord = $_POST["antwoord"];
 			$operator = $_SESSION["operator"];
 			$som = $_SESSION["opdracht"][0];
@@ -34,15 +35,23 @@
 			$timestart = $_SESSION["opdracht"][2];
 			$timeDifference = $timeStop - $timestart;
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
-			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle[1], date("i:s",$timeDifference));
+			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
 			$newOperator = rekundigeOperator($_SESSION["operator"]);
 			$indexChecker = indexChecker("");
 			if ($indexChecker == "eNumber"){
 				echo true;
 			}
-			else {
+			elseif ($operator == "Toets"){
 				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
 				echo $_SESSION["opdracht"][0];
+			}
+			else{
+				if ($opdrachtControlle == "fout"){
+					
+				}
+				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
+				$returnArray = array($_SESSION["opdracht"][0], $opdrachtControlle, $username);
+				echo json_encode($returnArray);
 			}
 		}
 		elseif ($_POST["functions"] == "results") {
@@ -169,52 +178,36 @@
 				return $_SESSION["opdracht"][0];
 			}		
 	}
-	// Global Section 4 - Index Comparison
-	function indexComparison($index){
-		if (empty($_SESSION["index"])){
-			return true;
+	// Global Section 4 - Index Checker
+	function indexChecker($index){
+		if (!empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])){
+			return "eSave"; // Empty Save
 		}
-		elseif (!empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])) {
-			return false;
+		if (!empty($_SESSION["numbers"])){
+			if (!empty($index)) {		
+				$_SESSION["index"] = $index;
+			}
+			else {
+				if ($_SESSION["index"] == 20 || empty($_SESSION["operator"])){
+					$_SESSION["index"] = 1;
+				}
+				else {
+					$_SESSION["index"]++;
+					while (!in_array($_SESSION["index"], $_SESSION["numbers"])) {
+						$_SESSION["index"]++;
+					}
+				}
+				if(($key = array_search($_SESSION["index"], $_SESSION["numbers"])) !== false) {
+					unset($_SESSION["numbers"][$key]);
+				}
+			}
 		}
 		else {
-			return true;
+			return "eNumber"; // Empty Number
 		}
 	}
 	// Global Section 4 - END
-	// Global Section 5 - Index Checker
-	function indexChecker($index){
-		$indexComparison = indexComparison($index);
-		if ($indexComparison == true){
-			if (!empty($_SESSION["numbers"])){
-				if (!empty($index)) {		
-						$_SESSION["index"] = $index;
-				}
-				else {
-					if ($_SESSION["index"] == 20 || empty($_SESSION["operator"])){
-						$_SESSION["index"] = 1;
-					}
-					else {
-						$_SESSION["index"]++;
-						while (!in_array($_SESSION["index"], $_SESSION["numbers"])) {
-							$_SESSION["index"]++;
-						}
-					}
-					if(($key = array_search($_SESSION["index"], $_SESSION["numbers"])) !== false) {
-						unset($_SESSION["numbers"][$key]);
-					}					
-				}
-			}
-			else {
-				return "eNumber"; // Empty Number
-			}			
-		}
-		else {
-			return "eSave"; // Empty Save;
-		}
-	}
-	// Global Section 5 - END
-	// Global Section 6 - Save Assignment
+	// Global Section 5 - Save Assignment
 	function opdrachtOpslaan($operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer) {
 		$_SESSION["opdrachtOpslaan"][$operator][$index] = array($opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 		if (count($_SESSION["opdrachtOpslaan"][$operator]) == 20) {
@@ -222,16 +215,16 @@
 		}
 		return array($operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 	}
-	// Global Section 6 - END
+	// Global Section 5 - END
 	
-	// Global Section 7 - Assignment Checker
+	// Global Section 6 - Assignment Checker
 	function opdrachtControleren($antwoord, $uitkomst){
 		if ($antwoord == $uitkomst){
-			return array(true, "goed");
+			return "goed";
 		}
 		else {
-			return array(false, "fout");
+			return "fout";
 		}
 	}
-	// Global Section 7 - END
+	// Global Section 6 - END
 ?>

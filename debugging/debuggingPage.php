@@ -64,12 +64,29 @@
 		<!--End Section 3-->
 		<!--Section 4 - Assigment Select Page -->
 		<div id="opdrachtenSelectie">
-			<button class="backwards">Ga terug</button>
-			<div class="text-center div-center">
+			<div class="flex-direction-row flex-justify-space-between">
+				<button class="backwards">Ga terug</button>
+				<button class="backwards">Opnieuw beginnen</button>
+				<button class="backwards">resultaten</button>
+			</div>
+			<div class="text-center div-center flex-direction-row flex-justify-space-around">
 				 <?php
-					for ($a = 1; $a < 21; $a++){
+					for ($a = 1; $a <= 20; $a++){
+						if ($a == 1) {
+							echo "<div>";
+						}
+						elseif ($a == 6) {
+							echo"</div> <div>";
+						}
+						elseif ($a == 11) {
+							echo "</div> <div>";
+						}
+						elseif ($a == 16) {
+							echo "</div> <div>";
+						}
 						echo "<button>$a</button>";
 					}
+					echo "</div>"
 				 ?>
 			</div>
 		</div>

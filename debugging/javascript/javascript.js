@@ -7,9 +7,10 @@ $(document).ready(function(){
 	});
 	$("button").click(function(){
 		if ($(this).text() == "Ga terug" && tmpMemory == "Toets"){
-			$("#uitslag").fadeOut("slow");
-			$("#opdrachten").fadeOut("slow", function(){
-				$("#operators").fadeIn("slow");
+			$("#uitslag").fadeOut("slow", function(){
+				$("#opdrachten").fadeOut("slow", function(){
+					$("#operators").fadeIn("slow");
+				});				
 			});
 		}
 		else if($(this).text() == "Ga terug"){
@@ -24,8 +25,7 @@ $(document).ready(function(){
 				modal("uitleg");
 			}
 		}
-		else{
-			console.log($(this).text()); 
+		else {
 			post($(this).text());
 			tmpMemory = $(this).text();
 		}
@@ -51,6 +51,43 @@ function previous(val){
 		$("#uitslag").fadeOut("slow", function(){
 			$("#operators").fadeIn("slow");
 		});
+	}
+}
+function usernameVerify(txt) {
+    if (txt.value == '') {
+        txt.setCustomValidity('Vul je naam in');
+    }
+    else if(txt.validity.patternMismatch){
+        txt.setCustomValidity('Gebruik alleen letters');
+    }
+    else {
+        txt.setCustomValidity('');
+    }
+    return true;
+}
+
+function modal(name) {
+	var modal = document.getElementById(name+"Modal");
+	var btn = document.getElementById(name);
+	var span = document.getElementsByClassName(name+"close")[0];
+	modal.style.display = "block";
+
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+}
+function testu(val, name) {
+	if (val == "goed"){
+		var text = ""
+	}
+	else {
+		
 	}
 }
 function post(val) {
@@ -125,17 +162,18 @@ function post(val) {
 					$("#opdrachten").children("form").children("h1").text(data);
 					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 					$('input[name="input"]').val("").focus();
-				});					
+				});				
 			}
 		}
 	}
 	if ($("#opdrachten").css("display") != "none"){
+		console.log(val);
 		dataSend = {
 			functions: "callControlsaveAndassignmentGenerator",
 			antwoord: val
 		}
+		dataType = "JSON";
 		success = function success(data){
-			console.log(data);
 				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
 						$("#uitslag").children("table").remove();
@@ -145,8 +183,9 @@ function post(val) {
 				}
 				else {
 					console.log(data);
+					testu(data[1], data[2]);
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-						$("#opdrachten").children("form").children("h1").text(data).fadeIn("fast");
+						$("#opdrachten").children("form").children("h1").text(data[0]).fadeIn("fast");
 					});
 					$('input[name="input"]').val("").focus();			
 				}
@@ -170,32 +209,5 @@ function post(val) {
 	   success: success
 	});
 }
-function usernameVerify(txt) {
-    if (txt.value == '') {
-        txt.setCustomValidity('Vul je naam in');
-    }
-    else if(txt.validity.patternMismatch){
-        txt.setCustomValidity('Gebruik alleen letters');
-    }
-    else {
-        txt.setCustomValidity('');
-    }
-    return true;
-}
 
-function modal(name) {
-	var modal = document.getElementById(name+"Modal");
-	var btn = document.getElementById(name);
-	var span = document.getElementsByClassName(name+"close")[0];
-	modal.style.display = "block";
 
-	span.onclick = function() {
-		modal.style.display = "none";
-	}
-
-	window.onclick = function(event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-		}
-	}
-}

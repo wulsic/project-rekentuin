@@ -4,9 +4,19 @@
 ?>
 
 @media only screen and (min-width:368px){
-	h1 {font-size:4em;margin:0px;}
-	label {padding:7px;}
-	#submit {cursor:pointer;}
+	h1 {
+		font-size:4em;margin:0px;
+	}
+	label {
+		padding:7px;
+	}
+	.backwards {
+		margin: -15px !important;
+		font-size: 1.5em !important;
+	}
+	#submit {
+		cursor:pointer;
+	}
 	#groepen button, #operators button {
 		margin:6px;
 		font-size:2em;
@@ -27,35 +37,37 @@
 		height:75px;
 		border-radius:20px;
 	}
-	.backwards {
-		margin: -15px !important;
-		font-size: 1.5em !important;
-	}
 
 }
 
 @media only screen and (min-width:910px){
-	h1 {font-size:4em;}
-	label {padding:9px;}
+	h1 {
+		font-size:4em;
+	}
+	label {
+		padding:9px;
+	}
+	button {
+		transition: all .2s ease-in-out;
+	}
+	button:hover {
+		transform:scale(1.1);
+	}
 	#groepen button, #operators button {
 		margin:20px;
 		font-size:4em;
 		width:250px;
 		height:250px;
 	}
-	button{transition: all .2s ease-in-out;}
-	button:hover {
-		transform:scale(1.1);
+	.backwards {
+		margin: 20px !important;
+		font-size: 2em !important;
 	}
 	#opdrachtenSelectie button {
 		margin:20px;
 		font-size:3em;
 		width:125px;
 		height:125px;
-	}
-	.backwards {
-		margin: 20px !important;
-		font-size: 2em !important;
 	}
 }
 
@@ -101,23 +113,69 @@ table {
 
 .flex-direction-row {
 	display: flex;
-	flex-direction: row;
+	flex-flow: row wrap;
 }
 .flex-direction-column {
 	display: flex;
-	flex-direction: column;
+	flex-flow: row wrap;
 }
+.flex-justify-space-between {
+	display: flex;
+	justify-content: space-between;
+}
+.flex-justify-space-around {
+	display: flex;
+	justify-content: space-around;
+}
+.flex-justify-center{
+	display: flex;
+	justify-content: center
+}
+.flex-align-center {
+	align-items: center;	
+}
+
 .text-center{
 	text-align: center;
 }
 .div-center {
-	align-items: center;
-    justify-content: center;
 	margin: auto;
 }
-.div-center-justify{
-	justify-content: center
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+	color: black;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 #startpagina, #groepen, #operators, #opdrachtenSelectie, #opdrachten, #uitslag{
 	display: none;
 	justify-content: center;
@@ -168,36 +226,3 @@ table {
 	background-color:black;
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-	color: black;
-}
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover, .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
