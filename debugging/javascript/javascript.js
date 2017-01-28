@@ -6,24 +6,32 @@ $(document).ready(function(){
 		post($(this).find("input[name='input']").val());
 	});
 	$("button").click(function(){
-		if ($(this).text() == "Ga terug" && tmpMemory == "Toets"){
-			$("#uitslag").fadeOut("slow", function(){
-				$("#opdrachten").fadeOut("slow", function(){
-					$("#operators").fadeIn("slow");
-				});				
-			});
-		}
-		else if($(this).text() == "Ga terug"){
-			previous(this);
-		}
-		else if ($("#startpagina").css("display") != "none"){
-			//popup modal
-			if ($(this).text() == "Over school"){
-				modal("over");
+		if($(this).text() == "Ga terug"){
+			if (tmpMemory == "Toets"){
+				$("#uitslag").fadeOut("slow", function(){
+					$("#opdrachten").fadeOut("slow", function(){
+						$("#operators").fadeIn("slow");
+					});				
+				});
 			}
-			else if ($(this).text() == "Klik hier voor uitleg :)"){
-				modal("uitleg");
+			else {
+				previous();
 			}
+		}
+		//popup modal
+		else if ($(this).text() == "Over school"){
+			console.log($(this).parents());
+			modal("over");
+		}
+		else if ($(this).text() == "Klik hier voor uitleg :)"){
+			console.log($(this).parents());
+			modal("uitleg");
+		}
+		else if ($(this).text() == "Opnieuw beginnen"){
+			
+		}
+		else if ($(this).text() == "Resultaten"){
+			
 		}
 		else {
 			post($(this).text());
@@ -32,22 +40,22 @@ $(document).ready(function(){
 	});
 });
 function previous(val){
-	if ($("#operators").find(val) && $("#operators").css("display") != "none"){
+	if ($("#operators").css("display") != "none"){
 		$("#operators").fadeOut("slow", function(){
 			$("#groepen").fadeIn("slow");
 		});
 	}
-	else if ($("#opdrachtenSelectie").find(val) && $("#opdrachtenSelectie").css("display") != "none"){
+	else if ($("#opdrachtenSelectie").css("display") != "none"){
 		$("#opdrachtenSelectie").fadeOut("slow", function(){
 			$("#operators").fadeIn("slow");
 		});
 	}
-	else if ($("#opdrachten").find(val) && $("#opdrachten").css("display") != "none"){
+	else if ($("#opdrachten").css("display") != "none"){
 		$("#opdrachten").fadeOut("slow", function(){
 			$("#opdrachtenSelectie").fadeIn("slow");
 		});
 	}
-	else if ($("#uitslag").find(val) && $("#uitslag").css("display") != "none"){
+	else if ($("#uitslag").css("display") != "none"){
 		$("#uitslag").fadeOut("slow", function(){
 			$("#operators").fadeIn("slow");
 		});
@@ -67,20 +75,11 @@ function usernameVerify(txt) {
 }
 
 function modal(name) {
-	var modal = document.getElementById(name+"Modal");
-	var btn = document.getElementById(name);
-	var span = document.getElementsByClassName(name+"close")[0];
-	modal.style.display = "block";
-
-	span.onclick = function() {
-		modal.style.display = "none";
-	}
-
-	window.onclick = function(event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-		}
-	}
+	
+	$("#" + name + "Modal").fadeIn("fast");
+	$("." + name + "Close").click(function() {
+		$("#" + name + "Modal").fadeOut("fast");
+	});
 }
 function testu(val, name) {
 	if (val == "goed"){
@@ -96,6 +95,7 @@ function post(val) {
 	var dataSend = "";
 	
 	if ($("#startpagina").css("display") != "none"){
+		console.log (val);
 		dataSend = {
 			functions: "callLoginsystem",
 			username: val
@@ -147,22 +147,27 @@ function post(val) {
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
-		console.log(val);
-		dataSend = {
-			functions: "callAssignmentindexCheckerandGenerator",
-			index: val
+		if (val == "delete"){
+			
 		}
-		//dataType = "JSON";
-		success = function success(data){
-			if (data == true){
-				alert("Opdracht gemaakt");
+		else {
+			console.log(val);
+			dataSend = {
+				functions: "callAssignmentindexCheckerandGenerator",
+				index: val
 			}
-			else {
-				$("#opdrachtenSelectie").fadeOut("slow", function(){
-					$("#opdrachten").children("form").children("h1").text(data);
-					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-					$('input[name="input"]').val("").focus();
-				});				
+			dataType: "text"
+			success = function success(data){
+				if (data == true){
+					alert("Opdracht gemaakt");
+				}
+				else {
+					$("#opdrachtenSelectie").fadeOut("slow", function(){
+						$("#opdrachten").children("form").children("h1").text(data);
+						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+						$('input[name="input"]').val("").focus();
+					});
+				}
 			}
 		}
 	}
@@ -172,7 +177,7 @@ function post(val) {
 			functions: "callControlsaveAndassignmentGenerator",
 			antwoord: val
 		}
-		dataType = "JSON";
+		dataType = (tmpMemory == "Toets") ? "text" : "JSON";
 		success = function success(data){
 				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
@@ -183,9 +188,9 @@ function post(val) {
 				}
 				else {
 					console.log(data);
-					testu(data[1], data[2]);
+					ifToets = (tmpMemory == "Toets") ? "" : testu(data[1], data[2]) ;
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-						$("#opdrachten").children("form").children("h1").text(data[0]).fadeIn("fast");
+						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
 					});
 					$('input[name="input"]').val("").focus();			
 				}

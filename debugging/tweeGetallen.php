@@ -4,22 +4,19 @@
 	if (isset($_POST["functions"]))  {
 		if ($_POST["functions"] == "callLoginsystem"){
 			$username = loginSystem($_POST["username"]);
-			echo $username;
+			echo $_SESSION["username"];
 		}
 		elseif ($_POST["functions"] == "group"){
 			$_SESSION["group"] = $_POST["group"];
 		}
 		elseif ($_POST["functions"] == "callRekundigeoperator"){
 			if ($_POST["operator"] == "Toets"){
-				$_SESSION["operator"] = $_POST["operator"];
 				echo AssignmentindexCheckerandGenerator(1);
 			}
-			else {
-				if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
-						$_SESSION["oldOperator"] = $_SESSION["operator"];
-					}
-					$_SESSION["operator"] = $_POST["operator"];				
-				}
+			if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
+				$_SESSION["oldOperator"] = $_SESSION["operator"];
+			}
+			$_SESSION["operator"] = $_POST["operator"];
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
 			echo AssignmentindexCheckerandGenerator($_POST["index"]);
@@ -41,17 +38,13 @@
 			if ($indexChecker == "eNumber"){
 				echo true;
 			}
-			elseif ($operator == "Toets"){
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
-				echo $_SESSION["opdracht"][0];
-			}
 			else{
 				if ($opdrachtControlle == "fout"){
 					
 				}
 				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
-				$returnArray = array($_SESSION["opdracht"][0], $opdrachtControlle, $username);
-				echo json_encode($returnArray);
+				$returnArray = ($operator == "Toets") ?  $_SESSION["opdracht"][0] : json_encode(array($_SESSION["opdracht"][0],$antwoord, $opdrachtControlle, $username));
+				echo $returnArray;
 			}
 		}
 		elseif ($_POST["functions"] == "results") {
@@ -83,6 +76,7 @@
 	// Global Section 2 - Login System
 	function loginSystem($username){
 		session_destroy();
+		session_start();
 		$_SESSION["username"] = $username;
 		return $username;
 	}
