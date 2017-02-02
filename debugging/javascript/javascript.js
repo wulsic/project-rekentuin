@@ -27,15 +27,10 @@ $(document).ready(function(){
 			console.log($(this).parents());
 			modal("uitleg");
 		}
-		else if ($(this).text() == "Opnieuw beginnen"){
-			
-		}
-		else if ($(this).text() == "Resultaten"){
-			
-		}
 		else {
 			post($(this).text());
 			tmpMemory = $(this).text();
+			console.log(tmpMemory);
 		}
 	});
 });
@@ -57,7 +52,7 @@ function previous(val){
 	}
 	else if ($("#uitslag").css("display") != "none"){
 		$("#uitslag").fadeOut("slow", function(){
-			$("#operators").fadeIn("slow");
+			$("#opdrachtenSelectie").fadeIn("slow");
 		});
 	}
 }
@@ -95,7 +90,6 @@ function post(val) {
 	var dataSend = "";
 	
 	if ($("#startpagina").css("display") != "none"){
-		console.log (val);
 		dataSend = {
 			functions: "callLoginsystem",
 			username: val
@@ -120,7 +114,6 @@ function post(val) {
 		}
 	}
 	if ($("#operators").css("display") != "none"){
-	
 		if (val == ":"){
 			var val = val.replace(":", "/");
 		}
@@ -148,10 +141,17 @@ function post(val) {
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
 		if (val == "delete"){
-			
+			dataSend = {
+				functions: (val == "delete") ?  "delete" : "results"
+			}
+		}
+		else if (val == "Resultaten"){
+			$("#opdrachtenSelectie").fadeOut("slow", function(){
+				$("#uitslag").children("table").remove();
+				post("");
+			});
 		}
 		else {
-			console.log(val);
 			dataSend = {
 				functions: "callAssignmentindexCheckerandGenerator",
 				index: val
@@ -183,7 +183,6 @@ function post(val) {
 					$("#opdrachten").fadeOut("slow", function(){
 						$("#uitslag").children("table").remove();
 						post("");
-						$("#uitslag").fadeIn("slow");
 					});
 				}
 				else {
@@ -203,6 +202,7 @@ function post(val) {
 		}
 		success = function success(data){
 			$("#uitslag").append(data);
+			$("#uitslag").fadeIn("slow");
 			console.log(data);
 		}
 	}
