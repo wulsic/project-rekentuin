@@ -17,8 +17,8 @@
 					<input type="submit" id="submit" name="gebruikersNaamsubmit" value="Submit">
 				</form>
 				<div id="buttons">
-					<button id="over">Over school</button>
-					<button id="uitleg">Klik hier voor uitleg :)</button>
+					<button class="popup" id="over">Over school</button>
+					<button class="popup" id="uitleg">Klik hier voor uitleg :)</button>
 				</div>
 				
 				<!-- Over Section -->
@@ -67,8 +67,8 @@
 		<div id="opdrachtenSelectie">
 			<div class="flex-direction-row flex-justify-space-between">
 				<button class="backwards">Ga terug</button>
-				<button class="backwards">Opnieuw beginnen</button>
-				<button class="backwards">Resultaten</button>
+				<button class="popup" id="restart">Opnieuw beginnen</button>
+				<button class="popup" id="results">Resultaten</button>
 			</div>
 			<div class="text-center div-center flex-direction-row flex-justify-space-around">
 				 <?php

@@ -29,22 +29,25 @@
 			$username = $_SESSION["username"];
 			$index = $_SESSION["index"];
 			$antwoord = $_POST["antwoord"];
-			$operator = $_SESSION["operator"];
 			$som = $_SESSION["opdracht"][0];
 			$uitkomst = $_SESSION["opdracht"][1];
 			$timestart = $_SESSION["opdracht"][2];
 			$timeDifference = $timeStop - $timestart;
+			$operator = rekundigeOperator($_SESSION["operator"]);
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
-			$newOperator = rekundigeOperator($_SESSION["operator"]);
 			$indexChecker = indexChecker("");
 			if ($indexChecker == "eNumber"){
 				echo true;
 			}
-			else{
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
-				$returnArray = ($operator == "Toets") ?  $_SESSION["opdracht"][0] : json_encode(array($_SESSION["opdracht"][0],$antwoord, $opdrachtControlle, $username));
+			//elseif ($operator == "Toets"){
+			//	$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $operator);
+			//	echo $_SESSION["opdracht"][0];
+			//}
+			else {
+				$returnArray = json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username));
 				echo $returnArray;
+				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $operator);
 			}
 		}
 		elseif ($_POST["functions"] == "results") {

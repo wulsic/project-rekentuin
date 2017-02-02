@@ -1,12 +1,23 @@
+// Global Section 1 - Variables.
+	// Section 1 - Text for the Pop up (subject to change).
+var aboutSchool = "Text over school";
+var explainPage = "Text over uitleg";
+	// Section 2 - Temporary Memory aka a Temporary save storage for one variable.
 var tmpMemory;
+// Global Section 1 - END
+
+// Global Section 2 - On DOM (page) ready.
 $(document).ready(function(){
+	// Section 1 - Fade in
 	$("#startpagina").fadeIn("slow").css("display", "inline-flex");
+	// Section 2 - Form submit
 	$("form").submit(function(){
-		event.preventDefault();
-		post($(this).find("input[name='input']").val());
+		event.preventDefault(); // Prevent a default action on submit.
+		post($(this).find("input[name='input']").val()); // send the val of the set input to function post.
 	});
+	// Section 3 - On button click
 	$("button").click(function(){
-		if($(this).text() == "Ga terug"){
+		if ($(this).attr("class") == "backwards"){
 			if (tmpMemory == "Toets"){
 				$("#uitslag").fadeOut("slow", function(){
 					$("#opdrachten").fadeOut("slow", function(){
@@ -19,22 +30,19 @@ $(document).ready(function(){
 			}
 		}
 		//popup modal
-		else if ($(this).text() == "Over school"){
-			console.log($(this).parents());
-			modal("over");
-		}
-		else if ($(this).text() == "Klik hier voor uitleg :)"){
-			console.log($(this).parents());
-			modal("uitleg");
+		else if ($(this).attr("class") == "popup"){
+			modal($(this).attr("id"));
 		}
 		else {
 			post($(this).text());
 			tmpMemory = $(this).text();
-			console.log(tmpMemory);
 		}
 	});
 });
-function previous(val){
+// Global Section 2 - END
+
+// Global Section 3 - Function previous. Fade out from current page to fade in the previous page from the hierarchy. Refer to html page for the hierarchy.
+function previous(){
 	if ($("#operators").css("display") != "none"){
 		$("#operators").fadeOut("slow", function(){
 			$("#groepen").fadeIn("slow");
@@ -56,6 +64,9 @@ function previous(val){
 		});
 	}
 }
+// Global Section 3 - END
+
+// Global Section 4 - username verfications.
 function usernameVerify(txt) {
     if (txt.value == '') {
         txt.setCustomValidity('Vul je naam in');
@@ -68,26 +79,68 @@ function usernameVerify(txt) {
     }
     return true;
 }
+// Global Section 4 - END
 
+// Global Section 5 - Popup function modal()
 function modal(name) {
+	var text = "";
 	
-	$("#" + name + "Modal").fadeIn("fast");
-	$("." + name + "Close").click(function() {
-		$("#" + name + "Modal").fadeOut("fast");
+	if (name == "uitleg"){
+		text = aboutSchool
+	}
+	else if (name == "over")(
+		text = explainPage
+	)
+	$("body").append(" <div class='modal'>" +
+						"<div class='modal-content'>" +
+							"<span class='close'>&times;</span>" +
+								"<p>" + text + "</p>" +
+						"</div>" +
+					   "</div>");
+	$(".modal").fadeIn("fast");
+	$(".close").click(function() {
+		$(".modal").fadeOut("fast");
 	});
 }
-function testu(val, name) {
-	if (val == "goed"){
-		var text = ""
+function modal2(som, uitkomst, antwoord, foutofGoed, naam){
+	var text = "";
+	if (foutofGoed == "fout"){
+		text = "<p>Jammer, " + naam + " jouw antwoord is niet goed " + som + " = " + uitkomst + "</p>";
 	}
 	else {
-		
+		text = "<p>Ja, "+ naam + "jouw antwoord is goed!" + som + " = " + uitkomst + "</p>" ;							
 	}
+		$("body").append("<div class='modal'>" +
+						"<div class='modal-content'>" +
+							"<span class='close'>&times;</span>" +
+								"<p>" + text + "</p>" +
+						"</div>" +
+					   "</div>");
+	$(".modal").fadeIn("fast");
+	$(".close").click(function() {
+		$(".modal").fadeOut("fast");
+	});
 }
+// Global Section 5 - END
+
+//Global Section 6 - Submit form replacement. POST using AJAX.
 function post(val) {
-	var success = "";
-	var dataType = "";
-	var dataSend = "";
+	var success = "";  // Reset success variable
+	var dataType = ""; // Reset dataType variable
+	var dataSend = ""; // Reset dataSend variable
+	
+	/* Everything form here on follows simple hierarchy:
+	if (the current page is displayed is true) {
+		dataSend {
+			postName : postValue
+		}
+		dataType: html, text or JSON (refer to jquery for more).
+		
+		on successfull AJAX response:
+		success = function success(any name for data from PHP){
+			Your executions after a successfull AJAX response, like a page fade in or out.
+		}
+	}*/
 	
 	if ($("#startpagina").css("display") != "none"){
 		dataSend = {
@@ -126,30 +179,19 @@ function post(val) {
 		}
 		dataType = "text";
 		success = function success(data){
-			if (val == "Toets"){
 				$("#operators").fadeOut("slow", function(){
-					$("#opdrachten").children("form").children("h1").text(data);
-					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-				});		
-			}
-			else {
-				$("#operators").fadeOut("slow", function(){
-					$("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
+					ifToets = (val == "Toets") ? $("#opdrachten").children("form").children("h1").text(data) : null;
+					ifToets2 = (val == "Toets") ? $("#opdrachten").fadeIn("slow").css("display", "inline-flex") : $("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
+					ifToets3 = (val == "Toets") ? $('input[name="input"]').val(null).focus() : null;
 				});
-			}
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
-		if (val == "Opnieuw beginnen"){
-			dataSend = {
-				functions: "delete"
-			}
-		}
-		else if (val == "Resultaten"){
+		if (val == "Resultaten"){
 			$("#opdrachtenSelectie").fadeOut("slow", function(){
 				$("#uitslag").children("table").remove();
 				$("#uitslag").fadeIn("slow");
-				post("");
+				post(null);
 			});
 		}
 		else {
@@ -166,14 +208,13 @@ function post(val) {
 					$("#opdrachtenSelectie").fadeOut("slow", function(){
 						$("#opdrachten").children("form").children("h1").text(data);
 						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-						$('input[name="input"]').val("").focus();
+						$('input[name="input"]').val(null).focus();
 					});
 				}
 			}
 		}
 	}
 	if ($("#opdrachten").css("display") != "none"){
-		console.log(val);
 		dataSend = {
 			functions: "callControlsaveAndassignmentGenerator",
 			antwoord: val
@@ -184,12 +225,12 @@ function post(val) {
 					$("#opdrachten").fadeOut("slow", function(){
 						$("#uitslag").children("table").remove();
 						$("#uitslag").fadeIn("slow");
-						post("");
+						post(null);
 					});
 				}
 				else {
 					console.log(data);
-					ifToets = (tmpMemory == "Toets") ? "" : testu(data[1], data[2]) ;
+					ifToets = (tmpMemory == "Toets") ? null : modal2(data[0],data[1], data[2], data[3], data[4]) ;
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
 						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
 					});
@@ -198,7 +239,6 @@ function post(val) {
 		}
 	}
 	if ($("#uitslag").css("display") != "none"){
-		console.log("test");
 		dataSend = {
 			functions: "results",
 		}
@@ -208,7 +248,7 @@ function post(val) {
 	}
 	$.ajax({
 	   type: "POST",
-	   url: "tweeGetallen.php",
+	   url: "tweeGetallen.php", // The url where the post is going to be send and the response orginate.
 	   data: dataSend,
 	   dataType: dataType,
 	   success: success
