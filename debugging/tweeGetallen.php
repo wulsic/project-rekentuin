@@ -22,7 +22,7 @@
 			echo AssignmentindexCheckerandGenerator($_POST["index"]);
 		}
 		elseif ($_POST["functions"] == "delete"){
-			unset($_SESSION["opdrachtOpslaan"][$operator]);
+			unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]]);
 		}
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			$timeStop = time();

@@ -140,24 +140,25 @@ function post(val) {
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
-		if (val == "delete"){
+		if (val == "Opnieuw beginnen"){
 			dataSend = {
-				functions: (val == "delete") ?  "delete" : "results"
+				functions: "delete"
 			}
 		}
 		else if (val == "Resultaten"){
 			$("#opdrachtenSelectie").fadeOut("slow", function(){
 				$("#uitslag").children("table").remove();
+				$("#uitslag").fadeIn("slow");
 				post("");
 			});
 		}
 		else {
 			dataSend = {
-				functions: "callAssignmentindexCheckerandGenerator",
+				functions: (val == "Opnieuw beginnen") ? "delete" : "callAssignmentindexCheckerandGenerator",
 				index: val
 			}
-			dataType: "text"
-			success = function success(data){
+			dataType: "text";
+			success = (val == "Opnieuw beginnen") ? "delete" : function success(data){
 				if (data == true){
 					alert("Opdracht gemaakt");
 				}
@@ -182,6 +183,7 @@ function post(val) {
 				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
 						$("#uitslag").children("table").remove();
+						$("#uitslag").fadeIn("slow");
 						post("");
 					});
 				}
@@ -191,7 +193,7 @@ function post(val) {
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
 						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
 					});
-					$('input[name="input"]').val("").focus();			
+					$('input[name="input"]').val("").focus();
 				}
 		}
 	}
@@ -202,8 +204,6 @@ function post(val) {
 		}
 		success = function success(data){
 			$("#uitslag").append(data);
-			$("#uitslag").fadeIn("slow");
-			console.log(data);
 		}
 	}
 	$.ajax({
