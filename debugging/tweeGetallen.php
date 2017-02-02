@@ -4,7 +4,7 @@
 	if (isset($_POST["functions"]))  {
 		if ($_POST["functions"] == "callLoginsystem"){
 			$username = loginSystem($_POST["username"]);
-			echo $_SESSION["username"];
+			echo $username;
 		}
 		elseif ($_POST["functions"] == "group"){
 			$_SESSION["group"] = $_POST["group"];
@@ -20,6 +20,9 @@
 		}
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
 			echo AssignmentindexCheckerandGenerator($_POST["index"]);
+		}
+		elseif ($_POST["functions"] == "delete"){
+			unset($_SESSION["opdrachtOpslaan"][$operator]);
 		}
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			$timeStop = time();
@@ -39,9 +42,6 @@
 				echo true;
 			}
 			else{
-				if ($opdrachtControlle == "fout"){
-					
-				}
 				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
 				$returnArray = ($operator == "Toets") ?  $_SESSION["opdracht"][0] : json_encode(array($_SESSION["opdracht"][0],$antwoord, $opdrachtControlle, $username));
 				echo $returnArray;
@@ -207,7 +207,6 @@
 		if (count($_SESSION["opdrachtOpslaan"][$operator]) == 20) {
 			ksort ($_SESSION["opdrachtOpslaan"][$operator]);
 		}
-		return array($operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 	}
 	// Global Section 5 - END
 	
