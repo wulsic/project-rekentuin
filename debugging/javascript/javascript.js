@@ -129,7 +129,7 @@ function post(val) {
 	var dataType = ""; // Reset dataType variable
 	var dataSend = ""; // Reset dataSend variable
 	
-	/* Everything form here on follows simple hierarchy:
+	/* Everything from here on follows simple hierarchy:
 	if (the current page is displayed is true) {
 		dataSend {
 			postName : postValue
