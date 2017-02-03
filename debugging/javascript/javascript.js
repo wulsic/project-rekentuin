@@ -105,10 +105,10 @@ function modal(name) {
 function modal2(som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
 	if (foutofGoed == "fout"){
-		text = "<p>Jammer, " + naam + " jouw antwoord is niet goed " + som + " = " + uitkomst + "</p>";
+		text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
 	}
 	else {
-		text = "<p>Ja, "+ naam + "jouw antwoord is goed!" + som + " = " + uitkomst + "</p>" ;							
+		text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
 	}
 		$("body").append("<div class='modal'>" +
 						"<div class='modal-content'>" +
@@ -118,7 +118,9 @@ function modal2(som, uitkomst, antwoord, foutofGoed, naam){
 					   "</div>");
 	$(".modal").fadeIn("fast");
 	$(".close").click(function() {
-		$(".modal").fadeOut("fast");
+		$(".modal").fadeOut("fast", function(){
+			$("body").children(".modal").remove();
+		});
 	});
 }
 // Global Section 5 - END
@@ -232,7 +234,7 @@ function post(val) {
 					console.log(data);
 					ifToets = (tmpMemory == "Toets") ? null : modal2(data[0],data[1], data[2], data[3], data[4]) ;
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
+						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[5]).fadeIn("fast");
 					});
 					$('input[name="input"]').val("").focus();
 				}

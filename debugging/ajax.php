@@ -21,12 +21,15 @@
 			}
 			$_SESSION["operator"] = $_POST["operator"];
 		}
+		// Section 3 - Assign index and call the generator for the first assignment
 		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
 			echo AssignmentindexCheckerandGenerator($_POST["index"]);
 		}
+		// Section 4 - Delete all assignment based on operator
 		elseif ($_POST["functions"] == "delete"){
 			unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]]);
 		}
+		// Section 5 - Save all variables for later use
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			$timeStop = time();
 			$username = $_SESSION["username"];
@@ -48,11 +51,13 @@
 			//	echo $_SESSION["opdracht"][0];
 			//}
 			else {
-				$returnArray = json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username));
+				$newsom = opdrachtGenerator($_SESSION["group"], $operator);
+				$returnArray = json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]));
 				echo $returnArray;
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $operator);
+				$_SESSION["opdracht"] = $newsom;
 			}
 		}
+		// Section 6 - Iterate array for a nice results table
 		elseif ($_POST["functions"] == "results") {
 			$operator = $_SESSION["operator"];
 			echo "<table>
