@@ -1,91 +1,14 @@
 <?php
-	session_start();
-	// Global Section 1 - Ajax
-	if (isset($_POST["functions"]))  {
-		if ($_POST["functions"] == "callLoginsystem"){
-			$username = loginSystem($_POST["username"]);
-			echo $username;
-		}
-		elseif ($_POST["functions"] == "group"){
-			$_SESSION["group"] = $_POST["group"];
-		}
-		elseif ($_POST["functions"] == "callRekundigeoperator"){
-			if ($_POST["operator"] == "Toets"){
-				echo AssignmentindexCheckerandGenerator(1);
-			}
-			if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
-				$_SESSION["oldOperator"] = $_SESSION["operator"];
-			}
-			$_SESSION["operator"] = $_POST["operator"];
-		}
-		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
-			echo AssignmentindexCheckerandGenerator($_POST["index"]);
-		}
-		elseif ($_POST["functions"] == "delete"){
-			unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]]);
-		}
-		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
-			$timeStop = time();
-			$username = $_SESSION["username"];
-			$index = $_SESSION["index"];
-			$antwoord = $_POST["antwoord"];
-			$som = $_SESSION["opdracht"][0];
-			$uitkomst = $_SESSION["opdracht"][1];
-			$timestart = $_SESSION["opdracht"][2];
-			$timeDifference = $timeStop - $timestart;
-			$operator = rekundigeOperator($_SESSION["operator"]);
-			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
-			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
-			$indexChecker = indexChecker("");
-			if ($indexChecker == "eNumber"){
-				echo true;
-			}
-			//elseif ($operator == "Toets"){
-			//	$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $operator);
-			//	echo $_SESSION["opdracht"][0];
-			//}
-			else {
-				$returnArray = json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username));
-				echo $returnArray;
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $operator);
-			}
-		}
-		elseif ($_POST["functions"] == "results") {
-			$operator = $_SESSION["operator"];
-			echo "<table>
-					<tr>
-						<td> $operator </td>
-					</tr>
-					<tr>
-						<td> Opdracht Nummer</td>
-						<td> Som </td>
-						<td> Uitkomst </td>
-						<td> Jouw Antwoord </td>
-						<td> Goed of Fout </td>
-						<td> Jouw tijd per som </td> 
-					</tr>";
-			foreach ($_SESSION["opdrachtOpslaan"][$operator] as $key => $value) {
-				echo "<tr>
-						<td> $key</td>";
-				foreach ($value as $key2) {
-					echo"<td> $key2 </td>";
-				}
-				echo "</tr>";
-			}
-			echo "</table>";
-		}
-	}
-	// Global Section 1 - END
-	// Global Section 2 - Login System
+	// Global Section 1 - Login System
 	function loginSystem($username){
 		session_destroy();
 		session_start();
 		$_SESSION["username"] = $username;
 		return $username;
 	}
-	// Global Section 2 -  END 
+	// Global Section 1 -  END
 
-	// Global Section 3 - Assignment generator
+	// Global Section 2 - Assignment generator
 	function rekundigeOperator($userSelection){
 		// Section 1 - Operator Picker
 		$operator = array("+", "-", "*", "");
@@ -157,7 +80,7 @@
 		$somUitkomstGetallen = array ($som, $uitkomst, time());
 		return $somUitkomstGetallen;
 	}
-	// Global Section 3 - END
+	// Global Section 2 - END
 	function AssignmentindexCheckerandGenerator($index){
 			if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"]){
 				$_SESSION["numbers"] = range(1,20);
@@ -175,7 +98,7 @@
 				return $_SESSION["opdracht"][0];
 			}		
 	}
-	// Global Section 4 - Index Checker
+	// Global Section 3 - Index Checker
 	function indexChecker($index){
 		if (!empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])){
 			return "eSave"; // Empty Save
@@ -203,17 +126,18 @@
 			return "eNumber"; // Empty Number
 		}
 	}
-	// Global Section 4 - END
-	// Global Section 5 - Save Assignment
+	// Global Section 3 - END
+	
+	// Global Section 4 - Save Assignment
 	function opdrachtOpslaan($operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer) {
 		$_SESSION["opdrachtOpslaan"][$operator][$index] = array($opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 		if (count($_SESSION["opdrachtOpslaan"][$operator]) == 20) {
 			ksort ($_SESSION["opdrachtOpslaan"][$operator]);
 		}
 	}
-	// Global Section 5 - END
+	// Global Section 4 - END
 	
-	// Global Section 6 - Assignment Checker
+	// Global Section 5 - Assignment Checker
 	function opdrachtControleren($antwoord, $uitkomst){
 		if ($antwoord == $uitkomst){
 			return "goed";
@@ -222,5 +146,5 @@
 			return "fout";
 		}
 	}
-	// Global Section 6 - END
+	// Global Section 5 - END
 ?>

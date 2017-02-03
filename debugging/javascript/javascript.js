@@ -248,7 +248,7 @@ function post(val) {
 	}
 	$.ajax({
 	   type: "POST",
-	   url: "tweeGetallen.php", // The url where the post is going to be send and the response orginate.
+	   url: "ajax.php", // The url where the post is going to be send and the response orginate.
 	   data: dataSend,
 	   dataType: dataType,
 	   success: success
