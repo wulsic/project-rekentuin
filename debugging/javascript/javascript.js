@@ -96,9 +96,9 @@ function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 		if (id == "uitleg"){
 			text = aboutSchool
 		}
-		else if (id == "over")(
-			text = explainPage
-		)		
+		else if (id == "over") {
+			text = explainPage			
+		}
 	}
 	$("body").children(".modal").remove();
 	$("body").append("<div class='modal'>" +
