@@ -92,24 +92,26 @@
 	}
 	// Global Section 3 - Index Checker
 	function indexChecker($index){
-		if (!empty($_SESSION["numbers"])){
-			if (!empty($index)) {		
-				$_SESSION["index"] = (int)$index;
-			}
-			else {
-				unset($_SESSION["numbers"][$_SESSION["index"] - 1]);
+		if (!empty($index)) {		
+			$_SESSION["index"] = (int)$index;
+		}
+		else {
+			unset($_SESSION["numbers"][$_SESSION["index"] - 1]);
+			if (!empty($_SESSION["numbers"])){
 				if ($_SESSION["index"] == 20){
 					$_SESSION["index"] = 1;
 				}
-				$_SESSION["index"]++;
-				while (!array_search($_SESSION["index"], $_SESSION["numbers"])) {
+				else {
 					$_SESSION["index"]++;
+					$_SESSION["debug"] = $_SESSION["index"];	
+					while (!array_search($_SESSION["index"], $_SESSION["numbers"])) {
+						$_SESSION["index"]++;
+					}
 				}
-				$_SESSION["debug"] = $_SESSION["index"];
 			}
-		}
-		else {
-			return "eNumber"; // Empty Number
+			else {
+				return "eNumber"; // Empty Number
+			}
 		}
 	}
 	// Global Section 3 - END
