@@ -82,44 +82,30 @@
 	}
 	// Global Section 2 - END
 	function AssignmentindexCheckerandGenerator($index){
-			if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"]){
-				$_SESSION["numbers"] = range(1,20);
-			}
-			else {
+			if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"] || empty($_SESSION["numbers"])){
 				$_SESSION["numbers"] = range(1,20);
 			}
 			$indexChecker = indexChecker($index);	
 			$newOperator = rekundigeOperator($_SESSION["operator"]);
-			if ($indexChecker == "eSave"){
-				return true;
-			}
-			else {
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
-				return $_SESSION["opdracht"][0];
-			}		
+			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
+			return $_SESSION["opdracht"][0];	
 	}
 	// Global Section 3 - Index Checker
 	function indexChecker($index){
-		if (!empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])){
-			return "eSave"; // Empty Save
-		}
 		if (!empty($_SESSION["numbers"])){
 			if (!empty($index)) {		
-				$_SESSION["index"] = $index;
+				$_SESSION["index"] = (int)$index;
 			}
 			else {
-				if ($_SESSION["index"] == 20 || empty($_SESSION["operator"])){
+				unset($_SESSION["numbers"][$_SESSION["index"] - 1]);
+				if ($_SESSION["index"] == 20){
 					$_SESSION["index"] = 1;
 				}
-				else {
+				$_SESSION["index"]++;
+				while (!array_search($_SESSION["index"], $_SESSION["numbers"])) {
 					$_SESSION["index"]++;
-					while (!in_array($_SESSION["index"], $_SESSION["numbers"])) {
-						$_SESSION["index"]++;
-					}
 				}
-				if(($key = array_search($_SESSION["index"], $_SESSION["numbers"])) !== false) {
-					unset($_SESSION["numbers"][$key]);
-				}
+				$_SESSION["debug"] = $_SESSION["index"];
 			}
 		}
 		else {
