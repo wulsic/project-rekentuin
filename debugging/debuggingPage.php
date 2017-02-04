@@ -21,24 +21,25 @@
 					<button class="popup" id="uitleg">Klik hier voor uitleg :)</button>
 				</div>
 				
-				<!-- Over Section
-				<div id="overModal" class="modal">
+				<!-- Section 1.1 - About School Popup -->
+				<div id="overmodal" class="modal">
 					<div class="modal-content">
-						<span class="overclose close">&times;</span>
+						<span class="close">&times;</span>
 						<p>Text over school</p>
 					</div>
-				</div>-->
+				</div>
 				
-				<!-- Uitleg Section
-				<div id="uitlegModal" class="modal">
+				<!-- Section 1.2 - Explaination about the usage of the page -->
+				<div id="uitlegmodal" class="modal">
 					<div class="modal-content">
-						<span class="uitlegclose close">&times;</span>
+						<span class="close">&times;</span>
 						<p>Text over uitleg</p>
 					</div>
-				</div>-->
+				</div>
 			</div>
 			
-		<!--End Section 1-->
+		<!--Section 1 - END-->
+		
 		<!--Section 2 - Groepen Select Page -->
 			<div id="groepen">
 				<h1 class="text-center"></h1>
@@ -49,7 +50,8 @@
 					<button>groep 6</button>
 				</div>
 			</div>
-		<!--End Section 2-->
+		<!--Section 2 - END->
+		
 		<!--Section 3 - Operator Select Page -->
 			<div id="operators">
 				<button class="backwards">Ga terug</button>
@@ -62,7 +64,8 @@
 					<button>Toets</button>
 				</div>
 			</div>
-		<!--End Section 3-->
+		<!--Section 3 - END-->
+		
 		<!--Section 4 - Assigment Select Page -->
 		<div id="opdrachtenSelectie">
 			<div class="flex-direction-row flex-justify-space-between">
@@ -91,6 +94,8 @@
 				 ?>
 			</div>
 		</div>
+		<!--Section 4 - END-->
+		
 		<!--Section 5 - Assignment Page-->
 		<div id="opdrachten">
 			<button class="backwards">Ga terug</button>
@@ -99,20 +104,22 @@
 				<input type="number" name="input" autocomplete="off" required>
 				<input type="submit" id="submit" name="antwoordSubmit" value="Submit">
 			</form>
-			<!-- Answer Control Section -->
-			<div id="controlModal" class="modal">
+			
+			<!-- Section 5.1 - Answer response popup -->
+			<div id="assignmentmodal" class="modal">
 				<div class="modal-content">
-					<span class="overclose close">&times;</span>
-					<p>Text over school</p>
+					<span class="close">&times;</span>
 				</div>
 			</div>
-			<!-- Answer Control Section - END -->
 		</div>
-		<!--End Section 5-->
+		
+		<!--Section 5 - END-->
+		
 		<!--Section 6 - Results Page-->
 		<div id="uitslag">
 			<button class="backwards">Ga terug</button>
 		</div>
-		<!--End Section 6-->
+		<!--Section 6 - END-->
+		
 	</body>
 </html>

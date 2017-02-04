@@ -7,36 +7,40 @@
 			$username = loginSystem($_POST["username"]);
 			echo $username;
 		}
+		// Section 1 - END
 		
 		// Section 2 - Assign Group
 		elseif ($_POST["functions"] == "group"){
 			$_SESSION["group"] = $_POST["group"];
 		}
+		// Section 1 - END
 		
 		// Section 2 - Assign Operator
 		elseif ($_POST["functions"] == "callRekundigeoperator"){
 			if ($_POST["operator"] == "Toets"){
-				echo AssignmentindexCheckerandGenerator(1);
+				echo indexCheckerandGenerator(1);
 			}
 			if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
 				$_SESSION["oldOperator"] = $_SESSION["operator"];
 			}
 			$_SESSION["operator"] = $_POST["operator"];
 		}
+		// Section 2 - END
 		
 		// Section 3 - Assign index and call the generator for the first assignment
-		elseif ($_POST["functions"] == "callAssignmentindexCheckerandGenerator") {
-			echo AssignmentindexCheckerandGenerator($_POST["index"]);
+		elseif ($_POST["functions"] == "callindexCheckerandGenerator") {
+			echo indexCheckerandGenerator($_POST["index"]);
 		}
 		
 		// Section 4 - Delete all assignment based on operator
 		elseif ($_POST["functions"] == "delete"){
 			unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]]);
 		}
+		// Section 4 - END
 		
 		// Section 5 - Save all variables for later use
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
-			// Section 1 - Put all sessions / post / time into a more readable variable
+			// Section 5.1 - Put all sessions / post / time into a more readable variable
 			$timeStop 		= time();
 			$antwoord 		= $_POST["antwoord"];
 			$index 			= $_SESSION["index"];
@@ -47,12 +51,12 @@
 			$timestart 		= $_SESSION["opdracht"][2];
 			$timeDifference = $timeStop - $timestart;
 			
-			// Section 2 - Put all those lovely variables into functions.
+			// Section 5.2 - Put all those lovely variables into functions.
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan   = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
 			$indexChecker 	   = indexChecker("");
 			
-			// Section 3 - Check whether indexChecker returns "eNumber".
+			// Section 5.3 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
 				echo true;
 			}
@@ -63,8 +67,9 @@
 				$_SESSION["opdracht"] = $newsom;
 			}
 		}
+		// Section 5 - END
 		
-		// Section 6 - Iterate array for a nice results table
+		// Section 6 - Iterate array where all the assignment are saved for a nice results table
 		elseif ($_POST["functions"] == "results") {
 			$operator = $_SESSION["operator"];
 			echo "<table>
@@ -89,5 +94,6 @@
 			}
 			echo "</table>";
 		}
+		// Section 6 - END
 	}
 ?>

@@ -178,7 +178,7 @@ function post(val) {
 		}
 		else {
 			dataSend = {
-				functions: (val == "Opnieuw beginnen") ? "delete" : "callAssignmentindexCheckerandGenerator",
+				functions: (val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
 				index: val
 			}
 			dataType: "text";
