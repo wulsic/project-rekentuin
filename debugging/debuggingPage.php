@@ -21,21 +21,21 @@
 					<button class="popup" id="uitleg">Klik hier voor uitleg :)</button>
 				</div>
 				
-				<!-- Over Section -->
+				<!-- Over Section
 				<div id="overModal" class="modal">
 					<div class="modal-content">
 						<span class="overclose close">&times;</span>
 						<p>Text over school</p>
 					</div>
-				</div>
+				</div>-->
 				
-				<!-- Uitleg Section -->
+				<!-- Uitleg Section
 				<div id="uitlegModal" class="modal">
 					<div class="modal-content">
 						<span class="uitlegclose close">&times;</span>
 						<p>Text over uitleg</p>
 					</div>
-				</div>
+				</div>-->
 			</div>
 			
 		<!--End Section 1-->
