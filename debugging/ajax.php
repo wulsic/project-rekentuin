@@ -39,20 +39,16 @@
 			$uitkomst = $_SESSION["opdracht"][1];
 			$timestart = $_SESSION["opdracht"][2];
 			$timeDifference = $timeStop - $timestart;
-			$operator = rekundigeOperator($_SESSION["operator"]);
+			$operator = $_SESSION["operator"];
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
 			$indexChecker = indexChecker("");
 			if ($indexChecker == "eNumber"){
 				echo true;
 			}
-			//elseif ($operator == "Toets"){
-			//	$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $operator);
-			//	echo $_SESSION["opdracht"][0];
-			//}
 			else {
-				$newsom = opdrachtGenerator($_SESSION["group"], $operator);
-				$returnArray = json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]));
+				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
+				$returnArray = ($operator == "Toets" ) ? $newsom[0] : json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]));
 				echo $returnArray;
 				$_SESSION["opdracht"] = $newsom;
 			}

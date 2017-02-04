@@ -13,7 +13,7 @@ $(document).ready(function(){
 	// Section 2 - Form submit
 	$("form").submit(function(){
 		event.preventDefault(); // Prevent a default action on submit.
-		post($(this).find("input[name='input']").val()); // send the val of the set input to function post.
+			post($(this).find("input[name='input']").val()); // send the val of the set input to function post.			
 	});
 	// Section 3 - On button click
 	$("button").click(function(){
@@ -82,45 +82,35 @@ function usernameVerify(txt) {
 // Global Section 4 - END
 
 // Global Section 5 - Popup function modal()
-function modal(name) {
+function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
-	
-	if (name == "uitleg"){
-		text = aboutSchool
+	if (id == "assignment"){
+		if (foutofGoed == "fout"){
+			text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
+		}
+		else {
+			text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
+		}		
 	}
-	else if (name == "over")(
-		text = explainPage
-	)
-	$("body").append(" <div class='modal'>" +
-						"<div class='modal-content'>" +
-							"<span class='close'>&times;</span>" +
-								"<p>" + text + "</p>" +
-						"</div>" +
-					   "</div>");
+	else {
+		if (id == "uitleg"){
+			text = aboutSchool
+		}
+		else if (id == "over")(
+			text = explainPage
+		)		
+	}
+	$("body").children(".modal").remove();
+	$("body").append("<div class='modal'>" +
+					"<div class='modal-content'>" +
+						"<span class='close'>&times;</span>" +
+							"<p>" + text + "</p>" +
+					"</div>" +
+				   "</div>");
 	$(".modal").fadeIn("fast");
 	$(".close").click(function() {
 		$(".modal").fadeOut("fast");
-	});
-}
-function modal2(som, uitkomst, antwoord, foutofGoed, naam){
-	var text = "";
-	if (foutofGoed == "fout"){
-		text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
-	}
-	else {
-		text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
-	}
-		$("body").append("<div class='modal'>" +
-						"<div class='modal-content'>" +
-							"<span class='close'>&times;</span>" +
-								"<p>" + text + "</p>" +
-						"</div>" +
-					   "</div>");
-	$(".modal").fadeIn("fast");
-	$(".close").click(function() {
-		$(".modal").fadeOut("fast", function(){
-			$("body").children(".modal").remove();
-		});
+		$('input[name="input"]').val("").focus();
 	});
 }
 // Global Section 5 - END
@@ -202,7 +192,7 @@ function post(val) {
 				index: val
 			}
 			dataType: "text";
-			success = (val == "Opnieuw beginnen") ? "delete" : function success(data){
+			success = (val == "Opnieuw beginnen") ? null : function success(data){
 				if (data == true){
 					alert("Opdracht gemaakt");
 				}
@@ -232,11 +222,11 @@ function post(val) {
 				}
 				else {
 					console.log(data);
-					ifToets = (tmpMemory == "Toets") ? null : modal2(data[0],data[1], data[2], data[3], data[4]) ;
+					ifToets = (tmpMemory == "Toets") ? null : modal("assignment", data[0],data[1], data[2], data[3], data[4]) ;
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
 						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[5]).fadeIn("fast");
 					});
-					$('input[name="input"]').val("").focus();
+					ifToets2 = (tmpMemory == "Toets") ? $('input[name="input"]').val("").focus() : $('input[name="input"]').val("");
 				}
 		}
 	}
@@ -245,7 +235,9 @@ function post(val) {
 			functions: "results",
 		}
 		success = function success(data){
-			$("#uitslag").append(data);
+			if ($("#uitslag").children("table").length == 0){
+				$("#uitslag").append(data);				
+			}
 		}
 	}
 	$.ajax({
