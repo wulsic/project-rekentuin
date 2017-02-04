@@ -82,19 +82,22 @@
 	
 	// Section 3 - Assign index and call the generator for the first assignment
 	function indexCheckerandGenerator($index){
+		if (empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])){
 			if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"] || empty($_SESSION["numbers"])){
 				$_SESSION["numbers"] = range(1,20);
 			}
 			$indexChecker = indexChecker($index);	
 			$newOperator = rekundigeOperator($_SESSION["operator"]);
 			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
-			return $_SESSION["opdracht"][0];	
+		}
+		$whatToreturn = (!empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])) ? array(true, $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]) : $_SESSION["opdracht"][0];
+		return $whatToreturn; 
 	}
 	// Section 3 - END
 	
 	// Section 4 - Index Checker
 	function indexChecker($index){
-		if (!empty($index)) {		
+		if (!empty($index)) {
 			$_SESSION["index"] = (int)$index;
 		}
 		else {
@@ -105,7 +108,6 @@
 				}
 				else {
 					$_SESSION["index"]++;
-					$_SESSION["debug"] = $_SESSION["index"];	
 					while (!array_search($_SESSION["index"], $_SESSION["numbers"])) {
 						$_SESSION["index"]++;
 					}

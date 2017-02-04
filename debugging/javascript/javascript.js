@@ -81,12 +81,23 @@ function usernameVerify(txt) {
 // Section 5 - Popup function modal()
 function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
-	if (id == "assignment"){
-		if (foutofGoed == "fout"){
-			text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
+	if (som != null){
+		if (id == "response"){
+			if (foutofGoed == "fout"){
+				text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
+			}
+			else {
+				text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
+			}			
 		}
-		else {
-			text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
+		else if (id == "alreadyMade"){
+			text =  "<p> Je hebt deze som al gemaakt </p>"+
+					"<p> Het som was: </p>" +
+					"<p>" + som + " = " + uitkomst + "</p>" +
+					"<p> Jouw antwoord was: </p>" +
+					"<p>" + antwoord + "</p>" +
+					"<p> wil je deze som opnieuw maken? </p>" +
+					"<button> Ja </button>" + "<button> nee </button>";
 		}
 		$("#" + id + "modal").children(".modal-content").children("p").remove();
 		$("#" + id + "modal").children(".modal-content").append(text);
@@ -181,14 +192,15 @@ function post(val) {
 				functions: (val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
 				index: val
 			}
-			dataType: "text";
+			dataType = "JSON";
 			success = (val == "Opnieuw beginnen") ? null : function success(data){
-				if (data == true){
-					alert("Opdracht gemaakt");
+				console.log (data);
+				if (data[0] == true){
+					modal("alreadyMade", data[1][0], data[1][1], data[1][2]);
 				}
 				else {
 					$("#opdrachtenSelectie").fadeOut("slow", function(){
-						$("#opdrachten").children("form").children("h1").text(data);
+						$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
 						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 						$("input[name='input']").val(null).focus();
 					});
@@ -213,7 +225,7 @@ function post(val) {
 				});
 			}
 			else {
-				ifToets = (tmpMemory == "Toets") ? null : modal("assignment", data[0],data[1], data[2], data[3], data[4]) ;
+				ifToets = (tmpMemory == "Toets") ? null : modal("response", data[0],data[1], data[2], data[3], data[4]) ;
 				$('input[name="input"]').val(null);
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
 					ifToets2 = (tmpMemory == "Toets") ? $("input[name='input']").prop('disabled', false) : null;

@@ -93,6 +93,12 @@
 					echo "</div>"
 				 ?>
 			</div>
+			<!-- Section 4.1 - Assignment already made response popup -->
+			<div id="alreadyMademodal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+				</div>
+			</div>
 		</div>
 		<!--Section 4 - END-->
 		
@@ -106,13 +112,12 @@
 			</form>
 			
 			<!-- Section 5.1 - Answer response popup -->
-			<div id="assignmentmodal" class="modal">
+			<div id="responsemodal" class="modal">
 				<div class="modal-content">
 					<span class="close">&times;</span>
 				</div>
 			</div>
 		</div>
-		
 		<!--Section 5 - END-->
 		
 		<!--Section 6 - Results Page-->
