@@ -38,7 +38,6 @@
 		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
 			// Section 1 - Put all sessions / post / time into a more readable variable
 			$timeStop 		= time();
-			$timeDifference = $timeStop - $timestart;
 			$antwoord 		= $_POST["antwoord"];
 			$index 			= $_SESSION["index"];
 			$username 		= $_SESSION["username"];
@@ -46,6 +45,7 @@
 			$som			= $_SESSION["opdracht"][0];
 			$uitkomst 		= $_SESSION["opdracht"][1];
 			$timestart 		= $_SESSION["opdracht"][2];
+			$timeDifference = $timeStop - $timestart;
 			
 			// Section 2 - Put all those lovely variables into functions.
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
