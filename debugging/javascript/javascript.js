@@ -109,8 +109,10 @@ function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 				   "</div>");
 	$(".modal").fadeIn("fast");
 	$(".close").click(function() {
+		$("input[name='input']").prop('disabled', false);
+		$("input[type='submit']").prop('disabled', false);
 		$(".modal").fadeOut("fast");
-		$('input[name="input"]').val("").focus();
+		$('input[name="input"]').focus();
 	});
 }
 // Global Section 5 - END
@@ -135,6 +137,8 @@ function post(val) {
 	}*/
 	
 	if ($("#startpagina").css("display") != "none"){
+		$("input[type='submit']").prop('disabled', true);
+		$("input[name='input']").prop('disabled', true);
 		dataSend = {
 			functions: "callLoginsystem",
 			username: val
@@ -159,6 +163,8 @@ function post(val) {
 		}
 	}
 	if ($("#operators").css("display") != "none"){
+		$("input[type='submit']").prop('disabled', false);
+		$("input[name='input']").prop('disabled', false);
 		if (val == ":"){
 			var val = val.replace(":", "/");
 		}
@@ -213,6 +219,8 @@ function post(val) {
 		}
 		dataType = (tmpMemory == "Toets") ? "text" : "JSON";
 		success = function success(data){
+				$("input[type='submit']").prop('disabled', true);
+				$("input[name='input']").prop('disabled', true);
 				if (data == true){
 					$("#opdrachten").fadeOut("slow", function(){
 						$("#uitslag").children("table").remove();
@@ -221,12 +229,14 @@ function post(val) {
 					});
 				}
 				else {
-					console.log(data);
 					ifToets = (tmpMemory == "Toets") ? null : modal("assignment", data[0],data[1], data[2], data[3], data[4]) ;
+					$('input[name="input"]').val("");
 					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+						ifToets2 = (tmpMemory == "Toets") ? $("input[name='input']").prop('disabled', false) : null;
+						ifToets3 = (tmpMemory == "Toets") ? $("input[type='submit']").prop('disabled', false) : null;
+						ifToets4 = (tmpMemory == "Toets") ? $('input[name="input"]').val("").focus() : null;
 						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[5]).fadeIn("fast");
 					});
-					ifToets2 = (tmpMemory == "Toets") ? $('input[name="input"]').val("").focus() : $('input[name="input"]').val("");
 				}
 		}
 	}
@@ -235,9 +245,7 @@ function post(val) {
 			functions: "results",
 		}
 		success = function success(data){
-			if ($("#uitslag").children("table").length == 0){
-				$("#uitslag").append(data);				
-			}
+			$("#uitslag").append(data);				
 		}
 	}
 	$.ajax({
