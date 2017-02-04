@@ -67,8 +67,8 @@
 		<div id="opdrachtenSelectie">
 			<div class="flex-direction-row flex-justify-space-between">
 				<button class="backwards">Ga terug</button>
-				<button class="popup" id="restart">Opnieuw beginnen</button>
-				<button class="popup" id="results">Resultaten</button>
+				<button id="restart">Opnieuw beginnen</button>
+				<button id="results">Resultaten</button>
 			</div>
 			<div class="text-center div-center flex-direction-row flex-justify-space-around">
 				 <?php
@@ -94,12 +94,10 @@
 		<!--Section 5 - Assignment Page-->
 		<div id="opdrachten">
 			<button class="backwards">Ga terug</button>
-			<form class="div-center" method="post" action="" >
+			<form class="div-center text-center" method="post" action="" >
 				<h1 class="text-center"></h1>
-				<div class="text-center">
-					<input type="number" name="input" autocomplete="off" required>
-					<input type="submit" id="submit" name="antwoordSubmit" value="Submit">
-				</div>
+				<input type="number" name="input" autocomplete="off" required>
+				<input type="submit" id="submit" name="antwoordSubmit" value="Submit">
 			</form>
 			<!-- Answer Control Section -->
 			<div id="controlModal" class="modal">
