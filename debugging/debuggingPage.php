@@ -114,7 +114,7 @@
 			
 			<!-- Section 5.1 - Answer response popup -->
 			<div id="responsemodal" class="modal">
-				<div class="modal-content">
+				<div class="modal-content modal-small">
 					<span class="close">&times;</span>
 				</div>
 			</div>

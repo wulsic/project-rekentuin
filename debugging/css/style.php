@@ -165,6 +165,10 @@ table {
     background-color: rgba(0,0,0,0.4);
 }
 
+.modal-small {
+	width: 35% !important;
+}
+
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
