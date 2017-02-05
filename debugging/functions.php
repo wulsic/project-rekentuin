@@ -125,7 +125,8 @@
 	
 	// Section 5 - Save Assignment
 	function opdrachtOpslaan($operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer) {
-		$_SESSION["opdrachtOpslaan"][$operator][$index] = array($opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
+		$gelijkteken = "=";
+		$_SESSION["opdrachtOpslaan"][$operator][$index] = array($opdracht, $gelijkteken, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 		if (count($_SESSION["opdrachtOpslaan"][$operator]) == 20) {
 			ksort ($_SESSION["opdrachtOpslaan"][$operator]);
 		}

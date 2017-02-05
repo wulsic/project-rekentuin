@@ -85,8 +85,9 @@
 						<td> $operator </td>
 					</tr>
 					<tr>
-						<td> Opdracht Nummer</td>
-						<td> Som </td>
+						<td> Opdracht </td>
+						<td style='padding-right:20px;'> Som </td>
+						<td style='padding-right:20px;'> </td>
 						<td> Uitkomst </td>
 						<td> Jouw Antwoord </td>
 						<td> Goed of Fout </td>
