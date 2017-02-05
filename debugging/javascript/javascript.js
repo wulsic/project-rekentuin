@@ -30,7 +30,11 @@ $(document).ready(function(){
 		else if ($(this).attr("class") == "popup"){
 			modal($(this).attr("id"));
 		}
+		else if ($(this).text() == "Nee"){
+			null
+		}
 		else {
+			console.log($(this).text());
 			post($(this).text());
 			tmpMemory = $(this).text();
 		}
@@ -96,17 +100,16 @@ function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 					"<p>" + som + " = " + uitkomst + "</p>" +
 					"<p> Jouw antwoord was: </p>" +
 					"<p>" + antwoord + "</p>" +
-					"<p> wil je deze som opnieuw maken? </p>" +
-					"<button> Ja </button>" + "<button> nee </button>";
+					"<p> wil je deze som opnieuw maken? </p>";
 		}
-		$("#" + id + "modal").children(".modal-content").children("p").remove();
-		$("#" + id + "modal").children(".modal-content").append(text);
+		ifAlreadymade = (id == "alreadyMade") ?  $("#" + id + "modal").children(".modal-content").prepend(text) : $("#" + id + "modal").children(".modal-content").children("span").after(text);
 	}
 	$("#" + id + "modal").fadeIn("fast");
-	$(".close").click(function() {
-		$("input[name='input']").prop('disabled', false);
-		$("input[type='submit']").prop('disabled', false);
-		$("#" + id + "modal").fadeOut("fast");
+	$(".close, #yesOrno").click(function() {
+		$("input[name='input'], input[type='submit']").prop('disabled', false);
+		$("#" + id + "modal").fadeOut("fast", function(){
+			$("#" + id + "modal").children(".modal-content").children("p").remove();
+		});
 		$('input[name="input"]').focus();
 	});
 }
@@ -132,8 +135,7 @@ function post(val) {
 	}*/
 	
 	if ($("#startpagina").css("display") != "none"){
-		$("input[type='submit']").prop('disabled', true);
-		$("input[name='input']").prop('disabled', true);
+		$("input[name='input'], input[type='submit']").prop('disabled', true);
 		dataSend = {
 			functions: "callLoginsystem",
 			username: val
@@ -158,8 +160,7 @@ function post(val) {
 		}
 	}
 	if ($("#operators").css("display") != "none"){
-		$("input[type='submit']").prop('disabled', false);
-		$("input[name='input']").prop('disabled', false);
+		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		if (val == ":"){
 			var val = val.replace(":", "/");
 		}
@@ -180,19 +181,19 @@ function post(val) {
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
-		if (val == "Resultaten"){
+		if (val == "Resultaten") {
 			$("#opdrachtenSelectie").fadeOut("slow", function(){
 				$("#uitslag").children("table").remove();
 				$("#uitslag").fadeIn("slow");
 				post(null);
-			});
+			});	
 		}
-		else {
+		else{
 			dataSend = {
-				functions: (val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
-				index: val
+				functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
+				index: (val == "Ja") ? tmpMemory : (val == "Opnieuw beginnen") ? null : val
 			}
-			dataType = "JSON";
+			dataType = (val == "Ja") ? "text" : "JSON";
 			success = (val == "Opnieuw beginnen") ? null : function success(data){
 				console.log (data);
 				if (data[0] == true){
@@ -205,7 +206,7 @@ function post(val) {
 						$("input[name='input']").val(null).focus();
 					});
 				}
-			}
+			}	
 		}
 	}
 	if ($("#opdrachten").css("display") != "none"){
@@ -215,8 +216,8 @@ function post(val) {
 		}
 		dataType = (tmpMemory == "Toets") ? "text" : "JSON";
 		success = function success(data){
-			$("input[type='submit']").prop('disabled', true);
-			$("input[name='input']").prop('disabled', true);
+			console.log (data);
+			$("input[name='input'], input[type='submit']").prop('disabled', true);
 			if (data == true){
 				$("#opdrachten").fadeOut("slow", function(){
 					$("#uitslag").children("table").remove();
@@ -228,8 +229,7 @@ function post(val) {
 				ifToets = (tmpMemory == "Toets") ? null : modal("response", data[0],data[1], data[2], data[3], data[4]) ;
 				$('input[name="input"]').val(null);
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-					ifToets2 = (tmpMemory == "Toets") ? $("input[name='input']").prop('disabled', false) : null;
-					ifToets3 = (tmpMemory == "Toets") ? $("input[type='submit']").prop('disabled', false) : null;
+					ifToets2 = (tmpMemory == "Toets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
 					ifToets4 = (tmpMemory == "Toets") ? $("input[name='input']").val(null).focus() : null;
 					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[5]).fadeIn("fast");
 				});

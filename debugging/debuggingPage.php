@@ -96,7 +96,8 @@
 			<!-- Section 4.1 - Assignment already made response popup -->
 			<div id="alreadyMademodal" class="modal">
 				<div class="modal-content">
-					<span class="close">&times;</span>
+					<button id="yesOrno">Ja</button>
+					<button id="yesOrno">Nee</button>
 				</div>
 			</div>
 		</div>

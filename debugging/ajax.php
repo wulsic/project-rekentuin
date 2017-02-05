@@ -32,9 +32,17 @@
 			echo json_encode(indexCheckerandGenerator($_POST["index"]));
 		}
 		
-		// Section 4 - Delete all assignment based on operator
+		// Section 4 - Delete all assignment based on operator or operator + index
 		elseif ($_POST["functions"] == "delete"){
-			unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]]);
+			if ($_POST["index"] != null){
+				unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$_SESSION["index"]]);
+				$_SESSION["index"] = $_POST["index"];
+				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], rekundigeOperator($_SESSION["operator"]));
+				echo $_SESSION["opdracht"][0];
+			}
+			else {
+				unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]]);				
+			}
 		}
 		// Section 4 - END
 		
@@ -62,7 +70,7 @@
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
-				$returnArray = ($operator == "Toets" ) ? $newsom[0] : json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]));
+				$returnArray = ($operator == "Toets" ) ? $newsom[0] : json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0], $_SESSION["opdrachtOpslaan"]));
 				echo $returnArray;
 				$_SESSION["opdracht"] = $newsom;
 			}
