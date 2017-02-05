@@ -89,8 +89,11 @@
 			$indexChecker = indexChecker($index);	
 			$newOperator = rekundigeOperator($_SESSION["operator"]);
 			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
+			$whatToreturn = $_SESSION["opdracht"][0];
 		}
-		$whatToreturn = (!empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])) ? array(true, $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]) : $_SESSION["opdracht"][0];
+		else {
+			$whatToreturn = array(true, $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]);
+		}
 		return $whatToreturn; 
 	}
 	// Section 3 - END
