@@ -14,6 +14,16 @@
 		margin: -15px !important;
 		font-size: 1.5em !important;
 	}
+	#restart {
+		width: 361px !important;
+		font-size: 2em !important;
+		height: 75px !important;;
+	}
+	#results {
+		width: 230px !important;
+		font-size: 2em !important;
+		height: 75px !important;
+	}
 	#submit {
 		cursor:pointer;
 	}
