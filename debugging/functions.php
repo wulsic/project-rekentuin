@@ -84,18 +84,30 @@
 	function indexCheckerandGenerator($index){
 		// Section 3.1 - Error Response
 		if (isset($_SESSION["operator"])){
-			// Section 3.2 - Call indexChecker and Generator
-			if (empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])){
-				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"] || empty($_SESSION["numbers"])){
+			
+			// Section 3.1.1 - Put all sessions into a more readable variable
+			$group			 = $_SESSION["group"]
+			$operator 		 = $_SESSION["operator"];
+			$oldOperator	 = $_SESSION["oldOperator"];
+			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
+			
+			// Section 3.1.2 - Check for already made assignments
+			if (empty($opdrachtOpslaan[$operator][$index])){
+				
+				// Section 3.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
+				if ($oldOperator != $operator || empty($_SESSION["numbers"])){
 					$_SESSION["numbers"] = range(1,20);
 				}
+				
+				// Section 3.1.2-2 - Call functions
 				$indexChecker = indexChecker($index);	
-				$newOperator = rekundigeOperator($_SESSION["operator"]);
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
+				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
 				$whatToreturn = $_SESSION["opdracht"][0];
+				
 			}
 			else {
-				$whatToreturn = array("true", $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]);
+				// Section 3.1.2-3 - Return array for a popup when the assignment is already made.
+				$whatToreturn = array("true", $opdrachtOpslaan[$operator][$index]);
 			}
 			return $whatToreturn;
 		}
@@ -107,12 +119,18 @@
 	
 	// Section 4 - Index Checker
 	function indexChecker($index){
+		
+		// Section 4.1 - Set session index
 		if (!empty($index)) {
 			$_SESSION["index"] = (int)$index;
 		}
 		else {
+			
+			// Section 4.1.1 - Remove a number and then check whether session numbers is empty
 			unset($_SESSION["numbers"][$_SESSION["index"] - 1]);
 			if (!empty($_SESSION["numbers"])){
+				
+				// Section 4.1.1-1 - Set session index 1 when it hits 20. If it' not 20 it will up the number currently in session index.
 				if ($_SESSION["index"] == 20){
 					$_SESSION["index"] = 1;
 				}
@@ -122,6 +140,7 @@
 						$_SESSION["index"]++;
 					}
 				}
+				
 			}
 			else {
 				return "eNumber"; // Empty Number
@@ -150,4 +169,34 @@
 		}
 	}
 	// Section 6 - END
+	
+	// Section 7 - Result page
+	function resultPage(){
+		$operator 		 = $_SESSION["operator"];
+		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
+			$table = "<table>
+					<tr>
+						<td> $operator </td>
+					</tr>
+					<tr>
+						<td> Opdracht </td>
+						<td style='padding-right:20px;'> Som </td>
+						<td style='padding-right:20px;'> </td>
+						<td> Uitkomst </td>
+						<td> Jouw Antwoord </td>
+						<td> Goed of Fout </td>
+						<td> Jouw tijd per som </td>
+					</tr>";
+		foreach ($opdrachtOpslaan[$operator] as $key => $value) {
+		$table 	.= "<tr>
+						<td> $key</td>";
+		foreach ($value as $key2) {
+			  $table .= "<td> $key2 </td>";
+		}
+		$table  .= "</tr>";
+		}
+		$table .= "</table>";
+		return $table;
+	}
+	// Section 7 - END
 ?>
