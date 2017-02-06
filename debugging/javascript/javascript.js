@@ -236,7 +236,7 @@ function post(val) {
 			functions: "callControlsaveAndassignmentGenerator",
 			antwoord: val
 		}
-		dataType = (tmpMemory == "Toets") ? "text" : "JSON";
+		dataType = "JSON";
 		success = function success(data){
 			$("input[name='input'], input[type='submit']").prop('disabled', true);
 			if (data[0] == "eNumber"){
