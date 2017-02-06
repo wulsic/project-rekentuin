@@ -70,7 +70,7 @@
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
-				$returnArray = ($operator == "Toets" ) ? $newsom[0] : json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0], $_SESSION["opdrachtOpslaan"]));
+				$returnArray = ($operator == "Toets" ) ? $newsom[0] : json_encode(array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]));
 				echo $returnArray;
 				$_SESSION["opdracht"] = $newsom;
 			}
