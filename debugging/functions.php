@@ -82,19 +82,26 @@
 	
 	// Section 3 - Assign index and call the generator for the first assignment
 	function indexCheckerandGenerator($index){
-		if (empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])){
-			if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"] || empty($_SESSION["numbers"])){
-				$_SESSION["numbers"] = range(1,20);
+		// Section 3.1 - Error Response
+		if (isset($_SESSION["operator"])){
+			// Section 3.2 - Call indexChecker and Generator
+			if (empty($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index])){
+				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $_SESSION["operator"] || empty($_SESSION["numbers"])){
+					$_SESSION["numbers"] = range(1,20);
+				}
+				$indexChecker = indexChecker($index);	
+				$newOperator = rekundigeOperator($_SESSION["operator"]);
+				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
+				$whatToreturn = $_SESSION["opdracht"][0];
 			}
-			$indexChecker = indexChecker($index);	
-			$newOperator = rekundigeOperator($_SESSION["operator"]);
-			$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], $newOperator);
-			$whatToreturn = $_SESSION["opdracht"][0];
+			else {
+				$whatToreturn = array(true, $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]);
+			}
+			return $whatToreturn;
 		}
 		else {
-			$whatToreturn = array(true, $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]);
+			return "operator not set";
 		}
-		return $whatToreturn; 
 	}
 	// Section 3 - END
 	

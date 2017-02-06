@@ -17,13 +17,13 @@
 		
 		// Section 2 - Assign Operator
 		elseif ($_POST["functions"] == "callRekundigeoperator"){
+			$_SESSION["operator"] = $_POST["operator"];
 			if ($_POST["operator"] == "Toets"){
 				echo indexCheckerandGenerator(1);
 			}
-			if ( isset($_SESSION["operator"])&& !empty($_SESSION["operator"]) ){
+			elseif (isset($_SESSION["operator"])&& !empty($_SESSION["operator"])){
 				$_SESSION["oldOperator"] = $_SESSION["operator"];
 			}
-			$_SESSION["operator"] = $_POST["operator"];
 		}
 		// Section 2 - END
 		
