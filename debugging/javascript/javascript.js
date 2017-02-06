@@ -104,14 +104,18 @@ function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 		text =  "<p> Je hebt deze toets al gemaakt </p>"+
 				"<p> wil je deze toets opnieuw maken? </p>";
 	}
+	else if (id == "eResults") {
+		text = "<p> Je hebt nog geen resultaten. </p>";
+		id = "alreadyMade";
+	}
 	if (text != ""){
-		ifAlreadymade = (id == "alreadyMade" || id == "testAlreadymade") ?  $("#" + id + "modal").children(".modal-content").prepend(text) : $("#" + id + "modal").children(".modal-content").children("span").after(text);	
+		ifAlreadymade = ($("#operators").css("display") != "none" || $("#opdrachtenSelectie").css("display") != "none") ?  $("#" + id + "modal").children(".modal-content").prepend(text) : $("#" + id + "modal").children(".modal-content").children("span").after(text);	
 	}
 	$("#" + id + "modal").fadeIn("fast");
 	$(".close, #yesOrno").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		$("#" + id + "modal").fadeOut("fast", function(){
-			whenNotremove = (id == "over") ? null : (id == "uitleg") ? null :  $("#" + id + "modal").children(".modal-content").children("p").remove();				
+			whenNotremove = ($("#startpagina").css("display") != "none") ? null : $("#" + id + "modal").children(".modal-content").children("p").remove();				
 		});
 		$('input[name="input"]').focus();
 	});
@@ -145,7 +149,9 @@ function post(val) {
 		on successfull AJAX response:
 		success = (condition) ? (code for YES) : function success(any name for data from PHP){
 			Your executions after a successfull AJAX response, like a page fade in or out.
-		}		
+		}
+		
+		anything with e infront of it is short version for empty. Like: eResults ; emptyResults
 		
 	}*/
 	
@@ -202,43 +208,40 @@ function post(val) {
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
-		console.log (val);
 		if (val == "Resultaten"){
 			dataSend = {
-				functions: "results"
+				functions: "callResultpage"
 			}
 			success = function success(data){
 				if (data == "eResults"){
-					
+					modal("eResults");
+				}
+				else {
+					$("#opdrachten").fadeOut("slow", function(){
+						$("#uitslag").children("table").remove();
+						$("#uitslag").append(data[1]);
+						$("#uitslag").fadeIn("slow");
+					});	
 				}
 			}
 		}
-		dataSend = {
-			functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
-			index: (val == "Toets") ? null : (val == "Ja") ? tmpMemory : val
-		}
-		dataType = "JSON";
-		success = (val == "Opnieuw beginnen") ? null : function success(data){
-
-			if (data == "eResults"){
-				modal();
+		else {
+			dataSend = {
+				functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
+				index: (val == "Toets") ? null : (val == "Ja") ? tmpMemory : val
 			}
-			else if (data[0] == "true") {
-				modal("alreadyMade", data[1][0], data[1][2], data[1][3]);
-			}
-			else if (val == "Resultaten") {
-				$("#opdrachtenSelectie").fadeOut("slow", function(){
-					$("#uitslag").children("table").remove();
-					$("#uitslag").fadeIn("slow");
-					post(null);
-				});	
-			}
-			else {
-				$("#opdrachtenSelectie").fadeOut("slow", function(){
-					$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-					$("input[name='input']").val(null).focus();
-				});
+			dataType = "JSON";
+			success = (val == "Opnieuw beginnen") ? null : function success(data){
+				if (data[0] == "true") {
+					modal("alreadyMade", data[1][0], data[1][2], data[1][3]);
+				}
+				else {
+					$("#opdrachtenSelectie").fadeOut("slow", function(){
+						$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
+						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+						$("input[name='input']").val(null).focus();
+					});
+				}
 			}
 		}
 	}

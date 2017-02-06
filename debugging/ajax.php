@@ -71,5 +71,18 @@
 			}
 		}
 		// Section 5 - END
+		
+		// Section 6 - check whether result page is empty.
+		elseif ($functions == "callResultpage"){
+			$operator = $_SESSION["operator"];
+			if (empty($_SESSION["opdrachtOpslaan"][$operator])){
+				echo "eResults"; // empty results
+			}
+			else {
+				echo resultPage();
+			}
+		}
+		// Section 6 - END
+	
 	}
 ?>
