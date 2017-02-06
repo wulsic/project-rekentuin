@@ -95,7 +95,7 @@
 				$whatToreturn = $_SESSION["opdracht"][0];
 			}
 			else {
-				$whatToreturn = array(true, $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]);
+				$whatToreturn = array("true", $_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$index]);
 			}
 			return $whatToreturn;
 		}
