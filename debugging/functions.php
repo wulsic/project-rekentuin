@@ -86,7 +86,7 @@
 		if (isset($_SESSION["operator"])){
 			
 			// Section 3.1.1 - Put all sessions into a more readable variable
-			$group			 = $_SESSION["group"]
+			$group			 = $_SESSION["group"];
 			$operator 		 = $_SESSION["operator"];
 			$oldOperator	 = $_SESSION["oldOperator"];
 			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
