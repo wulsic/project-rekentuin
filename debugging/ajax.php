@@ -2,21 +2,22 @@
 	session_start();
 	require_once("functions.php");
 	if (isset($_POST["functions"]))  {
+		$functions = $_POST["functions"];
 		// Section 1 - Login
-		if ($_POST["functions"] == "callLoginsystem"){
+		if ($functions == "callLoginsystem"){
 			$username = loginSystem($_POST["username"]);
 			echo $username;
 		}
 		// Section 1 - END
 		
 		// Section 2 - Assign Group
-		elseif ($_POST["functions"] == "group"){
+		elseif ($functions == "group"){
 			$_SESSION["group"] = $_POST["group"];
 		}
 		// Section 1 - END
 		
 		// Section 2 - Assign Operator
-		elseif ($_POST["functions"] == "callRekundigeoperator"){
+		elseif ($functions == "callRekundigeoperator"){
 			$_SESSION["operator"] = $_POST["operator"];
 			if ($_POST["operator"] == "Toets"){
 				echo indexCheckerandGenerator(1);
@@ -28,12 +29,12 @@
 		// Section 2 - END
 		
 		// Section 3 - Assign index and call the generator for the first assignment
-		elseif ($_POST["functions"] == "callindexCheckerandGenerator") {
+		elseif ($functions == "callindexCheckerandGenerator") {
 			echo json_encode(indexCheckerandGenerator($_POST["index"]));
 		}
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
-		elseif ($_POST["functions"] == "delete"){
+		elseif ($functions == "delete"){
 			if ($_POST["index"] != null){
 				unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$_SESSION["index"]]);
 				$_SESSION["index"] = $_POST["index"];
@@ -47,7 +48,8 @@
 		// Section 4 - END
 		
 		// Section 5 - Save all variables for later use
-		elseif ($_POST["functions"] == "callControlsaveAndassignmentGenerator"){
+		elseif ($functions == "callControlsaveAndassignmentGenerator"){
+			
 			// Section 5.1 - Put all sessions / post / time into a more readable variable
 			$timeStop 		= time();
 			$antwoord 		= $_POST["antwoord"];
@@ -59,14 +61,14 @@
 			$timestart 		= $_SESSION["opdracht"][2];
 			$timeDifference = $timeStop - $timestart;
 			
-			// Section 5.2 - Put all those lovely variables into functions.
+			// Section 5.2 - Call functions.
 			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan   = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
 			$indexChecker 	   = indexChecker("");
 			
 			// Section 5.3 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
-				echo true;
+				echo json_encode(array("eNumber", resultPage()));
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
@@ -76,33 +78,5 @@
 			}
 		}
 		// Section 5 - END
-		
-		// Section 6 - Iterate array where all the assignment are saved for a nice results table
-		elseif ($_POST["functions"] == "results") {
-			$operator = $_SESSION["operator"];
-			echo "<table>
-					<tr>
-						<td> $operator </td>
-					</tr>
-					<tr>
-						<td> Opdracht </td>
-						<td style='padding-right:20px;'> Som </td>
-						<td style='padding-right:20px;'> </td>
-						<td> Uitkomst </td>
-						<td> Jouw Antwoord </td>
-						<td> Goed of Fout </td>
-						<td> Jouw tijd per som </td>
-					</tr>";
-			foreach ($_SESSION["opdrachtOpslaan"][$operator] as $key => $value) {
-				echo "<tr>
-						<td> $key</td>";
-				foreach ($value as $key2) {
-					echo"<td> $key2 </td>";
-				}
-				echo "</tr>";
-			}
-			echo "</table>";
-		}
-		// Section 6 - END
 	}
 ?>
