@@ -20,7 +20,7 @@
 		elseif ($functions == "callRekundigeoperator"){
 			$_SESSION["operator"] = $_POST["operator"];
 			if ($_POST["operator"] == "Toets"){
-				echo indexCheckerandGenerator(1);
+				echo json_encode(indexCheckerandGenerator(1));
 			}
 			elseif (isset($_SESSION["operator"])&& !empty($_SESSION["operator"])){
 				$_SESSION["oldOperator"] = $_SESSION["operator"];
@@ -35,15 +35,8 @@
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
 		elseif ($functions == "delete"){
-			if ($_POST["index"] != null){
-				unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]][$_SESSION["index"]]);
-				$_SESSION["index"] = $_POST["index"];
-				$_SESSION["opdracht"] = opdrachtGenerator($_SESSION["group"], rekundigeOperator($_SESSION["operator"]));
-				echo $_SESSION["opdracht"][0];
-			}
-			else {
-				unset($_SESSION["opdrachtOpslaan"][$_SESSION["operator"]]);				
-			}
+			echo json_encode(deleteAssignments($_POST["index"]));
+
 		}
 		// Section 4 - END
 		

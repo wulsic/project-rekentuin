@@ -63,6 +63,13 @@
 					<button>x</button>
 					<button>Toets</button>
 				</div>
+				<!-- Section 4.1 - Test already made response popup -->
+				<div id="testAlreadymademodal" class="modal">
+					<div class="modal-content">
+						<button id="yesOrno">Ja</button>
+						<button id="yesOrno">Nee</button>
+					</div>
+				</div>
 			</div>
 		<!--Section 3 - END-->
 		

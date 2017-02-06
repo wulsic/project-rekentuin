@@ -84,24 +84,28 @@ function usernameVerify(txt) {
 // Section 5 - Popup function modal()
 function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
-	if (som != null){
-		if (id == "response"){
-			if (foutofGoed == "fout"){
-				text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
-			}
-			else {
-				text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
-			}			
+	if (id == "response"){
+		if (foutofGoed == "fout"){
+			text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
 		}
-		else if (id == "alreadyMade"){
-			text =  "<p> Je hebt deze som al gemaakt </p>"+
-					"<p> Het som was: </p>" +
-					"<p>" + som + " = " + uitkomst + "</p>" +
-					"<p> Jouw antwoord was: </p>" +
-					"<p>" + antwoord + "</p>" +
-					"<p> wil je deze som opnieuw maken? </p>";
-		}
-		ifAlreadymade = (id == "alreadyMade") ?  $("#" + id + "modal").children(".modal-content").prepend(text) : $("#" + id + "modal").children(".modal-content").children("span").after(text);
+		else {
+			text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
+		}			
+	}
+	else if (id == "alreadyMade"){
+		text =  "<p> Je hebt deze som al gemaakt </p>"+
+				"<p> Het som was: </p>" +
+				"<p>" + som + " = " + uitkomst + "</p>" +
+				"<p> Jouw antwoord was: </p>" +
+				"<p>" + antwoord + "</p>" +
+				"<p> wil je deze som opnieuw maken? </p>";
+	}
+	else if (id == "testAlreadymade") {
+		text =  "<p> Je hebt deze toets al gemaakt </p>"+
+				"<p> wil je deze toets opnieuw maken? </p>";
+	}
+	if (text != ""){
+		ifAlreadymade = (id == "alreadyMade" || id == "testAlreadymade") ?  $("#" + id + "modal").children(".modal-content").prepend(text) : $("#" + id + "modal").children(".modal-content").children("span").after(text);	
 	}
 	$("#" + id + "modal").fadeIn("fast");
 	$(".close, #yesOrno").click(function() {
@@ -179,16 +183,22 @@ function post(val) {
 			var val = val.replace("x", "*");
 		}
 		dataSend = {
-			functions: "callRekundigeoperator", 
-			operator: val
+			functions: (val == "Ja") ? "delete" : "callRekundigeoperator",
+			operator: (val == "Ja") ? null : val
 		}
-		dataType = "text";
+		dataType = ifToets = (val == "Toets") ? "JSON" : "text";
 		success = function success(data){
+			if (data[0] == "true") {
+				modal("testAlreadymade");
+			}
+			else {
 				$("#operators").fadeOut("slow", function(){
-					ifToets = (val == "Toets") ? $("#opdrachten").children("form").children("h1").text(data) : null;
-					ifToets2 = (val == "Toets") ? $("#opdrachten").fadeIn("slow").css("display", "inline-flex") : $("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
-					ifToets3 = (val == "Toets") ? $("input[name='input']").val(null).focus() : null;
-				});
+					ifToets  = (val == "Ja") ? tmpMemory = "Toets" : null;
+					ifToets2 = (val == "Toets" || val == "Ja") ? $("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, "")) : null;
+					ifToets3 = (val == "Toets" || val == "Ja") ? $("#opdrachten").fadeIn("slow").css("display", "inline-flex") : $("#opdrachtenSelectie").fadeIn("slow").css("display", "inline-flex");
+					ifToets4 = (val == "Toets" || val == "Ja") ? $("input[name='input']").val(null).focus() : null;
+				});				
+			}
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
@@ -205,10 +215,11 @@ function post(val) {
 		}
 		dataSend = {
 			functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
-			index: (val == "Ja") ? tmpMemory : (val == "Opnieuw beginnen") ? null : val
+			index: (val == "Toets") ? null : (val == "Ja") ? tmpMemory : val
 		}
-		dataType = (val == "Ja") ? "text" : "JSON";
+		dataType = "JSON";
 		success = (val == "Opnieuw beginnen") ? null : function success(data){
+
 			if (data == "eResults"){
 				modal();
 			}
