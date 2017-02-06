@@ -167,6 +167,7 @@ table {
 
 .modal-small {
 	width: 35% !important;
+	text-align:center;
 }
 
 .modal-content {
