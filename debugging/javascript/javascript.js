@@ -107,7 +107,7 @@ function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 	$(".close, #yesOrno").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		$("#" + id + "modal").fadeOut("fast", function(){
-			$("#" + id + "modal").children(".modal-content").children("p").remove();
+			whenNotremove = (id == "over") ? null : (id == "uitleg") ? null :  $("#" + id + "modal").children(".modal-content").children("p").remove();				
 		});
 		$('input[name="input"]').focus();
 	});
