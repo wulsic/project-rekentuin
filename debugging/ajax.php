@@ -91,7 +91,7 @@
 						<td> Uitkomst </td>
 						<td> Jouw Antwoord </td>
 						<td> Goed of Fout </td>
-						<td> Jouw tijd per som </td> 
+						<td> Jouw tijd per som </td>
 					</tr>";
 			foreach ($_SESSION["opdrachtOpslaan"][$operator] as $key => $value) {
 				echo "<tr>

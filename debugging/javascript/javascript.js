@@ -131,6 +131,18 @@ function post(val) {
 		success = function success(any name for data from PHP){
 			Your executions after a successfull AJAX response, like a page fade in or out.
 		}
+		
+		With ternary operator it looks like:
+		dataSend {
+			postName : (condition) ? (postValue for YES) : (postValue for NO)
+		}
+		dataType: (condition) ? (html, text or JSON for YES) : (html, text or JSON for NO).
+		
+		on successfull AJAX response:
+		success = (condition) ? (code for YES) : function success(any name for data from PHP){
+			Your executions after a successfull AJAX response, like a page fade in or out.
+		}		
+		
 	}*/
 	
 	if ($("#startpagina").css("display") != "none"){
