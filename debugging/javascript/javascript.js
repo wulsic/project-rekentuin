@@ -192,31 +192,43 @@ function post(val) {
 		}
 	}
 	if ($("#opdrachtenSelectie").css("display") != "none"){
-		if (val == "Resultaten") {
-			$("#opdrachtenSelectie").fadeOut("slow", function(){
-				$("#uitslag").children("table").remove();
-				$("#uitslag").fadeIn("slow");
-				post(null);
-			});	
-		}
-		else{
+		console.log (val);
+		if (val == "Resultaten"){
 			dataSend = {
-				functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
-				index: (val == "Ja") ? tmpMemory : (val == "Opnieuw beginnen") ? null : val
+				functions: "results"
 			}
-			dataType = (val == "Ja") ? "text" : "JSON";
-			success = (val == "Opnieuw beginnen") ? null : function success(data){
-				if (data[0] == "true"){
-					modal("alreadyMade", data[1][0], data[1][1], data[1][2]);
+			success = function success(data){
+				if (data == "eResults"){
+					
 				}
-				else {
-					$("#opdrachtenSelectie").fadeOut("slow", function(){
-						$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-						$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-						$("input[name='input']").val(null).focus();
-					});
-				}
-			}	
+			}
+		}
+		dataSend = {
+			functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
+			index: (val == "Ja") ? tmpMemory : (val == "Opnieuw beginnen") ? null : val
+		}
+		dataType = (val == "Ja") ? "text" : "JSON";
+		success = (val == "Opnieuw beginnen") ? null : function success(data){
+			if (data == "eResults"){
+				modal();
+			}
+			else if (data[0] == "true") {
+				modal("alreadyMade", data[1][0], data[1][2], data[1][3]);
+			}
+			else if (val == "Resultaten") {
+				$("#opdrachtenSelectie").fadeOut("slow", function(){
+					$("#uitslag").children("table").remove();
+					$("#uitslag").fadeIn("slow");
+					post(null);
+				});	
+			}
+			else {
+				$("#opdrachtenSelectie").fadeOut("slow", function(){
+					$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
+					$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+					$("input[name='input']").val(null).focus();
+				});
+			}
 		}
 	}
 	if ($("#opdrachten").css("display") != "none"){
@@ -227,11 +239,11 @@ function post(val) {
 		dataType = (tmpMemory == "Toets") ? "text" : "JSON";
 		success = function success(data){
 			$("input[name='input'], input[type='submit']").prop('disabled', true);
-			if (data == true){
+			if (data[0] == "eNumber"){
 				$("#opdrachten").fadeOut("slow", function(){
 					$("#uitslag").children("table").remove();
+					$("#uitslag").append(data[1]);
 					$("#uitslag").fadeIn("slow");
-					post(null);
 				});
 			}
 			else {
