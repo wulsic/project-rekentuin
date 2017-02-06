@@ -7,6 +7,29 @@
 		return $username;
 	}
 	// Section 1 -  END
+	
+	function deleteAssignments($variable){
+		$index 	  = $_SESSION["index"];
+		$group	  = $_SESSION["group"];
+		$operator = $_SESSION["operator"];
+		
+			if ($variable != "Opnieuw beginnen"){
+				if ($operator != "Toets"){
+					unset($_SESSION["opdrachtOpslaan"][$operator][$index]);
+					$_SESSION["index"] = $_POST["index"];
+				}
+				else {
+					unset($_SESSION["opdrachtOpslaan"][$operator]);
+				}
+				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
+				$whatToreturn = $_SESSION["opdracht"][0];
+			}
+			else {
+				unset($_SESSION["opdrachtOpslaan"][$operator]);
+			}
+			$_SESSION["numbers"] = range(1,20);
+		return $whatToreturn;
+	}
 
 	// Section 2 - Assignment generator
 	function rekundigeOperator($userSelection){
