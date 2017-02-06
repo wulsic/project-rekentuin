@@ -34,7 +34,6 @@ $(document).ready(function(){
 			null
 		}
 		else {
-			console.log($(this).text());
 			post($(this).text());
 			tmpMemory = $(this).text();
 		}
@@ -195,7 +194,6 @@ function post(val) {
 			}
 			dataType = (val == "Ja") ? "text" : "JSON";
 			success = (val == "Opnieuw beginnen") ? null : function success(data){
-				console.log (data);
 				if (data[0] == true){
 					modal("alreadyMade", data[1][0], data[1][1], data[1][2]);
 				}
@@ -216,7 +214,6 @@ function post(val) {
 		}
 		dataType = (tmpMemory == "Toets") ? "text" : "JSON";
 		success = function success(data){
-			console.log (data);
 			$("input[name='input'], input[type='submit']").prop('disabled', true);
 			if (data == true){
 				$("#opdrachten").fadeOut("slow", function(){
