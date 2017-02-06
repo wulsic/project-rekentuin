@@ -206,7 +206,7 @@ function post(val) {
 			}
 			dataType = (val == "Ja") ? "text" : "JSON";
 			success = (val == "Opnieuw beginnen") ? null : function success(data){
-				if (data[0] == true){
+				if (data[0] == "true"){
 					modal("alreadyMade", data[1][0], data[1][1], data[1][2]);
 				}
 				else {
