@@ -170,6 +170,13 @@ table {
 	text-align:center;
 }
 
+.modal-medium {
+	width: 500px !important;
+    text-align: center;
+    border: 1px;
+    border-radius: 22px;
+}
+
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
@@ -178,6 +185,18 @@ table {
     width: 80%;
 	color: black;
 }
+
+#yesOrno {
+	width: 200px !important;
+	height: 175px !important;
+	border-radius: 35px !important;
+}
+
+#resultatenKnop {
+	width: 450px !important;
+    font-size: 4em;
+}
+
 .close {
     color: #aaa;
     float: right;
