@@ -85,18 +85,20 @@ function usernameVerify(txt) {
 function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
 	var modal = ("#" + id + "modal")
+	var somEnuitkomst = som + " = " + uitkomst
+	
 	if (id == "response"){
 		if (foutofGoed == "fout"){
-			text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
+			text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + somEnuitkomst + "</p>";
 		}
 		else {
-			text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;							
+			text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + somEnuitkomst + "</p>" ;							
 		}			
 	}
 	else if (id == "alreadyMade"){
 		text =  "<p> Je hebt deze som al gemaakt </p>"+
 				"<p> Het som was: </p>" +
-				"<p>" + som + " = " + uitkomst + "</p>" +
+				"<p>" + somenUitkomst + "</p>" +
 				"<p> Jouw antwoord was: </p>" +
 				"<p>" + antwoord + "</p>" +
 				"<p> wil je deze som opnieuw maken? </p>";
