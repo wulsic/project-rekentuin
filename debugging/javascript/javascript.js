@@ -84,6 +84,7 @@ function usernameVerify(txt) {
 // Section 5 - Popup function modal()
 function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
+	var modal = ("#" + id + "modal")
 	if (id == "response"){
 		if (foutofGoed == "fout"){
 			text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
@@ -109,13 +110,13 @@ function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 		id = "alreadyMade";
 	}
 	if (text != ""){
-		ifAlreadymade = ($("#operators").css("display") != "none" || $("#opdrachtenSelectie").css("display") != "none") ?  $("#" + id + "modal").children(".modal-content").prepend(text) : $("#" + id + "modal").children(".modal-content").children("span").after(text);	
+		ifAlreadymade = ($("#operators").css("display") != "none" || $("#opdrachtenSelectie").css("display") != "none") ?  $(modal).children(".modal-content").prepend(text) : $(modal).children(".modal-content").children("span").after(text);	
 	}
-	$("#" + id + "modal").fadeIn("fast");
+	$(modal).fadeIn("fast");
 	$(".close, #yesOrno").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
-		$("#" + id + "modal").fadeOut("fast", function(){
-			whenNotremove = ($("#startpagina").css("display") != "none") ? null : $("#" + id + "modal").children(".modal-content").children("p").remove();				
+		$(modal).fadeOut("fast", function(){
+			whenNotremove = ($("#startpagina").css("display") != "none") ? null : $(modal).children(".modal-content").children("p").remove();				
 		});
 		$('input[name="input"]').focus();
 	});
