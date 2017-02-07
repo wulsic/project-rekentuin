@@ -17,9 +17,7 @@ $(document).ready(function(){
 		if ($(this).attr("class") == "backwards"){
 			if (tmpMemory == "Toets"){
 				$("#uitslag").fadeOut("slow", function(){
-					$("#opdrachten").fadeOut("slow", function(){
-						$("#operators").fadeIn("slow");
-					});				
+					fadeAnimation("#opdrachten", "#operators");				
 				});
 			}
 			else {
@@ -91,15 +89,15 @@ function usernameVerify(txt) {
 // Section 5 - Popup function modal()
 function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
-	var modal = ("#" + id + "modal")
-	var somEnuitkomst = som + " = " + uitkomst
+	var modal = ("#" + id + "modal");
+	var somEnuitkomst = som + " = " + uitkomst;
 	
 	if (id == "response"){
 		if (foutofGoed == "fout"){
 			text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + somEnuitkomst + "</p>";
 		}
 		else {
-			text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + somEnuitkomst + "</p>" ;							
+			text = "<p>Ja, " + naam + " jouw antwoord is goed! " + somEnuitkomst + "</p>" ;							
 		}			
 	}
 	else if (id == "alreadyMade"){
