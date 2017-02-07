@@ -43,10 +43,13 @@ $(document).ready(function(){
 
 // Section 3 - Function previous. Fade out from current page to fade in the previous page from the hierarchy. Refer to html page for the hierarchy.
 
+//Function - pageVisibility checks whether the 1 given argument page is visible or not
 function pageVisibility(id1){
 	var text = $(id1).css("display") != "none";
 	return text;
-	}
+}
+
+//Function - fadeAnimation manages the transition between the 2 given arguments
 function fadeAnimation(id1, id2){
 	$(id1).fadeOut("slow", function(){
 		$(id2).fadeIn("slow");
