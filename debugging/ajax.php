@@ -18,12 +18,16 @@
 		
 		// Section 2 - Assign Operator
 		elseif ($functions == "callRekundigeoperator"){
+			$_SESSION["oldOperator"] = (isset($_SESSION["operator"])) ? $_SESSION["operator"] : $_POST["operator"];
+			$operator 	 = $_POST["operator"];
+			$oldOperator = $_SESSION["oldOperator"];
 			$_SESSION["operator"] = $_POST["operator"];
-			if ($_POST["operator"] == "Toets"){
+			if ($operator == "Toets"){
 				echo json_encode(indexCheckerandGenerator(1));
 			}
-			elseif (isset($_SESSION["operator"])&& !empty($_SESSION["operator"])){
-				$_SESSION["oldOperator"] = $_SESSION["operator"];
+			elseif ($operator == "Resultaten"){
+				$_SESSION["operator"] = "Toets";
+				echo resultPage();
 			}
 		}
 		// Section 2 - END
@@ -35,8 +39,8 @@
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
 		elseif ($functions == "delete"){
-			echo json_encode(deleteAssignments($_POST["index"]));
-
+			$whatToreturn = (isset($_POST["index"])) ? json_encode(deleteAssignments($_POST["index"])) : json_encode(deleteAssignments(null));
+			echo $whatToreturn;
 		}
 		// Section 4 - END
 		
