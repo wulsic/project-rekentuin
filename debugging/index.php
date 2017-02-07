@@ -65,10 +65,10 @@
 				</div>
 				<!-- Section 4.1 - Test already made response popup -->
 				<div id="testAlreadymademodal" class="modal">
-					<div class="modal-content">
+					<div class="modal-content modal-medium">
 						<button id="yesOrno">Ja</button>
 						<button id="yesOrno">Nee</button>
-						<button id="testResults">Resultaten</button>
+						<button id="resultatenKnop">Resultaten</button>
 					</div>
 				</div>
 			</div>
@@ -103,7 +103,7 @@
 			</div>
 			<!-- Section 4.1 - Assignment already made response popup -->
 			<div id="alreadyMademodal" class="modal">
-				<div class="modal-content">
+				<div class="modal-content modal-medium">
 					<span class="close">&times;</span>
 					<button id="yesOrno">Ja</button>
 					<button id="yesOrno">Nee</button>

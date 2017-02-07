@@ -17,9 +17,7 @@ $(document).ready(function(){
 		if ($(this).attr("class") == "backwards"){
 			if (tmpMemory == "Toets"){
 				$("#uitslag").fadeOut("slow", function(){
-					$("#opdrachten").fadeOut("slow", function(){
-						$("#operators").fadeIn("slow");
-					});				
+					fadeAnimation("#opdrachten", "#operators");				
 				});
 			}
 			else {
@@ -42,26 +40,33 @@ $(document).ready(function(){
 // Section 2 - END
 
 // Section 3 - Function previous. Fade out from current page to fade in the previous page from the hierarchy. Refer to html page for the hierarchy.
+
+//Function - pageVisibility checks whether the 1 given argument page is visible or not
+function pageVisibility(id1){
+	var text = $(id1).css("display") != "none";
+	return text;
+}
+
+//Function - fadeAnimation manages the transition between the 2 given arguments
+function fadeAnimation(id1, id2){
+	$(id1).fadeOut("slow", function(){
+		$(id2).fadeIn("slow");
+	});
+}
+
 function previous(){
-	if ($("#operators").css("display") != "none"){
-		$("#operators").fadeOut("slow", function(){
-			$("#groepen").fadeIn("slow");
-		});
+	if (pageVisibility("#operators")){
+		fadeAnimation("#operators", "#groepen");
 	}
-	else if ($("#opdrachtenSelectie").css("display") != "none"){
-		$("#opdrachtenSelectie").fadeOut("slow", function(){
-			$("#operators").fadeIn("slow");
-		});
+	else if (pageVisibility("#opdrachtenSelectie")){
+		fadeAnimation("#opdrachtenSelectie", "#operators");
 	}
-	else if ($("#opdrachten").css("display") != "none"){
-		$("#opdrachten").fadeOut("slow", function(){
-			$("#opdrachtenSelectie").fadeIn("slow");
-		});
+	
+	else if (pageVisibility("#opdrachten")){
+		fadeAnimation("#opdrachten", "#opdrachtenSelectie");
 	}
-	else if ($("#uitslag").css("display") != "none"){
-		$("#uitslag").fadeOut("slow", function(){
-			$("#opdrachtenSelectie").fadeIn("slow");
-		});
+	else if (pageVisibility("#uitslag")){
+		fadeAnimation("#uitslag", "#opdrachtenSelectie")
 	}
 }
 // Section 3 - END
@@ -114,17 +119,16 @@ function modal(id, som, uitkomst, antwoord, foutofGoed, naam){
 		else if (id == "eResults") {
 			text = "<p> Je hebt nog geen resultaten. </p>";
 		}
-		ifTestalreadyMade = ($("#opdrachtenSelectie").css("display") != "none") ?   $(modal).children(".modal-content").children("span").after(text) : $(modal).children(".modal-content").prepend(text); 	
+		ifTestalreadyMade = ($("#opdrachtenSelectie").css("display") != "none") ?  $(modal).children(".modal-content").children("span").after(text) : $(modal).children(".modal-content").prepend(text); 	
 	}
-		
 	
 	$(modal).fadeIn("fast");
 	$(".close, #yesOrno, #testResults").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		$(modal).fadeOut("fast", function(){
 			whenNotremove = ($("#startpagina").css("display") != "none") ? null : $(modal).children(".modal-content").children("p").remove();				
+			var somEnuitkomst = som + " = " + uitkomst;
 		});
-		$('input[name="input"]').focus();
 	});
 }
 // Section 5 - END
@@ -162,7 +166,7 @@ function post(val) {
 		
 	}*/
 	
-	if ($("#startpagina").css("display") != "none"){
+	if (pageVisibility("#startpagina")){
 		$("input[name='input'], input[type='submit']").prop('disabled', true);
 		dataSend = {
 			functions: "callLoginsystem",
@@ -176,18 +180,16 @@ function post(val) {
 			});
 		}
 	}
-	if ($("#groepen").css("display") != "none"){
+	if (pageVisibility("#groepen")){
 		dataSend = {
 			functions: "group", 
 			group: val.replace(/[^0-9]/g, "")
 		}
 		success = function success(){
-			$("#groepen").fadeOut("slow", function(){
-				$("#operators").fadeIn("slow").css("display", "inline-flex");
-			});
+			fadeAnimation("#groepen", "#operators");
 		}
 	}
-	if ($("#operators").css("display") != "none"){
+	if (pageVisibility("#operators")){
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		if (val == ":"){
 			var val = val.replace(":", "/");
@@ -227,7 +229,7 @@ function post(val) {
 			}
 		}
 	}
-	if ($("#opdrachtenSelectie").css("display") != "none"){
+	if (pageVisibility("#opdrachtenSelectie")){
 		if (val == "Resultaten"){
 			dataSend = {
 				functions: "callResultpage"
@@ -265,7 +267,7 @@ function post(val) {
 			}
 		}
 	}
-	if ($("#opdrachten").css("display") != "none"){
+	if (pageVisibility("#opdrachten")){
 		dataSend = {
 			functions: "callControlsaveAndassignmentGenerator",
 			antwoord: val
