@@ -5,7 +5,7 @@
 
 @media only screen and (min-width:368px){
 	h1 {
-		font-size:4em;margin:0px;
+		font-size:3em;margin:0px;
 	}
 	label {
 		padding:7px;
@@ -30,7 +30,7 @@
 	#groepen button, #operators button {
 		margin:6px;
 		font-size:2em;
-		width:500px;
+		width:400px;
 		height:125px;
 	}
 	#startpagina button {
@@ -46,6 +46,9 @@
 		width:75px;
 		height:75px;
 		border-radius:20px;
+	}
+	.modal-small {
+		width: 87% !important;
 	}
 
 }
@@ -78,6 +81,9 @@
 		font-size:3em;
 		width:125px;
 		height:125px;
+	}
+	.modal-small {
+		width: 87% !important;
 	}
 }
 
@@ -166,7 +172,6 @@ table {
 }
 
 .modal-small {
-	width: 35% !important;
 	text-align:center;
 }
 

@@ -2,6 +2,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<link href="css/style.php" rel="stylesheet" type="text/css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title> Debugging Page - Opdrachten </title>
 		<!-- jquery version 3.1.1-->
 		<script src="javascript/jquery.min.js"></script>
