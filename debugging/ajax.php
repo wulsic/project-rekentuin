@@ -65,11 +65,11 @@
 			
 			// Section 5.3 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
-				echo json_encode(array("eNumber", resultPage()));
+				echo ($operator == "Toets") ? json_encode(array("table", resultPage())) : json_encode(array("popup", resultPage()));
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
-				$returnArray = ($operator == "Toets" ) ? $newsom[0] : array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]);
+				$returnArray = ($operator == "Toets") ? $newsom[0] : array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]);
 				echo json_encode($returnArray);
 				$_SESSION["opdracht"] = $newsom;
 			}
@@ -80,13 +80,12 @@
 		elseif ($functions == "callResultpage"){
 			$operator = $_SESSION["operator"];
 			if (empty($_SESSION["opdrachtOpslaan"][$operator])){
-				echo "eResults"; // empty results
+				echo json_encode("popup"); // empty results, echo popup;
 			}
 			else {
-				echo resultPage();
+				echo json_encode(array("table", resultPage()));
 			}
 		}
 		// Section 6 - END
-	
 	}
 ?>

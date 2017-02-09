@@ -115,7 +115,7 @@
 			$operator 		 = $_SESSION["operator"];
 			
 			// Section 4.1.2 - Check for already made assignments
-			if (empty($_SESSION["opdrachtOpslaan"][$operator][$index])){
+			if (empty($_SESSION["opdrachtOpslaan"][$operator][$index]) || $operator == "Toets"){
 			
 				// Section 4.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
 				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $operator || empty($_SESSION["numbers"])){
@@ -130,7 +130,7 @@
 			}
 			else {
 				// Section 4.1.2-3 - Return array for a popup when the assignment is already made.
-				$whatToreturn = ($operator == "Toets") ? "true" : array("true", $_SESSION["opdrachtOpslaan"][$operator][$index]);
+				$whatToreturn = array("popup", $_SESSION["opdrachtOpslaan"][$operator][$index][0], $_SESSION["opdrachtOpslaan"][$operator][$index][2], $_SESSION["opdrachtOpslaan"][$operator][$index][3]);
 			}
 			return $whatToreturn;
 		}

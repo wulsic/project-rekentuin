@@ -103,7 +103,7 @@
 				 ?>
 			</div>
 			<!-- Section 4.1 - Assignment already made response popup -->
-			<div id="alreadyMademodal" class="modal">
+			<div id="opdrachtenSelectiemodal" class="modal">
 				<div class="modal-content modal-medium">
 					<span class="close">&times;</span>
 					<button id="yesOrno">Ja</button>
@@ -129,7 +129,7 @@
 			</form>
 			
 			<!-- Section 5.1 - Answer response popup -->
-			<div id="responsemodal" class="modal">
+			<div id="opdrachtenmodal" class="modal">
 				<div class="modal-content modal-small">
 					<span class="close">&times;</span>
 				</div>
