@@ -22,21 +22,25 @@ $(document).ready(function(){
 	$("button").click(function(){
 		if ($(this).attr("class") == "backwards"){
 			if ($(this).parent().attr("id") == null){
-				fadeAnimation($(this).parent().parent().attr("id"), $(this).text());	
+				id = $(this).parent().parent().attr("id");
 			}
 			else {
-				fadeAnimation($(this).parent().attr("id"), $(this).text());	
+				id = $(this).parent().attr("id");	
 			}
+			$("#" + id).fadeOut("slow", function(){
+					id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
+				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
+			});
 		}
 		else if ($(this).text() != "Nee" ) {
 			if ($(this).parent().parent().attr("id") == null || $(this).parent().parent().attr("class") == "modal"){
-				parentID = $(this).parent().parent().parent().attr("id");
+				parentId = $(this).parent().parent().parent().attr("id");
 			}
 			else {
-				parentID = $(this).parent().parent().attr("id");			
+				parentId = $(this).parent().parent().attr("id");			
 			}
 			ifJa = ($(this).text() == "Ja") ? null : tmpMemory = $(this).text();
-			post($(this).text(), parentID);
+			post($(this).text(), parentId);
 		}
 	});
 });
@@ -47,6 +51,7 @@ function pageVisibility(id1){
 	var text = $(id1).css("display") != "none";
 	return text;
 }
+// Section 3 - END
 
 // Section 4 - fadeAnimation manages the transition between the 2 given arguments
 
@@ -142,7 +147,7 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	ifEresults = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("span").css("display", "block") : modal.children(".modal-content").children("span").css("display", "none");
 	ifEresults2 = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	text = popup[id].function(id, val, som, uitkomst, antwoord, foutofGoed, naam);
-	ifTestalreadyMade = ($("#opdrachtenSelectie").css("display") != "none" || $("#opdrachten").css("display") != "none") ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);	
+	ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);	
 	modal.fadeIn("fast");
 	$(".close, #yesOrno, #testResults").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
@@ -258,32 +263,24 @@ var myFunctions = {
 };
 
 function fadeAnimation(id1, val, data){
-	if (val == "Ga terug") {
-		$("#" + id1).fadeOut("slow", function(){
-				id1 = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id1 == "uitslag") ? "opdrachten" : id1;
-			$($("#" + id1).prev()).fadeIn("slow").css("display", "inline-flex");
-		});
+	if (id1 == "opdrachten") {
+		myFunctions[id1].success(data);
 	}
 	else {
-		if (id1 == "opdrachten") {
-			myFunctions[id1].success(data);
+		$("#" + id1).fadeOut("slow", function(){
+		if (val == "Toets" || val == "Ja" && id1 != "opdrachtenSelectie"){
+			$("#timer").css("display", "inline-block");
+			if (val == "Ja") {
+				tmpMemory = "Toets";
+			}
+			$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
+			$("#opdrachten").fadeIn("slow",  function(){timeLimit();}).css("display", "inline-flex");
+			$("input[name='input']").val(null).focus();
 		}
 		else {
-			$("#" + id1).fadeOut("slow", function(){
-			if (val == "Toets" || val == "Ja" && id1 != "opdrachtenSelectie"){
-				$("#timer").css("display", "inline-block");
-				if (val == "Ja") {
-					tmpMemory = "Toets";
-				}
-				$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-				$("#opdrachten").fadeIn("slow",  function(){timeLimit();}).css("display", "inline-flex");
-				$("input[name='input']").val(null).focus();
-			}
-			else {
-				ifFunction = (typeof(myFunctions[id1].success) == "function") ? myFunctions[id1].success(data) : null;
-				$($("#" + id1).next()).fadeIn("slow").css("display", "inline-flex");	
-			}
-			});
+			ifFunction = (typeof(myFunctions[id1].success) == "function") ? myFunctions[id1].success(data) : null;
+			$($("#" + id1).next()).fadeIn("slow").css("display", "inline-flex");	
 		}
+		});
 	}
 }
