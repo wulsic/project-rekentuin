@@ -65,7 +65,7 @@
 			
 			// Section 5.3 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
-				echo ($operator == "Toets") ? json_encode(array("table", resultPage())) : json_encode(array("popup", resultPage()));
+				echo json_encode(array("table", resultPage()));
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
