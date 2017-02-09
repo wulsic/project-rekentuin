@@ -20,25 +20,20 @@ $(document).ready(function(){
 	});
 	// Section 2.3 - On button click
 	$("button").click(function(){
-		console.log($(this))
 		if ($(this).attr("class") == "backwards"){
 			if ($(this).parent().attr("id") == null){
-				console.log($(this).parent().parent().attr("id"));
 				fadeAnimation($(this).parent().parent().attr("id"), $(this).text());	
 			}
 			else {
-				console.log($(this).parent().attr("id"));
 				fadeAnimation($(this).parent().attr("id"), $(this).text());	
 			}
 		}
 		else if ($(this).text() != "Nee" ) {
 			if ($(this).parent().parent().attr("id") == null || $(this).parent().parent().attr("class") == "modal"){
 				parentID = $(this).parent().parent().parent().attr("id");
-				console.log($(this).parent().parent().parent().prev());
 			}
 			else {
-				parentID = $(this).parent().parent().attr("id");
-				console.log($(this).parent().parent().attr("id"));				
+				parentID = $(this).parent().parent().attr("id");			
 			}
 			ifJa = ($(this).text() == "Ja") ? null : tmpMemory = $(this).text();
 			post($(this).text(), parentID);
@@ -56,8 +51,6 @@ function pageVisibility(id1){
 // Section 4 - fadeAnimation manages the transition between the 2 given arguments
 
 function createTable(id1, table){
-	console.log(id1);
-	console.log(table);
 	$("#" + id1).fadeOut("slow", function(){
 		$("#uitslag").children("p").remove();
 		$("#uitslag").children("table").remove();
@@ -116,7 +109,6 @@ var popup = {
 	},
 	"opdrachtenSelectie": {
 		function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
-			console.log(val);
 			if (val != "Resultaten"){
 			text =  "<p> Je hebt deze som al gemaakt </p>"+
 					"<p> Het som was: </p>" +
@@ -134,7 +126,6 @@ var popup = {
 	"opdrachten": {
 		function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 			var somEnuitkomst = som + " = " + uitkomst;
-			console.log(naam);
 			if (foutofGoed == "fout"){
 				text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
 			}
@@ -146,16 +137,12 @@ var popup = {
 	},	
 }
 function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
-	console.log(val);
 	var text = "";
 	var modal = $("#" + id + "modal");
 	ifEresults = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("span").css("display", "block") : modal.children(".modal-content").children("span").css("display", "none");
 	ifEresults2 = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	text = popup[id].function(id, val, som, uitkomst, antwoord, foutofGoed, naam);
-	console.log(modal);
-	console.log(text);
-	console.log(id);
-	ifTestalreadyMade = ($("#opdrachtenSelectie").css("display") != "none") ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);	
+	ifTestalreadyMade = ($("#opdrachtenSelectie").css("display") != "none" || $("#opdrachten").css("display") != "none") ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);	
 	modal.fadeIn("fast");
 	$(".close, #yesOrno, #testResults").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
@@ -169,29 +156,24 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 // Section 6 - END
 
 // Section 7 - Submit form replacement. POST using AJAX.
-function post(val, functions) {
-	console.log(val);
+function post(val, id) {
 	$.ajax({
 	   type: "POST",
 	   url: "ajax.php", // The url where the post is going to be send and the response orginate.
-	   data: myFunctions[functions].dataSend(val, functions),
-	   dataType: (functions == "opdrachtenSelectie" || functions == "opdrachten") ? "JSON" : "text",
+	   data: myFunctions[id].dataSend(val, id),
+	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten") ? "JSON" : "text",
 	   success: function(data){
-			console.log(data);
 		   if (data[0] == "popup"){
-			   console.log("data[0]");
-			   modal(functions, val, data[1], data[2], data[3]);
+			   modal(id, val, data[1], data[2], data[3]);
 		   }
 		   else if (data == "popup"){
-			   console.log("data");
-			   modal(functions, val);
+			   modal(id, val);
 		   }
 		   else if (data[0] == "table"){
-			   console.log(data);
-			   createTable(functions, data[1]);
+			   createTable(id, data[1]);
 		   }
 		   else {
-			   fadeAnimation(functions, val, data);		   
+			   fadeAnimation(id, val, data);		   
 		   }
 	   }
 	});
@@ -239,8 +221,6 @@ var myFunctions = {
 	"opdrachtenSelectie": {
 		dataSend:
 		function(val){
-			console.log(val);
-			console.log(tmpMemory);
 			dataSend = {
 				functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : (val == "Resultaten") ? "callResultpage" : "callindexCheckerandGenerator",
 				index: (val == "Ja") ? tmpMemory : (val == "Resultaten") ? null : val
@@ -265,7 +245,6 @@ var myFunctions = {
 		},
 		success:
 		function(data){
-			console.log(data);
 			$("input[name='input'], input[type='submit']").prop('disabled', true);
 			ifToets = (tmpMemory == "Toets") ? null : modal("opdrachten", null, data[0], data[1], data[2], data[3], data[4]) ;
 			$('input[name="input"]').val(null).focus();
@@ -279,8 +258,6 @@ var myFunctions = {
 };
 
 function fadeAnimation(id1, val, data){
-	console.log(id1);
-	console.log(val);
 	if (val == "Ga terug") {
 		$("#" + id1).fadeOut("slow", function(){
 				id1 = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id1 == "uitslag") ? "opdrachten" : id1;

@@ -16,7 +16,7 @@
 		
 			if ($variable != "Opnieuw beginnen"){
 				if ($operator != "Toets"){
-					unset($_SESSION["opdrachtOpslaan"][$operator][$index]);
+					unset($_SESSION["opdrachtOpslaan"][$operator][$_POST["index"]]);
 					$_SESSION["index"] = $_POST["index"];
 				}
 				else {
