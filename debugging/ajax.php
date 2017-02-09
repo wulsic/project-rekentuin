@@ -25,7 +25,7 @@
 			if ($operator == "Toets"){
 				echo json_encode(indexCheckerandGenerator(1));
 			}
-			elseif ($operator == "Resultaten"){
+			elseif ($operator == "Resultaten" || $operator == "Toets"){
 				$_SESSION["operator"] = "Toets";
 				echo resultPage();
 			}
@@ -58,13 +58,15 @@
 			$timestart 		= $_SESSION["opdracht"][2];
 			$timeDifference = $timeStop - $timestart;
 			
-			// Section 5.2 - Call functions.
-			$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
-			$opdrachtOpslaan   = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
-			$indexChecker 	   = indexChecker("");
+			if ($antwoord != "Toets") {
+				// Section 5.2 - Call functions.
+				$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
+				$opdrachtOpslaan   = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
+				$indexChecker 	   = indexChecker("");			
+			}
 			
 			// Section 5.3 - Check whether indexChecker returns "eNumber".
-			if ($indexChecker == "eNumber"){
+			if ($indexChecker == "eNumber" || $antwoord == "Toets"){
 				echo json_encode(array("table", resultPage()));
 			}
 			else {

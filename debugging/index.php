@@ -65,7 +65,7 @@
 					<button>Toets</button>
 				</div>
 				<!-- Section 4.1 - Test already made response popup -->
-				<div id="testAlreadymademodal" class="modal">
+				<div id="operatorsmodal" class="modal">
 					<div class="modal-content modal-medium">
 						<button id="yesOrno">Ja</button>
 						<button id="yesOrno">Nee</button>
@@ -108,12 +108,6 @@
 					<span class="close">&times;</span>
 					<button id="yesOrno">Ja</button>
 					<button id="yesOrno">Nee</button>
-				</div>
-			</div>
-			<!-- Section 4.2 - Empty result page response popup -->
-			<div id="eResultsmodal" class="modal">
-				<div class="modal-content">
-					<span class="close">&times;</span>
 				</div>
 			</div>
 		</div>

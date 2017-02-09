@@ -3,8 +3,120 @@
 	var tmpMemory;
 	
 	//Section 1.2 - Minutes / Seconds
-	var minutes = 30;
+	var minutes = 1;
+    var aMinutes = 2; // assignment minutes. Time limit per assignments
 	var seconds = 0;
+	
+	// Section 1.3 - Initialization multiple variables and functions for each ID in the hierachy of index.php
+	var myFunctions = {
+		"startpagina": {
+			dataSend:
+			function(val){
+				dataSend = {
+					functions: "callLoginsystem",
+					username: val
+				};
+				return dataSend;
+			},
+			success: function(data) {
+				$("#groepen").children("h1:first-child").text("hallo " + data);
+			}
+		},
+		"groepen": {
+			dataSend:
+			function(val){
+				dataSend = {
+					functions: "group", 
+					group: val.replace(/[^0-9]/g, ""),
+				};
+			return dataSend;
+			},
+		},
+		"operators": {
+			dataSend:
+			function(val){
+				if (val == ":"){
+					var val = val.replace(":", "/");
+				}
+				else if (val == "x"){
+					var val = val.replace("x", "*");
+				};
+				dataSend = {
+					functions: (val == "Ja") ? "delete" : "callRekundigeoperator",
+					operator: (val == "Ja") ? null : val
+				};
+			return dataSend;
+			},
+			popup:
+			function(){
+				text =  "<p> Je hebt deze toets al gemaakt </p>"+
+						"<p> wil je deze toets opnieuw maken? </p>";
+				return text;
+			}
+		},
+		"opdrachtenSelectie": {
+			dataSend:
+			function(val){
+				dataSend = {
+					functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : (val == "Resultaten") ? "callResultpage" : "callindexCheckerandGenerator",
+					index: (val == "Ja") ? tmpMemory : (val == "Resultaten") ? null : val
+				};
+			return dataSend;
+			},
+			success: 
+			function(data) {
+					ifTimerexist = (pageVisibility("#timer")) ? $("#timer").css("display", "none") : null;
+					$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
+					$("input[name='input']").val(null).focus();
+			},
+			popup:
+			function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
+				if (val != "Resultaten"){
+				text =  "<p> Je hebt deze som al gemaakt </p>"+
+						"<p> Het som was: </p>" +
+						"<p>" + som + " = " + uitkomst + "</p>" +
+						"<p> Jouw antwoord was: </p>" +
+						"<p>" + antwoord + "</p>" +
+						"<p> wil je deze som opnieuw maken? </p>";				
+				}
+				else {
+					text = "<p> Je hebt nog geen resultaten. </p>";
+				}
+				return text;
+			}
+		},
+		"opdrachten": {
+			dataSend:
+			function(val){
+				dataSend = {
+					functions: "callControlsaveAndassignmentGenerator",
+					antwoord: val
+				};
+			return dataSend;
+			},
+			success:
+			function(data){
+				$("input[name='input'], input[type='submit']").prop('disabled', true);
+				ifToets = (tmpMemory == "Toets") ? null : modal("opdrachten", null, data[0], data[1], data[2], data[3], data[4]) ;
+				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+					ifToets2 = (tmpMemory == "Toets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
+					ifToets4 = (tmpMemory == "Toets") ? $("input[name='input']").val(null).focus() : null;
+					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[5]).fadeIn("fast");
+				});
+			},
+			popup: 
+			function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
+				var somEnuitkomst = som + " = " + uitkomst;
+				if (foutofGoed == "fout"){
+					text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
+				}
+				else {
+					text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;	
+				}
+				return text;
+			}
+		},
+	};
 // Section 1 - END
 
 // Section 2 - On DOM (page) ready.
@@ -28,7 +140,7 @@ $(document).ready(function(){
 				id = $(this).parent().attr("id");	
 			}
 			$("#" + id).fadeOut("slow", function(){
-					id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
+			id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
 			});
 		}
@@ -53,7 +165,7 @@ function pageVisibility(id1){
 }
 // Section 3 - END
 
-// Section 4 - fadeAnimation manages the transition between the 2 given arguments
+// Section 4 - create table for the results page.
 
 function createTable(id1, table){
 	$("#" + id1).fadeOut("slow", function(){
@@ -62,8 +174,9 @@ function createTable(id1, table){
 		ifEresults = (table == "eResults") ? $("#uitslag").append("<p> ???????? wat </p>") : $("#uitslag").append(table);
 		$("#uitslag").fadeIn("slow");
 	});
-	timeLimit(); // Minutes and Seconds are 0 so it is going to reset the minutes to a set variable;
 }
+// Section 4 - END
+
 // Section 5 - username verfications.
 function usernameVerify(txt) {
     if (txt.value == '') {
@@ -79,74 +192,39 @@ function usernameVerify(txt) {
 }
 // Section 5 - END
 
-// Section 7 - Time limit for the user making a test.
-function timeLimit() {
-	if (minutes != 0 || seconds != 0){
-		seconds--;
-		if (seconds <= 0 && minutes != 0){
-			seconds = 60;
-			minutes--
-		}
-		if (minutes == 0 && seconds == 0){
-			clearTimeout(timeLimitloop);
-			post(null);
-		}
-		else {
-			timeLimitloop = setTimeout(timeLimit, 1000);	
-		}
-		$("#timer").text("Tijd : " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));		
+// Section 6 - Time limit for the user making a test.
+function loopIniator(val){
+	minutes = 1;
+	seconds = 0;
+	countDownloop();
+}
+function countDownloop(){
+	seconds--;
+	if (seconds <= 0 && minutes != 0){
+		seconds = 2;
+		minutes--
+	}
+	if (minutes == 0 && seconds == 0){
+		clearTimeout(timeLimitloop);
+		post("Toets", "opdrachten");
 	}
 	else {
-		minutes = 30;
-		timeLimit();
+		timeLimitloop = setTimeout(countDownloop, 1000);	
 	}
+	$("#timer").text("Tijd : " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
 }
-// Section 7 - END
+function testAtimeLimit(){ //  Time limit per assignments
+}
+// Section 6 - END
 
-// Section 6 - Popup function modal()
-var popup = {
-	"operators": {
-		function(){
-			text =  "<p> Je hebt deze toets al gemaakt </p>"+
-					"<p> wil je deze toets opnieuw maken? </p>";
-			return text;
-		}
-	},
-	"opdrachtenSelectie": {
-		function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
-			if (val != "Resultaten"){
-			text =  "<p> Je hebt deze som al gemaakt </p>"+
-					"<p> Het som was: </p>" +
-					"<p>" + som + " = " + uitkomst + "</p>" +
-					"<p> Jouw antwoord was: </p>" +
-					"<p>" + antwoord + "</p>" +
-					"<p> wil je deze som opnieuw maken? </p>";				
-			}
-			else {
-				text = "<p> Je hebt nog geen resultaten. </p>";
-			}
-			return text;
-		}
-	},
-	"opdrachten": {
-		function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
-			var somEnuitkomst = som + " = " + uitkomst;
-			if (foutofGoed == "fout"){
-				text = "<p>Jammer, " + naam + " jouw antwoord is niet goed. " + som + " = " + uitkomst + "</p>";
-			}
-			else {
-				text = "<p>Ja, "+ naam + " jouw antwoord is goed! " + som + " = " + uitkomst + "</p>" ;	
-			}
-			return text;
-		}
-	},	
-}
+// Section 7 - Popup function modal()
+
 function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
 	var modal = $("#" + id + "modal");
 	ifEresults = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("span").css("display", "block") : modal.children(".modal-content").children("span").css("display", "none");
 	ifEresults2 = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
-	text = popup[id].function(id, val, som, uitkomst, antwoord, foutofGoed, naam);
+	text = popup[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
 	ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);	
 	modal.fadeIn("fast");
 	$(".close, #yesOrno, #testResults").click(function() {
@@ -158,9 +236,9 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 		$("input[name='input']").val(null).focus();
 	});
 }
-// Section 6 - END
+// Section 7 - END
 
-// Section 7 - Submit form replacement. POST using AJAX.
+// Section 8 - Submit form replacement. POST using AJAX.
 function post(val, id) {
 	$.ajax({
 	   type: "POST",
@@ -183,87 +261,10 @@ function post(val, id) {
 	   }
 	});
 }
-var myFunctions = {
-	"startpagina": {
-		dataSend:
-		function(val){
-			dataSend = {
-				functions: "callLoginsystem",
-				username: val
-			};
-			return dataSend;
-		},
-		success: function(data) {
-			$("#groepen").children("h1:first-child").text("hallo " + data);
-		}
-	},
-	"groepen": {
-		dataSend:
-		function(val){
-			dataSend = {
-				functions: "group", 
-				group: val.replace(/[^0-9]/g, ""),
-			};
-		return dataSend;
-		},
-	},
-	"operators": {
-		dataSend:
-		function(val){
-			if (val == ":"){
-				var val = val.replace(":", "/");
-			}
-			else if (val == "x"){
-				var val = val.replace("x", "*");
-			};
-			dataSend = {
-				functions: (val == "Ja") ? "delete" : "callRekundigeoperator",
-				operator: (val == "Ja") ? null : val
-			};
-		return dataSend;
-		},
-	},
-	"opdrachtenSelectie": {
-		dataSend:
-		function(val){
-			dataSend = {
-				functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : (val == "Resultaten") ? "callResultpage" : "callindexCheckerandGenerator",
-				index: (val == "Ja") ? tmpMemory : (val == "Resultaten") ? null : val
-			};
-		return dataSend;
-		},
-		success: 
-		function(data) {
-				ifTimerexist = (pageVisibility("#timer")) ? $("#timer").css("display", "none") : null;
-				$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-				$("input[name='input']").val(null).focus();
-		}
-	},
-	"opdrachten": {
-		dataSend:
-		function(val){
-			dataSend = {
-				functions: "callControlsaveAndassignmentGenerator",
-				antwoord: val
-			};
-		return dataSend;
-		},
-		success:
-		function(data){
-			$("input[name='input'], input[type='submit']").prop('disabled', true);
-			ifToets = (tmpMemory == "Toets") ? null : modal("opdrachten", null, data[0], data[1], data[2], data[3], data[4]) ;
-			$('input[name="input"]').val(null).focus();
-			$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-				ifToets2 = (tmpMemory == "Toets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
-				ifToets4 = (tmpMemory == "Toets") ? $("input[name='input']").val(null).focus() : null;
-				$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[5]).fadeIn("fast");
-			});
-		}
-	},
-};
 
 function fadeAnimation(id1, val, data){
 	if (id1 == "opdrachten") {
+		$('input[name="input"]').val(null).focus();
 		myFunctions[id1].success(data);
 	}
 	else {
@@ -274,7 +275,8 @@ function fadeAnimation(id1, val, data){
 				tmpMemory = "Toets";
 			}
 			$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-			$("#opdrachten").fadeIn("slow",  function(){timeLimit();}).css("display", "inline-flex");
+			loopIniator();
+			$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 			$("input[name='input']").val(null).focus();
 		}
 		else {
@@ -284,3 +286,4 @@ function fadeAnimation(id1, val, data){
 		});
 	}
 }
+// Section 8 - END

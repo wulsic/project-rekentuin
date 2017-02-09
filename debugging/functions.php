@@ -194,30 +194,35 @@
 	function resultPage(){
 		$operator 		 = $_SESSION["operator"];
 		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
-		ksort ($opdrachtOpslaan[$operator]);
-			$table = "<table>
-					<tr>
-						<td> $operator </td>
-					</tr>
-					<tr>
-						<td> Opdracht </td>
-						<td style='padding-right:20px;'> Som </td>
-						<td style='padding-right:20px;'> </td>
-						<td> Uitkomst </td>
-						<td> Jouw Antwoord </td>
-						<td> Goed of Fout </td>
-						<td> Jouw tijd per som </td>
-					</tr>";
-		foreach ($opdrachtOpslaan[$operator] as $key => $value) {
-		$table 	.= "<tr>
-						<td> $key</td>";
-		foreach ($value as $key2) {
-			  $table .= "<td> $key2 </td>";
+		if (empty($_SESSION["opdrachtOpslaan"][$operator])){
+			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
 		}
-		$table  .= "</tr>";
+		else {
+			ksort ($opdrachtOpslaan[$operator]);
+				$table = "<table>
+						<tr>
+							<td> $operator </td>
+						</tr>
+						<tr>
+							<td> Opdracht </td>
+							<td style='padding-right:20px;'> Som </td>
+							<td style='padding-right:20px;'> </td>
+							<td> Uitkomst </td>
+							<td> Jouw Antwoord </td>
+							<td> Goed of Fout </td>
+							<td> Jouw tijd per som </td>
+						</tr>";
+			foreach ($opdrachtOpslaan[$operator] as $key => $value) {
+			$table 	.= "<tr>
+							<td> $key</td>";
+			foreach ($value as $key2) {
+				  $table .= "<td> $key2 </td>";
+			}
+			$table  .= "</tr>";
+			}
+			$table .= "</table>";	
 		}
-		$table .= "</table>";
-		return $table;
+		return $table;			
 	}
 	// Section 8 - END
 ?>
