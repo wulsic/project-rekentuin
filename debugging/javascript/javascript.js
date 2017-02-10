@@ -232,6 +232,7 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	var text = "";
 	var modal = $("#" + id + "modal");
 	var modalId = document.getElementById(id + "modal");
+	var closeDelay = 2000; // 2 second delay
 	
 	
 	// Section 7.2 - Enable / Disable X button or yes and no button	
@@ -242,24 +243,30 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	if (id != "over" || id != "uitleg"){
 		text = (typeof(myFunctions[id]) == "undefined") ? null : myFunctions[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
 		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);			
+		setTimeout(function() {
+			closeAnswerModal();
+		}, closeDelay);
 	}
-
 	// Section 7.4 - Popup fade in
 	modal.fadeIn("fast");
 	
 	// Sectuib 7.5 - Close modal onclick + remove p when startpagina is not active.
-	$(".close, #yesOrno, #testResults").click(function() {
+	function closeAnswerModal() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
 			whenNotremove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();				
 			var somEnuitkomst = som + " = " + uitkomst;
 		});
 		$("input[name='input']").val(null).focus();
+	}
+	
+	$(".close, #yesOrno, #testResults").click(function(){
+		closeAnswerModal();
 	});
 
 	window.onclick = function(event) {
 		if (event.target == modalId) {
-			$(modalId).hide();
+			closeAnswerModal();
 	}}
 	
 	/*$(document).keyup(function(e) {
