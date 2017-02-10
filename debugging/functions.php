@@ -189,9 +189,11 @@
 		}
 	}
 	function cijferBerekenen(){
+		$operator 		 = $_SESSION["operator"];
+		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 		$fouten = 0;
 		for ($x = 1; $x < 20; $x++){
-			if ($_SESSION["opdrachtOpslaan"][($_SESSION["operator"])][$x][4] == "fout"){
+			if ($opdrachtOpslaan[$operator][$x][4] == "fout"){
 				$fouten++;
 			}
 		}
