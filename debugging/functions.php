@@ -191,31 +191,36 @@
 	function cijferBerekenen(){
 		$operator 		 = $_SESSION["operator"];
 		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
+		$CountedAssignments = count($opdrachtOpslaan[$operator]);
 		$fouten = 0;
-		for ($x = 1; $x < 20; $x++){
+		for ($x = 1; $x < $CountedAssignments; $x++){
 			if ($opdrachtOpslaan[$operator][$x][4] == "fout"){
 				$fouten++;
 			}
 		}
-		$cijfer = 10 - ($fouten * 0.5);
-		$c = $cijfer;
-		if ($cijfer == 10){
-			$reactie = "School heeft geen zin meer voor jou.";
+		if ($CountedAssignments == 20){
+			$c = 10 - ($fouten * 0.5); //Var C is Het cijfer
+			if ($c == 10){
+				$reactie = "School heeft geen zin meer voor jou.";
+			}
+			elseif ($c >= 8 && $c < 10){
+				$reactie = "Wauw! Dat heb je goed gemaakt!";
+			}
+			elseif ($c >= 6 && $c < 8){
+				$reactie = "Goed gedaan!";
+			}
+			elseif ($c >= 5.5 && $c < 6){
+				$reactie = "Je deed het goed maar nog een beetje bij spijkeren";
+			}
+			elseif ($c >= 4 && $c < 5.5){
+				$reactie = "Net niet goed, jammer. Blijf oefenen";
+			}
+			elseif ($c >= 0 && $c < 4){
+				$reactie = "Maak de oefeningen goed overnieuw en probeer nogmaals";
+			}
 		}
-		elseif ($c >= 8 && $c < 10){
-			$reactie = "Wauw! Dat heb je goed gemaakt!";
-		}
-		elseif ($c >= 6 && $c < 8){
-			$reactie = "Goed gedaan!";
-		}
-		elseif ($c >= 5.5 && $c < 6){
-			$reactie = "Je deed het goed maar nog een beetje bij spijkeren";
-		}
-		elseif ($c >= 4 && $c < 5.5){
-			$reactie = "Net niet goed, jammer. Blijf oefenen";
-		}
-		elseif ($c >= 0 && $c < 4){
-			$reactie = "Maak de oefeningen goed overnieuw en probeer nogmaals";
+		else {
+			$reactie = "De sommen zijn nog niet afgemaakt";
 		}
 		return array('reactie' => $reactie, 'fouten' => $fouten);
 	}
