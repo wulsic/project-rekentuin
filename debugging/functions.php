@@ -191,7 +191,7 @@
 	// Section 7 - END
 	
 	// Section 8 - Test Page
-	function testPage($val){// Test is such a pain in the frigin ass.
+	function testPage($val = "Toets"){// Test is such a pain in the frigin ass.
 		$operator = $_SESSION["operator"];
 		if (isset($_SESSION["opdrachtOpslaan"][$operator])){
 			if (count($_SESSION["opdrachtOpslaan"][$operator]) != 20){
