@@ -33,7 +33,7 @@
 		
 		// Section 3 - Assign index and call the generator for the first assignment
 		elseif ($functions == "callindexCheckerandGenerator") {
-			echo json_encode(indexCheckerandGenerator($_POST["index"]));
+			echo $ifTest = ($_POST["index"] == "Oefentoets") ? testPage($_POST["index"]) :json_encode(indexCheckerandGenerator($_POST["index"]));
 		}
 		
 		// Section 4 - Delete all assignment based on operator or operator + index

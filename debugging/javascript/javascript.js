@@ -71,6 +71,7 @@
 			},
 			popup:
 			function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
+				console.log(val);
 				if (val != "Resultaten"){
 				text =  "<p> Je hebt deze som al gemaakt </p>"+
 						"<p> Het som was: </p>" +
@@ -79,8 +80,11 @@
 						"<p>" + antwoord + "</p>" +
 						"<p> wil je deze som opnieuw maken? </p>";				
 				}
-				else {
+				else if (val == "Resultaten") {
 					text = "<p> Je hebt nog geen resultaten. </p>";
+				}
+				else if (val == "Oefentoets"){
+					text = "<p> Je moet 20 opdrachten maken voordat je de oefentoets kan maken. </p>";
 				}
 				return text;
 			}
@@ -143,6 +147,9 @@ $(document).ready(function(){
 				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
 			});
+		}
+		else if ($(this).attr("id") == "over" || $(this).attr("id") == "uitleg"){
+			modal($(this).attr("id"));
 		}
 		else if ($(this).text() != "Nee" ) {
 			if ($(this).parent().parent().attr("id") == null || $(this).parent().parent().attr("class") == "modal"){
@@ -219,15 +226,26 @@ function testAtimeLimit(){ //  Time limit per assignments
 // Section 6 - END
 
 // Section 7 - Popup function modal()
-
 function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
+	
+	//  Section 7.1 - Set variables
 	var text = "";
 	var modal = $("#" + id + "modal");
-	ifEresults = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("span").css("display", "block") : modal.children(".modal-content").children("span").css("display", "none");
-	ifEresults2 = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
-	text = myFunctions[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
-	ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);	
+	
+	// Section 7.2 - Enable / Disable X button or yes and no button	
+	ifEresults  = (val == "Resultaten" || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
+	ifEresults2 = 					(val == "Resultaten" || id == "opdrachten")					? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
+	
+	// Section 7.3 - Set text when it's id is not the same as over and uitleg
+	if (id != "over" || id != "uitleg"){
+		text = (typeof(myFunctions[id]) == "undefined") ? null : myFunctions[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
+		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);			
+	}
+
+	// Section 7.4 - Popup fade in
 	modal.fadeIn("fast");
+	
+	// Sectuib 7.5 - Close modal onclick + remove p when startpagina is not active.
 	$(".close, #yesOrno, #testResults").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
@@ -236,11 +254,13 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 		});
 		$("input[name='input']").val(null).focus();
 	});
+	
 }
 // Section 7 - END
 
 // Section 8 - Submit form replacement. POST using AJAX.
 function post(val, id) {
+	
 	$.ajax({
 	   type: "POST",
 	   url: "ajax.php", // The url where the post is going to be send and the response orginate.

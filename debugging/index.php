@@ -81,6 +81,7 @@
 				<button class="backwards">Ga terug</button>
 				<button id="restart">Opnieuw beginnen</button>
 				<button id="results">Resultaten</button>
+				<button id="oefen">Oefentoets</button>
 			</div>
 			<div class="text-center div-center flex-direction-row flex-justify-space-around">
 				 <?php
