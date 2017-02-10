@@ -221,10 +221,24 @@
 		}
 	}
 	// Section 8 - END
+	function cijferBerekenen(){
+		$fouten = 0;
+		for ($x = 1; $x < 20; $x++){
+			if ($_SESSION["opdrachtOpslaan"][($_SESSION["operator"])][$x][4] == "fout"){
+				$fouten++;
+			}
+		}
+		$cijfer = 10 - ($fouten * 0.5);
+		return array('cijfer' => $cijfer, 'fouten' => $fouten);
+	}
 	
 	// Section 8 - Result page
 	function resultPage(){
 		$operator = $_SESSION["operator"];
+		$cijferEnFouten = cijferBerekenen();
+		$cijfer = $cijferEnFouten['cijfer'];
+		$aantalFouten = $cijferEnFouten['fouten'];
+		
 		if (empty($_SESSION["opdrachtOpslaan"][$operator])){
 			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
 		}
@@ -234,6 +248,8 @@
 				$table = "<table>
 						<tr>
 							<td> $operator </td>
+							<td> Aantal fouten: $aantalFouten</td>
+							<td> Cijfer: $cijfer</td>
 						</tr>
 						<tr>
 							<td> Opdracht </td>
