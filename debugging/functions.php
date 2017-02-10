@@ -191,15 +191,20 @@
 	// Section 7 - END
 	
 	// Section 8 - Test Page
-	function testPage(){// Test is such a pain in the frigin ass.
+	function testPage($val){// Test is such a pain in the frigin ass.
 		$operator = $_SESSION["operator"];
 		if (isset($_SESSION["opdrachtOpslaan"][$operator])){
 			if (count($_SESSION["opdrachtOpslaan"][$operator]) != 20){
-				if (empty($_SESSION["opdrachtOpslaan"][$operator]) && isset($_SESSION["number"])){
+				if ($val == "Oefentoets") {
 					echo "popup";
 				}
 				else {
-					echo indexCheckerandGenerator(1);
+					if (empty($_SESSION["opdrachtOpslaan"][$operator]) && isset($_SESSION["number"])){
+						echo "popup";
+					}
+					else {
+						echo indexCheckerandGenerator(1);
+					}					
 				}
 			}
 			else {
@@ -207,7 +212,12 @@
 			}			
 		}
 		else {
-			echo indexCheckerandGenerator(1);
+			if ($val == "Oefentoets") {
+				echo "popup";
+			}
+			else {
+				echo indexCheckerandGenerator(1);	
+			}
 		}
 	}
 	// Section 8 - END
