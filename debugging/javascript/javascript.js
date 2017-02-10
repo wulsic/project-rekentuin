@@ -224,7 +224,7 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	var modal = $("#" + id + "modal");
 	ifEresults = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("span").css("display", "block") : modal.children(".modal-content").children("span").css("display", "none");
 	ifEresults2 = (val == "Resultaten" || id == "opdrachten") ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
-	text = popup[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
+	text = myFunctions[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
 	ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);	
 	modal.fadeIn("fast");
 	$(".close, #yesOrno, #testResults").click(function() {
