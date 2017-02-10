@@ -241,6 +241,7 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	
 	// Section 7.3 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" || id != "uitleg"){
+		$("input[name='input']").val(null);
 		text = (typeof(myFunctions[id]) == "undefined") ? null : myFunctions[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
 		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);			
 		setTimeout(function() {
@@ -257,7 +258,7 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 			whenNotremove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();				
 			var somEnuitkomst = som + " = " + uitkomst;
 		});
-		$("input[name='input']").val(null).focus();
+		$("input[name='input']").focus();
 	}
 	
 	$(".close, #yesOrno, #testResults").click(function(){
