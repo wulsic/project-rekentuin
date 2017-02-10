@@ -96,7 +96,6 @@
 			},
 			success:
 			function(data){
-				$("input[name='input'], input[type='submit']").prop('disabled', true);
 				ifToets = (tmpMemory == "Toets") ? null : modal("opdrachten", null, data[0], data[1], data[2], data[3], data[4]) ;
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
 					ifToets2 = (tmpMemory == "Toets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
@@ -128,6 +127,7 @@ $(document).ready(function(){
 	// Section 2.2 - Form submit
 	$("form").submit(function(){
 		event.preventDefault(); // Prevent a default action on submit.
+		$("input[name='input'], input[type='submit']").prop('disabled', true);
 		post($(this).find("input[name='input']").val(), $(this).parent().attr("id")); // send the val of the set input to function post.			
 	});
 	// Section 2.3 - On button click
@@ -140,7 +140,7 @@ $(document).ready(function(){
 				id = $(this).parent().attr("id");	
 			}
 			$("#" + id).fadeOut("slow", function(){
-			id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
+				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
 			});
 		}
@@ -207,7 +207,7 @@ function countDownloop(){
 	}
 	if (minutes == 0 && seconds == 0){
 		clearTimeout(timeLimitloop);
-		post("Toets", "opdrachten");
+		post("Toets", "operators");
 	}
 	else {
 		timeLimitloop = setTimeout(countDownloop, 1000);	
@@ -265,25 +265,28 @@ function post(val, id) {
 
 function fadeAnimation(id1, val, data){
 	if (id1 == "opdrachten") {
-		$('input[name="input"]').val(null).focus();
 		myFunctions[id1].success(data);
 	}
 	else {
+		$("input[name='input'], input[type='submit']").prop('disabled', true);
 		$("#" + id1).fadeOut("slow", function(){
-		if (val == "Toets" || val == "Ja" && id1 != "opdrachtenSelectie"){
-			$("#timer").css("display", "inline-block");
-			if (val == "Ja") {
-				tmpMemory = "Toets";
+			$("input[name='input'], input[type='submit']").prop('disabled', false);
+			if (val == "Toets" || val == "Ja" && id1 != "opdrachtenSelectie"){
+				$("#timer").css("display", "inline-block");
+				if (val == "Ja") {
+					tmpMemory = "Toets";
+				}
+				
+				$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
+				loopIniator();
+				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
+				$("input[name='input']").val(null).focus();
 			}
-			$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-			loopIniator();
-			$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
-			$("input[name='input']").val(null).focus();
-		}
-		else {
-			ifFunction = (typeof(myFunctions[id1].success) == "function") ? myFunctions[id1].success(data) : null;
-			$($("#" + id1).next()).fadeIn("slow").css("display", "inline-flex");	
-		}
+			else {
+				ifFunction = (typeof(myFunctions[id1].success) == "function") ? myFunctions[id1].success(data) : null;
+				$($("#" + id1).next()).fadeIn("slow").css("display", "inline-flex");
+				ifStartpagina = (id1 == "groepen") ? null : $("input[name='input']").val(null).focus();
+			}
 		});
 	}
 }
