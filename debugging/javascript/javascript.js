@@ -3,7 +3,7 @@
 	var tmpMemory;
 	
 	//Section 1.2 - Minutes / Seconds
-	var minutes = 1;
+	var minutes = 30;
     var aMinutes = 2; // assignment minutes. Time limit per assignments
 	var seconds = 0;
 	
@@ -171,7 +171,7 @@ function createTable(id1, table){
 	$("#" + id1).fadeOut("slow", function(){
 		$("#uitslag").children("p").remove();
 		$("#uitslag").children("table").remove();
-		ifEresults = (table == "eResults") ? $("#uitslag").append("<p> ???????? wat </p>") : $("#uitslag").append(table);
+		$("#uitslag").append(table);
 		$("#uitslag").fadeIn("slow");
 	});
 }
@@ -194,14 +194,15 @@ function usernameVerify(txt) {
 
 // Section 6 - Time limit for the user making a test.
 function loopIniator(val){
-	minutes = 1;
+	minutes = 30;
 	seconds = 0;
+	ifLoop = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
 	countDownloop();
 }
 function countDownloop(){
 	seconds--;
 	if (seconds <= 0 && minutes != 0){
-		seconds = 2;
+		seconds = 59;
 		minutes--
 	}
 	if (minutes == 0 && seconds == 0){
@@ -244,7 +245,7 @@ function post(val, id) {
 	   type: "POST",
 	   url: "ajax.php", // The url where the post is going to be send and the response orginate.
 	   data: myFunctions[id].dataSend(val, id),
-	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten") ? "JSON" : "text",
+	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten" || val == "Resultaten") ? "JSON" : "text",
 	   success: function(data){
 		   if (data[0] == "popup"){
 			   modal(id, val, data[1], data[2], data[3]);

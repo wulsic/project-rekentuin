@@ -21,13 +21,12 @@
 			$_SESSION["oldOperator"] = (isset($_SESSION["operator"])) ? $_SESSION["operator"] : $_POST["operator"];
 			$operator 	 = $_POST["operator"];
 			$oldOperator = $_SESSION["oldOperator"];
-			$_SESSION["operator"] = $_POST["operator"];
+			$_SESSION["operator"] = ($_POST["operator"] == "Resultaten") ? "Toets" : $_POST["operator"];
 			if ($operator == "Toets"){
-				echo json_encode(indexCheckerandGenerator(1));
+				testPage();
 			}
-			elseif ($operator == "Resultaten" || $operator == "Toets"){
-				$_SESSION["operator"] = "Toets";
-				echo resultPage();
+			elseif ($operator == "Resultaten"){
+				echo json_encode(array("table", resultPage()));
 			}
 		}
 		// Section 2 - END
@@ -57,16 +56,15 @@
 			$uitkomst 		= $_SESSION["opdracht"][1];
 			$timestart 		= $_SESSION["opdracht"][2];
 			$timeDifference = $timeStop - $timestart;
-			
-			if ($antwoord != "Toets") {
-				// Section 5.2 - Call functions.
-				$opdrachtControlle = opdrachtControleren($antwoord, $uitkomst);
-				$opdrachtOpslaan   = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));
-				$indexChecker 	   = indexChecker("");			
-			}
+		
+			// Section 5.2 - Call functions.
+			$opdrachtControlle = ($antwoord == "Toets") ? 	null 	: opdrachtControleren($antwoord, $uitkomst);
+			$opdrachtOpslaan   = ($antwoord == "Toets") ? 	null 	: opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));		
+			$indexChecker 	   = ($antwoord == "Toets") ? "eNumber" : indexChecker("");
+				
 			
 			// Section 5.3 - Check whether indexChecker returns "eNumber".
-			if ($indexChecker == "eNumber" || $antwoord == "Toets"){
+			if ($indexChecker == "eNumber"){
 				echo json_encode(array("table", resultPage()));
 			}
 			else {
