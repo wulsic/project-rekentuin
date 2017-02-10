@@ -188,6 +188,35 @@
 			return "fout";
 		}
 	}
+	function cijferBerekenen(){
+		$fouten = 0;
+		for ($x = 1; $x < 20; $x++){
+			if ($_SESSION["opdrachtOpslaan"][($_SESSION["operator"])][$x][4] == "fout"){
+				$fouten++;
+			}
+		}
+		$cijfer = 10 - ($fouten * 0.5);
+		$c = $cijfer;
+		if ($cijfer == 10){
+			$reactie = "Jezus christus dat deed je goed!";
+		}
+		elseif ($c >= 8 && $c < 10){
+			$reactie = "Wauw! Dat heb je goed gemaakt!";
+		}
+		elseif ($c >= 6 && $c < 8){
+			$reactie = "Goed gedaan!";
+		}
+		elseif ($c >= 5.5 && $c < 6){
+			$reactie = "Je deed het goed maar nog een beetje bij spijkeren";
+		}
+		elseif ($c >= 4 && $c < 5.5){
+			$reactie = "Net niet goed, jammer. Blijf oefenen";
+		}
+		elseif ($c >= 0 && $c < 4){
+			$reactie = "Maak de oefeningen goed overnieuw en probeer nogmaals";
+		}
+		return array('reactie' => $reactie, 'fouten' => $fouten);
+	}
 	// Section 7 - END
 	
 	// Section 8 - Test Page
@@ -221,22 +250,12 @@
 		}
 	}
 	// Section 8 - END
-	function cijferBerekenen(){
-		$fouten = 0;
-		for ($x = 1; $x < 20; $x++){
-			if ($_SESSION["opdrachtOpslaan"][($_SESSION["operator"])][$x][4] == "fout"){
-				$fouten++;
-			}
-		}
-		$cijfer = 10 - ($fouten * 0.5);
-		return array('cijfer' => $cijfer, 'fouten' => $fouten);
-	}
 	
 	// Section 8 - Result page
 	function resultPage(){
 		$operator = $_SESSION["operator"];
 		$cijferEnFouten = cijferBerekenen();
-		$cijfer = $cijferEnFouten['cijfer'];
+		$reactie = $cijferEnFouten['reactie'];
 		$aantalFouten = $cijferEnFouten['fouten'];
 		
 		if (empty($_SESSION["opdrachtOpslaan"][$operator])){
@@ -249,7 +268,7 @@
 						<tr>
 							<td> $operator </td>
 							<td> Aantal fouten: $aantalFouten</td>
-							<td> Cijfer: $cijfer</td>
+							<td> $reactie </td>
 						</tr>
 						<tr>
 							<td> Opdracht </td>
