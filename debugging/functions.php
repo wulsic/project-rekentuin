@@ -198,7 +198,7 @@
 		$cijfer = 10 - ($fouten * 0.5);
 		$c = $cijfer;
 		if ($cijfer == 10){
-			$reactie = "Jezus christus dat deed je goed!";
+			$reactie = "School heeft geen zin meer voor jou.";
 		}
 		elseif ($c >= 8 && $c < 10){
 			$reactie = "Wauw! Dat heb je goed gemaakt!";
@@ -277,7 +277,7 @@
 							<td> Uitkomst </td>
 							<td> Jouw Antwoord </td>
 							<td> Goed of Fout </td>
-							<td> Jouw tijd per som </td>
+							<td> Jouw tijd</td>
 						</tr>";
 			foreach ($opdrachtOpslaan[$operator] as $key => $value) {
 			$table 	.= "<tr>
