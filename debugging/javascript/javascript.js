@@ -6,7 +6,7 @@
 	var minutes = 30;
     var aMinutes = 2; // assignment minutes. Time limit per assignments
 	var seconds = 0;
-	
+
 	// Section 1.3 - Initialization multiple variables and functions for each ID in the hierachy of index.php
 	var myFunctions = {
 		"startpagina": {
@@ -231,6 +231,8 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	//  Section 7.1 - Set variables
 	var text = "";
 	var modal = $("#" + id + "modal");
+	var modalId = document.getElementById(id + "modal");
+	
 	
 	// Section 7.2 - Enable / Disable X button or yes and no button	
 	ifEresults  = (val == "Resultaten" || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
@@ -249,12 +251,22 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	$(".close, #yesOrno, #testResults").click(function() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
-			whenNotremove = ($("#startpagina").css("display") != "none") ? null : modal.children(".modal-content").children("p").remove();				
+			whenNotremove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();				
 			var somEnuitkomst = som + " = " + uitkomst;
 		});
 		$("input[name='input']").val(null).focus();
 	});
+
+	window.onclick = function(event) {
+		if (event.target == modalId) {
+			$(modalId).hide();
+	}}
 	
+	/*$(document).keyup(function(e) {
+		if (e.keyCode==13){
+			$(modalId).hide();
+		}
+	})*/
 }
 // Section 7 - END
 
