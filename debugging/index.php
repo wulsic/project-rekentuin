@@ -88,15 +88,6 @@
 						if ($a == 1) {
 							echo "<div>";
 						}
-						elseif ($a == 6) {
-							echo"</div> <div>";
-						}
-						elseif ($a == 11) {
-							echo "</div> <div>";
-						}
-						elseif ($a == 16) {
-							echo "</div> <div>";
-						}
 						echo "<button>$a</button>";
 					}
 					echo "</div>"
