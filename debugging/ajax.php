@@ -33,7 +33,7 @@
 		
 		// Section 3 - Assign index and call the generator for the first assignment
 		elseif ($functions == "callindexCheckerandGenerator") {
-			echo $ifTest = ($_POST["index"] == "Oefentoets") ? testPage($_POST["index"]) :json_encode(indexCheckerandGenerator($_POST["index"]));
+			echo $ifTest = ($_POST["index"] == "Oefentoets") ? testPage($_POST["index"]) : json_encode(indexCheckerandGenerator($_POST["index"]));
 		}
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
@@ -58,8 +58,8 @@
 			$timeDifference = $timeStop - $timestart;
 		
 			// Section 5.2 - Call functions.
-			$opdrachtControlle = ($antwoord == "Toets") ? 	null 	: opdrachtControleren($antwoord, $uitkomst);
-			$opdrachtOpslaan   = ($antwoord == "Toets") ? 	null 	: opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControlle, date("i:s",$timeDifference));		
+			$opdrachtControle = ($antwoord == "Toets") ? 	null 	: opdrachtControleren($antwoord, $uitkomst);
+			$opdrachtOpslaan   = ($antwoord == "Toets") ? 	null 	: opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControle, date("i:s",$timeDifference));		
 			$indexChecker 	   = ($antwoord == "Toets") ? "eNumber" : indexChecker("");
 				
 			
@@ -69,7 +69,7 @@
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
-				$returnArray = ($operator == "Toets") ?  $newsom[0] : array($som, $uitkomst, $antwoord, $opdrachtControlle, $username, $newsom[0]);
+				$returnArray = ($operator == "Toets") ?  $newsom[0] : array($som, $uitkomst, $antwoord, $opdrachtControle, $username, $newsom[0]);
 				echo json_encode($returnArray);
 				$_SESSION["opdracht"] = $newsom;
 			}
