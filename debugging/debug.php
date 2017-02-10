@@ -35,4 +35,27 @@
 					}
 				}
 	echo "</table>";
+	$debugW = 0;
+	if ($debugW == 1){
+		//print_r ($_SESSION["opdrachtOpslaan"]);
+		echo "<br />";
+		echo "Test";
+		//print_r (array_keys($_SESSION["opdrachtOpslaan"]));
+		print_r ($_SESSION["opdrachtOpslaan"]["Toets"][1]);
+		echo "<br />";
+		//echo $_SESSION["opdrachtOpslaan"]["Toets"][1][4];
+		
+		$fouten = 0;
+		for ($x = 1; $x < 20; $x++){
+			if ($_SESSION["opdrachtOpslaan"][($_SESSION["operator"])][$x][4] == "fout"){
+				$fouten++;
+			}
+		}
+		$cijfer = 10 - ($fouten * 0.5);
+		// 10 is default number if the pupil has 0 faults, the formula will be: (10 - (number of faults * 0.5))
+	}
+	echo "<br/><br />";
+	//foreach ($_SESSION[opdrachtOpslaan] as $key){
+	//	echo $key;
+	//}
 ?>
