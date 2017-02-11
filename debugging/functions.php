@@ -8,30 +8,13 @@
 	}
 	// Section 1 -  END
 	
-	// Section 2 - Delete Assignments
-	function deleteAssignments($variable){
-		$index 	  = $_SESSION["index"];
-		$group	  = $_SESSION["group"];
-		$operator = $_SESSION["operator"];
-		
-			if ($variable != "Opnieuw beginnen"){
-				if ($operator != "Toets"){
-					unset($_SESSION["opdrachtOpslaan"][$operator][$_POST["index"]]);
-					$_SESSION["index"] = $_POST["index"];
-				}
-				else {
-					unset($_SESSION["opdrachtOpslaan"][$operator]);
-				}
-				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
-				return $_SESSION["opdracht"][0];
-			}
-			else {
-				unset($_SESSION["opdrachtOpslaan"][$operator]);
-			}
-			$_SESSION["numbers"] = range(1,20);
+	// Section 2 - Set session Operator and Old operator.
+	function setOperator($operator){
+		$_SESSION["oldOperator"] = (isset($_SESSION["operator"])) ? $_SESSION["operator"] : $operator;
+		$_SESSION["operator"] = ($operator == "Resultaten") ? "Toets" : $_POST["operator"];		
 	}
 	// Section 2 - END
-
+	
 	// Section 3 - Assignment generator
 	function rekundigeOperator($userSelection){
 		// Section 2.1 - Operator Picker
@@ -278,7 +261,31 @@
 	}
 	// Section 8 - END
 	
-	// Section 8 - Result page
+	// Section 8 - Delete Assignments
+	function deleteAssignments($variable){
+		$index 	  = $_SESSION["index"];
+		$group	  = $_SESSION["group"];
+		$operator = $_SESSION["operator"];
+		
+			if ($variable != "Opnieuw beginnen"){
+				if ($operator != "Toets"){
+					unset($_SESSION["opdrachtOpslaan"][$operator][$_POST["index"]]);
+					$_SESSION["index"] = $_POST["index"];
+				}
+				else {
+					unset($_SESSION["opdrachtOpslaan"][$operator]);
+				}
+				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
+				return $_SESSION["opdracht"][0];
+			}
+			else {
+				unset($_SESSION["opdrachtOpslaan"][$operator]);
+			}
+			$_SESSION["numbers"] = range(1,20);
+	}
+	// Section 8 - END	
+
+	// Section 9 - Result page
 	function resultPage(){
 		$operator = $_SESSION["operator"];
 		$cijferEnFouten = cijferBerekenen();
@@ -318,5 +325,5 @@
 		}
 		return $table;			
 	}
-	// Section 8 - END
+	// Section 9 - END
 ?>

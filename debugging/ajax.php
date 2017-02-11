@@ -18,10 +18,8 @@
 		
 		// Section 2 - Assign Operator
 		elseif ($functions == "callRekundigeoperator"){
-			$_SESSION["oldOperator"] = (isset($_SESSION["operator"])) ? $_SESSION["operator"] : $_POST["operator"];
-			$operator 	 = $_POST["operator"];
-			$oldOperator = $_SESSION["oldOperator"];
-			$_SESSION["operator"] = ($_POST["operator"] == "Resultaten") ? "Toets" : $_POST["operator"];
+			$operator = $_POST["operator"];
+			setOperator($operator);
 			if ($operator == "Toets"){
 				$testPage = testPage();
 				echo json_encode($testPage);
@@ -75,6 +73,9 @@
 			
 			// Section 5.4 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
+				if ($operator == "Oefentoets"){
+					setOperator($_SESSION["oldOperator"]);
+				}
 				echo json_encode(array("table", resultPage()));
 			}
 			else {
