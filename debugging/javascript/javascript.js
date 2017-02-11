@@ -30,7 +30,7 @@
 					group: val.replace(/[^0-9]/g, ""),
 				};
 			return dataSend;
-			},
+			}
 		},
 		"operators": {
 			dataSend:
@@ -62,14 +62,7 @@
 					ifTimerexist = (pageVisibility("#timer")) ? $("#timer").css("display", "none") : null;
 					$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
 					$("input[name='input']").val(null).focus();
-			},
-			/*popup:
-			function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
-				if (val == "Oefentoets"){
-					text = "<p> Je moet 20 opdrachten maken voordat je de oefentoets kan maken. </p>";
-				}
-				return text;
-			}*/
+			}
 		},
 		"opdrachten": {
 			dataSend:
@@ -82,10 +75,10 @@
 			},
 			success:
 			function(data){
-				ifToets = (tmpMemory == "Toets") ? null : modal("opdrachten", null, data[1]) ;
+				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-					ifToets2 = (tmpMemory == "Toets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
-					ifToets4 = (tmpMemory == "Toets") ? $("input[name='input']").val(null).focus() : null;
+					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
+					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets") ? $("input[name='input']").val(null).focus() : null;
 					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
 				});
 			}
@@ -150,6 +143,7 @@ function pageVisibility(id1){
 function createTable(id1, table){
 	$("#" + id1).fadeOut("slow", function(){
 		$("#uitslag").children("p").remove();
+		$("#uitslag").children("br").remove();
 		$("#uitslag").children("table").remove();
 		$("#uitslag").append(table);
 		$("#uitslag").fadeIn("slow");
@@ -229,7 +223,7 @@ function modal(id, val, text){
 	function closeAnswerModal() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
-			whenNotremove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();
+			whenNottoRemove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();
 		});
 		$("input[name='input']").focus();
 	}

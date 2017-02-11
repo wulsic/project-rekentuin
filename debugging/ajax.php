@@ -78,10 +78,8 @@
 			
 			// Section 5.4 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
-				if ($opdrachtOftoets == "Oefentoets"){
-					$_SESSION["opdrachtOftoets"] = "opdracht";
-				}
 				echo json_encode(array("table", resultPage()));
+				$_SESSION["opdrachtOftoets"] = "Opdracht";
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
@@ -105,7 +103,13 @@
 					echo json_encode(array("popup", "<p> Je hebt nog niet alle opdrachten gemaakt. </p>")); // echo popup and text whenever the total made assingments is not 20
 				}
 				else {
-					echo json_encode(array("table", resultPage()));	
+					$table = resultPage();
+					if (isset($opdrachtOpslaan["Oefentoets"][$operator])){
+						$_SESSION["opdrachtOftoets"] = "Oefentoets";
+						$table .= resultPage();
+						$_SESSION["opdrachtOftoets"] = "Opdracht";						
+					}
+					echo json_encode(array("table", $table));
 				}
 			}
 		}

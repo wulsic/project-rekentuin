@@ -221,7 +221,7 @@
 	
 	// Section 8 - Test Page
 	function oefenToets(){
-		$text1 = "<p> Je moet 20 opdrachten maken voordat je de oefentoets mag maken. </p>";
+		$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
 		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
 		$text3 = "<p> Je heb de oefentoets al gemaakt. </p> <p> wil je deze oefentoets opnieuw maken? </p>";
 		$operator = $_SESSION["operator"];
@@ -229,14 +229,22 @@
 		if (isset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
 			$cijfer = cijferBerekenen();
 			if (count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){
-				$_SESSION["opdrachtOftoets"] = "Oefentoets";
-				return indexCheckerandGenerator(1);
+				if (empty($_SESSION["opdrachtOpslaan"]["Oefentoets"][$operator])){
+					$_SESSION["opdrachtOftoets"] = "Oefentoets";
+					return indexCheckerandGenerator(1);
+				}
+				else {
+					if (count($_SESSION["opdrachtOpslaan"]["Oefentoets"][$operator]) == 20){
+						return array("popup", $text3);
+					}
+					else{
+						$_SESSION["opdrachtOftoets"] = "Oefentoets";
+						return indexCheckerandGenerator(1);
+					}
+				}
 			}
 			else {
-				if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
-					return array("popup", $text3);
-				}
-				elseif ($cijfer["fouten"] > 10) {
+				if ($cijfer["fouten"] > 10){
 					return array("popup", $text2);
 				}
 				else {
@@ -246,7 +254,7 @@
 		}
 		else {
 			return array("popup", $text1);
-		}		
+		}
 	}
 	function testPage(){// Test is such a pain in the frigin ass.
 		$text = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
@@ -305,16 +313,30 @@
 		$reactie = $cijferEnFouten['reactie'];
 		$aantalFouten = $cijferEnFouten['fouten'];
 		
+		if ($operator == "+") {
+			$operatorText = "Plus";
+		}
+		elseif ($operator == "-") {
+			$operatorText = "Min";
+		}
+		elseif ($operator == "*") {
+			$operatorText = "Keer";
+		}
+		elseif ($operator == "/") {
+			$operatorText = "Gedeelddoor";
+		}
+			
 		
 		if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
 			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
 		}
 		else {
+			
 			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 			ksort ($opdrachtOpslaan[$opdrachtOftoets][$operator]);
 				$table = "<table>
 						<tr>
-							<td> $operator </td>
+							<td> $opdrachtOftoets $operatorText </td>
 							<td colspan='3'> Aantal fouten: $aantalFouten</td>
 							<td colspan='7'> $reactie </td>
 						</tr>
@@ -335,7 +357,7 @@
 			}
 			$table  .= "</tr>";
 			}
-			$table .= "</table>";	
+			$table .= "</table> <br />";
 		}
 		return $table;			
 	}

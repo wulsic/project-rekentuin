@@ -75,7 +75,6 @@
 		}
 		echo "<br/>" . $fouten . " fouten. <br/> Cijfer: " . $c . "<br/> Reactie: " . $reactie;
 	}
-
 ?>
 <hr />
 <pre>
