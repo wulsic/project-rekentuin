@@ -63,13 +63,13 @@
 					$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
 					$("input[name='input']").val(null).focus();
 			},
-			popup:
+			/*popup:
 			function(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 				if (val == "Oefentoets"){
 					text = "<p> Je moet 20 opdrachten maken voordat je de oefentoets kan maken. </p>";
 				}
 				return text;
-			}
+			}*/
 		},
 		"opdrachten": {
 			dataSend:
@@ -115,6 +115,7 @@ $(document).ready(function(){
 				id = $(this).parent().attr("id");	
 			}
 			$("#" + id).fadeOut("slow", function(){
+				console.log(tmpMemory);
 				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
 			});
@@ -122,15 +123,16 @@ $(document).ready(function(){
 		else if ($(this).attr("id") == "over" || $(this).attr("id") == "uitleg"){
 			modal($(this).attr("id"));
 		}
-		else if ($(this).text() != "Nee" ) {
+		else if ($(this).text() != "Nee" || $(this).text() != "Oefentoets") { // Oefentoets disabled.
 			if ($(this).parent().parent().attr("id") == null || $(this).parent().parent().attr("class") == "modal"){
 				parentId = $(this).parent().parent().parent().attr("id");
 			}
 			else {
 				parentId = $(this).parent().parent().attr("id");			
 			}
-			ifJa = ($(this).text() == "Ja") ? null : tmpMemory = $(this).text();
-			post($(this).text(), parentId);
+			getText = $(this).text();
+			ifJa = (getText == "Ja" || (pageVisibility("#operators") && getText == "Resultaten")) ? null : tmpMemory = $(this).text();
+			post(getText, parentId);
 		}
 	});
 });
@@ -205,8 +207,8 @@ function modal(id, val, text){
 	
 	
 	// Section 7.2 - Enable / Disable X button or yes and no button	
-	ifEresults  = (val == "Resultaten" || val == "Oefentoets" || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
-	ifEresults2 = 				(val == "Resultaten" || id == "opdrachten" || val == "Oefentoets")				       ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
+	ifEresults  = (val == "Resultaten" /*|| val == "Oefentoets"*/ || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
+	ifEresults2 = 				(val == "Resultaten" || id == "opdrachten" /*|| val == "Oefentoets"*/)				       ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	
 	// Section 7.3 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" && id != "uitleg"){
@@ -251,17 +253,16 @@ function modal(id, val, text){
 
 // Section 8 - Submit form replacement. POST using AJAX.
 function post(val, id) {
+	console.log(val);
 	$.ajax({
 	   type: "POST",
 	   url: "ajax.php", // The url where the post is going to be send and the response orginate.
 	   data: myFunctions[id].dataSend(val, id),
-	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten" || val == "Resultaten") ? "JSON" : "text",
+	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten" || val == "Resultaten" || val == "Toets") ? "JSON" : "text",
 	   success: function(data){
+		   console.log(data);
 		   if (data[0] == "popup"){
 			   modal(id, val, data[1]);
-		   }
-		   else if (data == "popup") {
-			   modal(id, val);
 		   }
 		   else if (data[0] == "table"){
 			   createTable(id, data[1]);

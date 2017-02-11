@@ -116,7 +116,6 @@
 			// Section 4.1.2 - Check for already made assignments
 			if (empty($_SESSION["opdrachtOpslaan"][$operator][$index]) || $operator == "Toets"){
 				
-				
 				// Section 4.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
 				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $operator || empty($_SESSION["numbers"])){
 					$_SESSION["numbers"] = range(1,20);
@@ -237,7 +236,7 @@
 	// Section 7 - END
 	
 	// Section 8 - Test Page
-	function oefenToets(){
+	/*function oefenToets(){
 		$operator = $_SESSION["operator"];
 		if (isset($_SESSION["opdrachtOpslaan"][$operator])){
 			if (count($_SESSION["opdrachtOpslaan"][$operator]) == 20){
@@ -256,7 +255,7 @@
 		else {
 			return "popup";
 		}		
-	}
+	}*/
 	function testPage(){// Test is such a pain in the frigin ass.
 		$text = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
 		$operator = $_SESSION["operator"];
