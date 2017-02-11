@@ -45,14 +45,15 @@
 	echo "<br />";
 	if (isset($_SESSION["opdrachtOpslaan"])){
 		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
+		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 		$operator = $_SESSION["operator"];
-		$array_column = array_column($opdrachtOpslaan[$operator], 4);
+		$array_column = array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4);
 		echo "array column: ";
 		print_r($array_column);
-		$array_keys = array_keys(array_column($opdrachtOpslaan[$operator], 4), "fout");
+		$array_keys = array_keys(array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4), "fout");
 		echo "<br/> array keys: ";
 		print_r($array_keys);
-		$fouten = count(array_keys(array_column($opdrachtOpslaan[$operator], 4), "fout"));
+		$fouten = count(array_keys(array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4), "fout"));
 		$c = 10 - ($fouten * 0.5); //Var C is Het cijfer
 		if ($c == 10){
 			$reactie = "School heeft geen zin meer voor jou.";

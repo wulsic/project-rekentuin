@@ -123,7 +123,7 @@ $(document).ready(function(){
 		else if ($(this).attr("id") == "over" || $(this).attr("id") == "uitleg"){
 			modal($(this).attr("id"));
 		}
-		else if ($(this).text() != "Nee" || $(this).text() != "Oefentoets") { // Oefentoets disabled.
+		else if ($(this).text() != "Nee") {
 			if ($(this).parent().parent().attr("id") == null || $(this).parent().parent().attr("class") == "modal"){
 				parentId = $(this).parent().parent().parent().attr("id");
 			}

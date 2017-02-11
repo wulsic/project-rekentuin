@@ -215,28 +215,33 @@
 		else {
 			$reactie = "De sommen zijn nog niet afgemaakt"; 
 		}
-		return array('reactie' => $reactie, 'fouten' => $fout);
+		return array("reactie" => $reactie, "fouten" => $fout);
 	}
 	// Section 7 - END
 	
 	// Section 8 - Test Page
 	function oefenToets(){
-		$text1 = "<p> Je moet 20 opdrachten maken voordat je de oefentoets kan maken. </p>";
-		$text2 = "<p> Je heb de oefentoets al gemaakt. </p> <p> wil je deze oefentoets opnieuw maken? </p>";
+		$text1 = "<p> Je moet 20 opdrachten maken voordat je de oefentoets mag maken. </p>";
+		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
+		$text3 = "<p> Je heb de oefentoets al gemaakt. </p> <p> wil je deze oefentoets opnieuw maken? </p>";
 		$operator = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 		if (isset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
-			if (count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) == 20){
+			$cijfer = cijferBerekenen();
+			if (count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){
+				$_SESSION["opdrachtOftoets"] = "Oefentoets";
+				return indexCheckerandGenerator(1);
+			}
+			else {
 				if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
+					return array("popup", $text3);
+				}
+				elseif ($cijfer["fouten"] > 10) {
 					return array("popup", $text2);
 				}
 				else {
-					$_SESSION["operator"] = "Oefentoets";
-					return indexCheckerandGenerator(1);
+					return array("popup", $text1);
 				}
-			}
-			else {
-				return array("popup", $text1);
 			}
 		}
 		else {
@@ -272,22 +277,23 @@
 		$group	  = $_SESSION["group"];
 		$operator = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+		$_SESSION["numbers"] = range(1,20);	
 		
-			if ($variable != "Opnieuw beginnen"){
-				if ($operator != "Toets"){
-					unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$_POST["index"]]);
-					$_SESSION["index"] = $_POST["index"];
-				}
-				else {
-					unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]);
-				}
-				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
-				return $_SESSION["opdracht"][0];
+		if ($variable != "Opnieuw beginnen"){
+			if ($operator != "Toets"){
+				unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$_POST["index"]]);
+				$_SESSION["index"] = $_POST["index"];
 			}
 			else {
-				unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]);
+				unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]);
 			}
-			$_SESSION["numbers"] = range(1,20);
+			$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
+			return $_SESSION["opdracht"][0];
+		}
+		else {
+			unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]);
+		}
+
 	}
 	// Section 8 - END	
 

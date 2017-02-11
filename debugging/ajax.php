@@ -21,7 +21,7 @@
 			$operator = $_POST["operator"];
 			setOperator($operator);
 			if ($operator == "Toets"){
-				$_SESSION["opdrachtOftoets"] = "toets";
+				$_SESSION["opdrachtOftoets"] = "Toets";
 				$testPage = testPage();
 				echo json_encode($testPage);
 			}
@@ -29,20 +29,20 @@
 				echo json_encode(array("table", resultPage()));
 			}
 			else {
-				$_SESSION["opdrachtOftoets"] = "opdracht";
+				$_SESSION["opdrachtOftoets"] = "Opdracht";
 			}
 		}
 		// Section 2 - END
 		
 		// Section 3 - Assign index and call the generator for the first assignment
+		// Section 3 - Assign index and call the generator for the first assignment
 		elseif ($functions == "callindexCheckerandGenerator") {
-			echo $ifTest = ($_POST["index"] == "Oefentoets") ? json_encode(oefenToets()) : json_encode(indexCheckerandGenerator($_POST["index"]));
+				echo ($_POST["index"] == "Oefentoets") ? json_encode(oefenToets()) : json_encode(indexCheckerandGenerator($_POST["index"]));
 		}
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
 		elseif ($functions == "delete"){
-			$whatToreturn = (isset($_POST["index"])) ? json_encode(deleteAssignments($_POST["index"])) : json_encode(deleteAssignments(null));
-			echo $whatToreturn;
+			echo $whatToreturn = (isset($_POST["index"])) ? json_encode(deleteAssignments($_POST["index"])) : json_encode(deleteAssignments(null));
 		}
 		// Section 4 - END
 		
@@ -78,8 +78,8 @@
 			
 			// Section 5.4 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
-				if ($operator == "Oefentoets"){
-					setOperator($_SESSION["oldOperator"]);
+				if ($opdrachtOftoets == "Oefentoets"){
+					$_SESSION["opdrachtOftoets"] = "opdracht";
 				}
 				echo json_encode(array("table", resultPage()));
 			}
