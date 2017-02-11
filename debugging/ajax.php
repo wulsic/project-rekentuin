@@ -101,7 +101,12 @@
 				echo json_encode(array("popup", "<p> Je hebt nog geen resultaten. </p>")); // empty results, echo popup and text;
 			}
 			else {
-				echo json_encode(array("table", resultPage()));
+				if (count($opdrachtOpslaan[$opdrachtOftoets][$operator]) != 20){
+					echo json_encode(array("popup", "<p> Je hebt nog niet alle opdrachten gemaakt. </p>")); // echo popup and text whenever the total made assingments is not 20
+				}
+				else {
+					echo json_encode(array("table", resultPage()));	
+				}
 			}
 		}
 		// Section 6 - END
