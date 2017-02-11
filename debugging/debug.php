@@ -22,12 +22,19 @@
 							<td> $key</td>";
 						echo "</tr>";
 						foreach ($value as $key2 => $value2){
-							echo "<td> $key2</td>";
 							echo "<tr>";
+							echo "<td> $key2</td>";
+							echo "</tr>";
 							foreach ($value2 as $key3 => $value3){
+								echo "<tr>";
 								echo "<td> $key3</td>";
+								echo "</tr>";
 								foreach ($value3 as $key4 => $value4){
-									echo "<td> $value4</td>";
+									echo "<tr>";
+									echo "<td> $key4</td>";
+									foreach ($value4 as $key5 => $value5){
+										echo "<td> $value5</td>";
+									}
 								}
 						echo "</tr>";
 							}
@@ -67,4 +74,12 @@
 		}
 		echo "<br/>" . $fouten . " fouten. <br/> Cijfer: " . $c . "<br/> Reactie: " . $reactie;
 	}
+
 ?>
+<hr />
+<pre>
+<p> Session hiearchy </p>
+<?php
+ print_r($_SESSION);
+?>
+</pre>
