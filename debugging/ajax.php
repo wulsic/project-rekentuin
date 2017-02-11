@@ -21,18 +21,22 @@
 			$operator = $_POST["operator"];
 			setOperator($operator);
 			if ($operator == "Toets"){
+				$_SESSION["opdrachtOftoets"] = "toets";
 				$testPage = testPage();
 				echo json_encode($testPage);
 			}
 			elseif ($operator == "Resultaten"){
 				echo json_encode(array("table", resultPage()));
 			}
+			else {
+				$_SESSION["opdrachtOftoets"] = "opdracht";
+			}
 		}
 		// Section 2 - END
 		
 		// Section 3 - Assign index and call the generator for the first assignment
 		elseif ($functions == "callindexCheckerandGenerator") {
-			echo /*$ifTest = ($_POST["index"] == "Oefentoets") ? json_encode(oefenToets()) : */json_encode(indexCheckerandGenerator($_POST["index"]));
+			echo $ifTest = ($_POST["index"] == "Oefentoets") ? json_encode(oefenToets()) : json_encode(indexCheckerandGenerator($_POST["index"]));
 		}
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
@@ -46,19 +50,20 @@
 		elseif ($functions == "callControlsaveAndassignmentGenerator"){
 			
 			// Section 5.1 - Put all sessions / post / time into a more readable variable
-			$timeStop 		= time();
-			$antwoord 		= $_POST["antwoord"];
-			$index 			= $_SESSION["index"];
-			$username 		= $_SESSION["username"];
-			$operator 		= $_SESSION["operator"];
-			$som			= $_SESSION["opdracht"][0];
-			$uitkomst 		= $_SESSION["opdracht"][1];
-			$timestart 		= $_SESSION["opdracht"][2];
-			$timeDifference = $timeStop - $timestart;
+			$timeStop 		 = time();
+			$antwoord 		 = $_POST["antwoord"];
+			$index 			 = $_SESSION["index"];
+			$username 		 = $_SESSION["username"];
+			$operator 		 = $_SESSION["operator"];
+			$som			 = $_SESSION["opdracht"][0];
+			$uitkomst 		 = $_SESSION["opdracht"][1];
+			$timestart 		 = $_SESSION["opdracht"][2];
+			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+			$timeDifference  = $timeStop - $timestart;
 		
 			// Section 5.2 - Call functions.
 			$opdrachtControle  = opdrachtControleren($antwoord, $uitkomst);
-			$opdrachtOpslaan   = opdrachtOpslaan($operator, $index , $som, $uitkomst, $antwoord, $opdrachtControle, date("i:s",$timeDifference));		
+			$opdrachtOpslaan   = opdrachtOpslaan($opdrachtOftoets, $operator, $index , $som, $uitkomst, $antwoord, $opdrachtControle, date("i:s",$timeDifference));		
 			$indexChecker 	   = indexChecker("");
 			
 			// Section 5.3 - Generate text base of right or wrong of the assignments.
@@ -89,8 +94,10 @@
 		
 		// Section 6 - check whether result page is empty.
 		elseif ($functions == "callResultpage"){
-			$operator = $_SESSION["operator"];
-			if (empty($_SESSION["opdrachtOpslaan"][$operator])){
+			$operator 		 = $_SESSION["operator"];
+			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
+			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+			if (empty($opdrachtOpslaan[$opdrachtOftoets][$operator])){
 				echo json_encode(array("popup", "<p> Je hebt nog geen resultaten. </p>")); // empty results, echo popup and text;
 			}
 			else {

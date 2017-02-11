@@ -207,8 +207,8 @@ function modal(id, val, text){
 	
 	
 	// Section 7.2 - Enable / Disable X button or yes and no button	
-	ifEresults  = (val == "Resultaten" /*|| val == "Oefentoets"*/ || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
-	ifEresults2 = 				(val == "Resultaten" || id == "opdrachten" /*|| val == "Oefentoets"*/)				       ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
+	ifEresults  = (val == "Resultaten" || val == "Oefentoets" || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
+	ifEresults2 = 				(val == "Resultaten" || id == "opdrachten" || val == "Oefentoets")				       ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	
 	// Section 7.3 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" && id != "uitleg"){
