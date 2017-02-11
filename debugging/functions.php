@@ -192,35 +192,29 @@
 		$operator 		 = $_SESSION["operator"];
 		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 		$CountedAssignments = count($opdrachtOpslaan[$operator]);
-		$fouten = 0;
-		for ($x = 1; $x < $CountedAssignments; $x++){
-			if ($opdrachtOpslaan[$operator][$x][4] == "fout"){
-				$fouten++;
-			}
+		//Array keys search all keys, array column sends back single column of input. That input is 4, because at index 4 there lies the value we need: "fout" or "goed". Array column return that value as an array([0] = "fout/goed").
+		//Array keys then search that returned array for "fout" and return an array with the key as value(array([0] = 1)). Using count, it count's how many keys are in the returned array from array keys.
+		//Array Keys: http://php.net/manual/en/function.array-keys.php | Array Column: http://php.net/manual/en/function.array-column.php . Refer to debug.php for testing these 2 functions if you still don't understand.
+		$fouten = count(array_keys(array_column($opdrachtOpslaan[$operator], 4), "fout")); // Source: http://www.php.net/manual/en/function.array-search.php#106904 at User Contributed Notes: user xfoxawy
+		
+		$c = 10 - ($fouten * 0.5); //Var C is Het cijfer
+		if ($c == 10){
+			$reactie = "School heeft geen zin meer voor jou.";
 		}
-		if ($CountedAssignments == 20){
-			$c = 10 - ($fouten * 0.5); //Var C is Het cijfer
-			if ($c == 10){
-				$reactie = "School heeft geen zin meer voor jou.";
-			}
-			elseif ($c >= 8 && $c < 10){
-				$reactie = "Wauw! Dat heb je goed gemaakt!";
-			}
-			elseif ($c >= 6 && $c < 8){
-				$reactie = "Goed gedaan!";
-			}
-			elseif ($c >= 5.5 && $c < 6){
-				$reactie = "Je deed het goed maar nog een beetje bij spijkeren";
-			}
-			elseif ($c >= 4 && $c < 5.5){
-				$reactie = "Net niet goed, jammer. Blijf oefenen";
-			}
-			elseif ($c >= 0 && $c < 4){
-				$reactie = "Maak de oefeningen goed overnieuw en probeer nogmaals";
-			}
+		elseif ($c >= 8 && $c < 10){
+			$reactie = "Wauw! Dat heb je goed gemaakt!";
 		}
-		else {
-			$reactie = "De sommen zijn nog niet afgemaakt";
+		elseif ($c >= 6 && $c < 8){
+			$reactie = "Goed gedaan!";
+		}
+		elseif ($c >= 5.5 && $c < 6){
+			$reactie = "Je deed het goed maar nog een beetje bij spijkeren";
+		}
+		elseif ($c >= 4 && $c < 5.5){
+			$reactie = "Net niet goed, jammer. Blijf oefenen";
+		}
+		elseif ($c >= 0 && $c < 4){
+			$reactie = "Maak de oefeningen goed overnieuw en probeer nogmaals";
 		}
 		return array('reactie' => $reactie, 'fouten' => $fouten);
 	}
