@@ -240,7 +240,7 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	ifEresults2 = 					(val == "Resultaten" || id == "opdrachten")					? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	
 	// Section 7.3 - Set text when it's id is not the same as over and uitleg
-	if (id != "over" || id != "uitleg"){
+	if (id != "over" && id != "uitleg"){
 		$("input[name='input']").val(null);
 		text = (typeof(myFunctions[id]) == "undefined") ? null : myFunctions[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
 		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);
