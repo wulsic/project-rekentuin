@@ -243,10 +243,14 @@ function modal(id, val, som, uitkomst, antwoord, foutofGoed, naam){
 	if (id != "over" || id != "uitleg"){
 		$("input[name='input']").val(null);
 		text = (typeof(myFunctions[id]) == "undefined") ? null : myFunctions[id].popup(id, val, som, uitkomst, antwoord, foutofGoed, naam);
-		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);			
-		setTimeout(function() {
-			closeAnswerModal();
-		}, closeDelay);
+		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);
+		if (id != "opdrachtenSelectie"){
+			setTimeout(function() {
+				console.log("Test");
+				console.log(id);
+				closeAnswerModal();
+			}, closeDelay);
+		}
 	}
 	// Section 7.4 - Popup fade in
 	modal.fadeIn("fast");
