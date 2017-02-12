@@ -231,6 +231,11 @@ function modal(id, val, text){
 		closeAnswerModal();
 	});
 	
+	window.onclick = function(event) {
+		if (event.target == modalId) {
+			closeAnswerModal();
+	}}
+	
 	/*$(document).keyup(function(e) {
 		if (e.keyCode==13){
 			$(modalId).hide();
