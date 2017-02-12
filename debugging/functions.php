@@ -235,7 +235,7 @@
 				}
 				else {
 					if (count($_SESSION["opdrachtOpslaan"]["Oefentoets"][$operator]) == 20){
-						return array("popup", $text3);
+						return array("popup", $text3, "oefentoets");
 					}
 					else{
 						$_SESSION["opdrachtOftoets"] = "Oefentoets";
@@ -258,10 +258,12 @@
 	}
 	function testPage(){// Test is such a pain in the frigin ass.
 		$text = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
+		$text2 = array("popup", "<p> Maak eerst plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>");
 		$operator = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 		if (isset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
-			if (count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) != 20){
+			// If you want to debug, use this: count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) != 20
+			if (count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["+"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["-"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["*"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["/"]) == 20){
 				if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
 					return $text;
 				}
@@ -270,7 +272,7 @@
 				}
 			}
 			else {
-				return $text;
+				return $text2;
 			}
 		}
 		else {
@@ -281,6 +283,7 @@
 	
 	// Section 8 - Delete Assignments
 	function deleteAssignments($variable){
+		$_SESSION["debug"] = $variable;
 		$index 	  = $_SESSION["index"];
 		$group	  = $_SESSION["group"];
 		$operator = $_SESSION["operator"];
@@ -288,12 +291,17 @@
 		$_SESSION["numbers"] = range(1,20);	
 		
 		if ($variable != "Opnieuw beginnen"){
-			if ($operator != "Toets"){
+			if ($operator != "Toets" && $variable != "oefentoets"){
 				unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$_POST["index"]]);
-				$_SESSION["index"] = $_POST["index"];
+				$_SESSION["index"] = $variable;
 			}
 			else {
-				unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]);
+				if ($variable == "oefentoets"){
+					unset($_SESSION["opdrachtOpslaan"]["Oefentoets"][$operator]);
+				}
+				else {
+					unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]);					
+				}
 			}
 			$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
 			return $_SESSION["opdracht"][0];

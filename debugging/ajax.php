@@ -42,6 +42,9 @@
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
 		elseif ($functions == "delete"){
+			if ($_POST["index"] == "oefentoets"){
+				$_SESSION["opdrachtOftoets"] = "Oefentoets";
+			}
 			echo $whatToreturn = (isset($_POST["index"])) ? json_encode(deleteAssignments($_POST["index"])) : json_encode(deleteAssignments(null));
 		}
 		// Section 4 - END
@@ -93,12 +96,12 @@
 		// Section 6 - check whether result page is empty.
 		elseif ($functions == "callResultpage"){
 			$operator 		 = $_SESSION["operator"];
-			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
-			if (empty($opdrachtOpslaan[$opdrachtOftoets][$operator])){
+			if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
 				echo json_encode(array("popup", "<p> Je hebt nog geen resultaten. </p>")); // empty results, echo popup and text;
 			}
 			else {
+				$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 				if (count($opdrachtOpslaan[$opdrachtOftoets][$operator]) != 20){
 					echo json_encode(array("popup", "<p> Je hebt nog niet alle opdrachten gemaakt. </p>")); // echo popup and text whenever the total made assingments is not 20
 				}

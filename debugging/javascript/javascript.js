@@ -75,10 +75,10 @@
 			},
 			success:
 			function(data){
-				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
+				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
-					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets") ? $("input[name='input']").val(null).focus() : null;
+					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
+					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
 					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
 				});
 			}
@@ -194,15 +194,16 @@ function testAtimeLimit(){ //  Time limit per assignments
 
 // Section 7 - Popup function modal()
 function modal(id, val, text){
+	
+	console.log(tmpMemory);
 	//  Section 7.1 - Set variables
 	var modal = $("#" + id + "modal");
 	var modalId = document.getElementById(id + "modal");
 	var closeDelay = 2000; // 2 second delay
 	
-	
 	// Section 7.2 - Enable / Disable X button or yes and no button	
-	ifEresults  = (val == "Resultaten" || val == "Oefentoets" || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
-	ifEresults2 = 				(val == "Resultaten" || id == "opdrachten" || val == "Oefentoets")				       ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
+	ifEresults  = (val == "Resultaten" || tmpMemory == "Oefentoets" || id == "opdrachten" || pageVisibility("#startpagina")) ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
+	ifEresults2 = 				(val == "Resultaten" || id == "opdrachten" || tmpMemory == "Oefentoets")				       ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	
 	// Section 7.3 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" && id != "uitleg"){
@@ -248,6 +249,7 @@ function modal(id, val, text){
 // Section 8 - Submit form replacement. POST using AJAX.
 function post(val, id) {
 	console.log(val);
+	console.log(tmpMemory);
 	$.ajax({
 	   type: "POST",
 	   url: "ajax.php", // The url where the post is going to be send and the response orginate.
@@ -256,13 +258,14 @@ function post(val, id) {
 	   success: function(data){
 		   console.log(data);
 		   if (data[0] == "popup"){
+			   tmpMemory = (data[2] == null) ? tmpMemory : data[2];
 			   modal(id, val, data[1]);
 		   }
 		   else if (data[0] == "table"){
 			   createTable(id, data[1]);
 		   }
 		   else {
-			   fadeAnimation(id, val, data);		   
+			   fadeAnimation(id, val, data);	   
 		   }
 	   }
 	});
