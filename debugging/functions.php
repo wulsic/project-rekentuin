@@ -8,14 +8,7 @@
 	}
 	// Section 1 -  END
 	
-	// Section 2 - Set session Operator and Old operator.
-	function setOperator($operator){
-		$_SESSION["oldOperator"] = (isset($_SESSION["operator"])) ? $_SESSION["operator"] : $operator;
-		$_SESSION["operator"] = ($operator == "Resultaten") ? "Toets" : $_POST["operator"];		
-	}
-	// Section 2 - END
-	
-	// Section 3 - Assignment generator
+	// Section 2 - Assignment generator
 	function rekundigeOperator($userSelection){
 		// Section 2.1 - Operator Picker
 		$operator = array("+", "-", "*", "");
@@ -36,7 +29,7 @@
 		}
 	}
 	function opdrachtGenerator($niveau, $rekundigeoperator) {
-		// Section 3.2 - Number Generator
+		// Section 2.2 - Number Generator
 		if ($niveau == 4){
 			$max = 10;
 		}
@@ -53,7 +46,7 @@
 		$getal1 = mt_rand($min, $max);
 		$getal2 = mt_rand($min, $max);
 		
-		// Section 3.3 - Operator Picker
+		// Section 2.3 - Operator Picker
 		if ($rekundigeoperator == "+") {
 			$uitkomst = $getal1 + $getal2;
 			$som = "$getal1 + $getal2";
@@ -85,35 +78,35 @@
 		$somUitkomstGetallen = array ($som, $uitkomst, time());
 		return $somUitkomstGetallen;
 	}
-	// Section 3 - END
+	// Section 2 - END
 	
-	// Section 4 - Assign index and call the generator for the first assignment
+	// Section 3 - Assign index and call the generator for the first assignment
 	function indexCheckerandGenerator($index){
-		// Section 4.1 - Error Response
+		// Section 3.1 - Error Response
 		if (isset($_SESSION["operator"]) && isset($_SESSION["opdrachtOftoets"])){
 			
-			// Section 4.1.1 - Put all sessions into a more readable variable
+			// Section 3.1.1 - Put all sessions into a more readable variable
 			$group			 = $_SESSION["group"];
 			$operator 		 = $_SESSION["operator"];
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 			
-			// Section 4.1.2 - Check for already made assignments
+			// Section 3.1.2 - Check for already made assignments
 			if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
 				
-				// Section 4.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
+				// Section 3.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
 				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $operator || empty($_SESSION["numbers"])){
 					$_SESSION["numbers"] = range(1,20);
 				}
 				
-				// Section 4.1.2-2 - Call functions
+				// Section 3.1.2-2 - Call functions
 				$indexChecker = indexChecker($index);
 				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
 				return $_SESSION["opdracht"][0];	
 			}
-			// Section 4.1.3 - Return array for a popup when the assignment is already made.
+			// Section 3.1.3 - Return array for a popup when the assignment is already made.
 			else {
 				
-				// Section 4.1.3-1 - Put all sessions into a more readable variable
+				// Section 3.1.3-1 - Put all sessions into a more readable variable
 				$assignment	= $_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index][0];
 				$outcome	= $_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index][2];
 				$answer		= $_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index][3];
@@ -132,22 +125,22 @@
 			return "operator not set";
 		}
 	}
-	// Section 4 - END
+	// Section 3 - END
 	
-	// Section 5 - Index Checker
+	// Section 4 - Index Checker
 	function indexChecker($index){
 		
-		// Section 5.1 - Set session index
+		// Section 4.1 - Set session index
 		if (!empty($index)) {
 			$_SESSION["index"] = (int)$index;
 		}
 		else {
 			
-			// Section 5.1.1 - Remove a number and then check whether session numbers is empty
+			// Section 4.1.1 - Remove a number and then check whether session numbers is empty
 			unset($_SESSION["numbers"][$_SESSION["index"] - 1]);
 			if (!empty($_SESSION["numbers"])){
 				
-				// Section 5.1.1-1 - Set session index 1 when it hits 20. If it' not 20 it will up the number currently in session index.
+				// Section 4.1.1-1 - Set session index 1 when it hits 20. If it' not 20 it will up the number currently in session index.
 				if ($_SESSION["index"] == 20){
 					$_SESSION["index"] = 1;
 				}
@@ -164,15 +157,15 @@
 			}
 		}
 	}
-	// Section 5 - END
+	// Section 4 - END
 	
-	// Section 6 - Save Assignment
+	// Section 5 - Save Assignment
 	function opdrachtOpslaan($opdrachtOftoets, $operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer) {
 		$_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index] = array($opdracht, "=", $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 	}
-	// Section 6 - END
+	// Section 5 - END
 	
-	// Section 7 - Assignment Checker
+	// Section 6 - Assignment Checker
 	function opdrachtControleren($antwoord, $uitkomst){
 		if ($antwoord == $uitkomst){
 			return "goed";
@@ -181,6 +174,9 @@
 			return "fout";
 		}
 	}
+	// Section 6 - END;
+	
+	// Section 7 - Calculate number to get a response.
 	function cijferBerekenen(){
 		$operator 		 = $_SESSION["operator"];
 		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
@@ -256,7 +252,7 @@
 			return array("popup", $text1);
 		}
 	}
-	function testPage(){// Test is such a pain in the frigin ass.
+	function toets(){// Test is such a pain in the frigin ass.
 		$text = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
 		$text2 = array("popup", "<p> Maak eerst plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>");
 		$operator = $_SESSION["operator"];
