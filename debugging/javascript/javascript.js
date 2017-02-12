@@ -194,33 +194,31 @@ function testAtimeLimit(){ //  Time limit per assignments
 
 // Section 7 - Popup function modal()
 function modal(id, val, text){
-	
-	console.log(tmpMemory);
+
 	//  Section 7.1 - Set variables
 	var modal = $("#" + id + "modal");
 	var modalId = document.getElementById(id + "modal");
 	var closeDelay = 2000; // 2 second delay
 	
 	// Section 7.2 - Enable / Disable X button or yes and no button	
-	ifEresults  = (val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || pageVisibility("#startpagina") || tmpMemory == "Oefentoets") ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
+	ifEresults  = (pageVisibility("#startpagina") || val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets") ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
 	ifEresults2 = 				(val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets")				      ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	
 	// Section 7.3 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" && id != "uitleg"){
 		$("input[name='input']").val(null);
 		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);
-		if (id != "opdrachtenSelectie"){
-			setTimeout(function() {
-				console.log("Test");
-				console.log(id);
-				closeAnswerModal();
-			}, closeDelay);
+		if (pageVisibility("#opdrachten") || pageVisibility("#operators") || val == "Resultaten" || val == "Opnieuw beginnen" || tmpMemory == "Oefentoets" ){
+			if (typeof(pClosedelay) != "undefined"){
+				clearTimeout(pClosedelay);
+			}
+			pClosedelay = setTimeout(closeAnswerModal, closeDelay); // pClosedelay = Popup close delay.
 		}
 	}
 	// Section 7.4 - Popup fade in
 	modal.fadeIn("fast");
 	
-	// Sectuib 7.5 - Close modal onclick + remove p when startpagina is not active.
+	// Section 7.5 - Close modal onclick + remove p when startpagina is not active.
 	function closeAnswerModal() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
@@ -232,11 +230,6 @@ function modal(id, val, text){
 	$(".close, #yesOrno, #testResults").click(function(){
 		closeAnswerModal();
 	});
-
-	window.onclick = function(event) {
-		if (event.target == modalId) {
-			closeAnswerModal();
-	}}
 	
 	/*$(document).keyup(function(e) {
 		if (e.keyCode==13){
@@ -248,15 +241,12 @@ function modal(id, val, text){
 
 // Section 8 - Submit form replacement. POST using AJAX.
 function post(val, id) {
-	console.log(val);
-	console.log(tmpMemory);
 	$.ajax({
 	   type: "POST",
 	   url: "ajax.php", // The url where the post is going to be send and the response orginate.
 	   data: myFunctions[id].dataSend(val, id),
 	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten" || val == "Resultaten" || val == "Toets") ? "JSON" : "text",
 	   success: function(data){
-		   console.log(data);
 		   if (data[0] == "popup"){
 			   tmpMemory = (data[2] == null) ? tmpMemory : data[2];
 			   modal(id, val, data[1]);
