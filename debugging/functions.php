@@ -284,7 +284,7 @@
 	// Section 8 - Delete Assignments
 	function deleteAssignments($variable){
 		$_SESSION["debug"] = $variable;
-		$index 	  = $_SESSION["index"];
+		$index 	  = (isset($_SESSION["index"])) ? $_SESSION["index"] : null;
 		$group	  = $_SESSION["group"];
 		$operator = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
@@ -308,6 +308,7 @@
 		}
 		else {
 			unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]);
+			return array("popup", "<p> De opdrachten en oefentoets zijn gewist. </p>");
 		}
 
 	}
