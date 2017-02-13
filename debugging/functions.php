@@ -49,7 +49,7 @@
 		else {
 			return false;
 		}
-		$min = 0;
+		$min = ($rekundigeoperator == "*" || $rekundigeoperator == "") ? 1 : 0;
 		$getal1 = mt_rand($min, $max);
 		$getal2 = mt_rand($min, $max);
 		
@@ -71,10 +71,7 @@
 			$uitkomst = $getal1 * $getal2;
 			$som = "$getal1 x $getal2";
 		}
-		else {
-			$min = 1;
-			$getal1 = mt_rand($min, $max);
-			$getal2 = mt_rand($min, $max);			
+		else {		
 			while (!is_int($getal1/$getal2)){
 				$getal1 = mt_rand($min, $max);
 				$getal2 = mt_rand($min, $max);
