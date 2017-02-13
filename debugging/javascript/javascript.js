@@ -278,6 +278,9 @@ function modal(id, val, text, closeDelay = 2000){
 				$("button").prop('disabled', true);
 				post("moveToassignment", "moveToassignment");
 			}
+			else {
+				$("button").prop('disabled', false);
+			}
 			whenNottoRemove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();
 		});
 		$("input[name='input']").focus();
@@ -340,10 +343,14 @@ function fadeAnimation(id1, val, data){
 		$("#" + id1).fadeOut("slow", function(){
 			id1 = (val == "moveToassignment") ? "moveToassignment" : id1;
 			$("input[name='input'], input[type='submit']").prop('disabled', false);
-			if (val == "Toets" || val == "Ja" && id1 != "opdrachtenSelectie"){
+			if (val == "Toets" || val == "Oefentoets" || val == "Ja" && id1 != "opdrachtenSelectie"){
 				$("#timer").css("display", "inline-block");
+				
 				if (val == "Ja") {
 					tmpMemory = "Toets";
+				}
+				else {
+					$("#timer").css("display", "block");
 				}
 				
 				$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
