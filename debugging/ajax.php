@@ -95,11 +95,12 @@
 		
 		// Section 6 - Move to assignment page based on the operator when the timer runs out.
 		elseif ($functions == "callTomoveAssignment"){
-			$group	  = $_SESSION["group"];
-			$operator = $_POST["operator"];
+			$group	  					 = $_SESSION["group"];
+			$operator 					 = $_POST["operator"];
+			$opdrachtOftoets 	 		 = $_SESSION["opdrachtOftoets"];
 			$_SESSION["opdrachtOftoets"] = "Opdracht";
+			unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]);
 			setOperator($operator);
-			echo json_encode("moveToopdrachtSelectie");
 		}
 		// Section 6 - END
 		

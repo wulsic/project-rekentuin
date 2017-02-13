@@ -75,35 +75,33 @@
 		"opdrachten": {
 			dataSend:
 			function(val){
-				if (val == "moveToassignment"){
-					dataSend = {
-						functions: "callTomoveAssignment",
-						operator: $("#opdrachten").children("form").children("h1").text().replace(/[\w ]/g,"")
-					};					
-				}
-				else {
 					dataSend = {
 						functions: "callControlsaveAndassignmentGenerator",
 						antwoord: val
 					};
-				}
 			return dataSend;
 			},
 			success:
 			function(data){
-				if (data == "moveToopdrachtSelectie"){
-					tmpMemory = "operators";
-				}
-				else {
-					ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
-					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-						ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
-						ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
-						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
-					});	
-				}
+				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
+				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
+					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
+					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
+				});
 			}
 		},
+		"moveToassignment": {
+			dataSend:
+			function(){
+				dataSend = {
+					functions: "callTomoveAssignment",
+					operator: $("#opdrachten").children("form").children("h1").text().replace(/[\w ]/g,"")
+				};
+			return dataSend;
+			},
+			success: null
+		}
 	};
 // Section 1 - END
 
@@ -121,7 +119,7 @@ $(document).ready(function(){
 	});
 	// Section 2.3 - On button click
 	$("button").click(function(){
-
+		$("button").prop('disabled', true);
 		if ($(this).attr("class") == "backwards"){
 			if ($(this).parent().attr("id") == null){
 				id = $(this).parent().parent().attr("id");
@@ -130,9 +128,9 @@ $(document).ready(function(){
 				id = $(this).parent().attr("id");	
 			}
 			$("#" + id).fadeOut("slow", function(){
-				console.log(tmpMemory);
 				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
+				$("button").prop('disabled', false);
 			});
 		}
 		else if ($(this).attr("id") == "over" || $(this).attr("id") == "uitleg"){
@@ -195,7 +193,7 @@ function loopInitiator(val){
 	aMinutes = 1;
 	aSeconds = 0;
 	ifLoop  = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
-	ifLoop2 = (typeof(aTimelimitLoop) == "undefined") ? null : clearTimeout(aTimelimitloop);
+	ifLoop2 = (typeof(aTimelimitLoop) == "undefined") ? null : clearTimeout(aTimelimitLoop);
 	countDownloop();
 	aCountdownLoop();
 }
@@ -221,8 +219,8 @@ function aCountdownLoop(){ // Assignment time limit per assignments during the t
 	}
 	if (aMinutes == 0 && aSeconds == 0){
 		clearTimeout(timeLimitloop);
-		clearTimeout(aTimelimitloop);
-		var getAssignment = $("#opdrachten").children("form").children("h1").text().replace(/[\w ]/g,"");
+		clearTimeout(aTimelimitLoop);
+		var getAssignment = $("#opdrachten").children("form").children("h1").text().replace(/[\d ]/g,"");
 		if (getAssignment == "+"){
 			operatorText = "plus";
 		}
@@ -237,9 +235,10 @@ function aCountdownLoop(){ // Assignment time limit per assignments during the t
 		}
 		text = "<p> Je hebt te lang over deze opdracht gedaan, je wordt nu doorverzonden naar opdrachten pagina, " + operatorText + "</p>";
 		modal("opdrachten", "moveToassignment", text, 5000);
+		console.log("call");
 	}
 	else {
-		aTimelimitloop = setTimeout(aCountdownLoop, 1000);	
+		aTimelimitLoop = setTimeout(aCountdownLoop, 1000);	
 	}
 	aSeconds--;
 }
@@ -247,7 +246,7 @@ function aCountdownLoop(){ // Assignment time limit per assignments during the t
 
 // Section 7 - Popup function modal()
 function modal(id, val, text, closeDelay = 2000){
-
+	
 	//  Section 7.1 - Set variables
 	var modal = $("#" + id + "modal");
 	var modalId = document.getElementById(id + "modal");
@@ -256,7 +255,10 @@ function modal(id, val, text, closeDelay = 2000){
 	ifEresults  = (pageVisibility("#startpagina") || val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets") ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
 	ifEresults2 = 				(val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets")				      ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	
-	// Section 7.3 - Set text when it's id is not the same as over and uitleg
+	// Section 7.3 - Popup fade in
+	modal.fadeIn("fast");
+	
+	// Section 7.4 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" && id != "uitleg"){
 		$("input[name='input']").val(null);
 		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);
@@ -267,15 +269,14 @@ function modal(id, val, text, closeDelay = 2000){
 			pClosedelay = setTimeout(closeAnswerModal, closeDelay); // pClosedelay = Popup close delay.
 		}
 	}
-	// Section 7.4 - Popup fade in
-	modal.fadeIn("fast");
 	
 	// Section 7.5 - Close modal onclick + remove p when startpagina is not active.
 	function closeAnswerModal() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
 			if (val == "moveToassignment"){
-				post("moveToassignment", "opdrachten");
+				$("button").prop('disabled', true);
+				post("moveToassignment", "moveToassignment");
 			}
 			whenNottoRemove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();
 		});
@@ -335,8 +336,9 @@ function fadeAnimation(id1, val, data){
 		myFunctions[id1].success(data);
 	}
 	else {
-		$("input[name='input'], input[type='submit']").prop('disabled', true);
+		id1 = (val == "moveToassignment") ? "opdrachten" : id1;
 		$("#" + id1).fadeOut("slow", function(){
+			id1 = (val == "moveToassignment") ? "moveToassignment" : id1;
 			$("input[name='input'], input[type='submit']").prop('disabled', false);
 			if (val == "Toets" || val == "Ja" && id1 != "opdrachtenSelectie"){
 				$("#timer").css("display", "inline-block");
@@ -351,10 +353,9 @@ function fadeAnimation(id1, val, data){
 			}
 			else {
 				ifFunction = (typeof(myFunctions[id1].success) == "function") ? myFunctions[id1].success(data) : null;
-				if (val == "moveToassignment"){
-					id1 = "operators";
-				}
+				id1 = (val == "moveToassignment") ? "operators" : id1;
 				$($("#" + id1).next()).fadeIn("slow").css("display", "inline-flex");
+				$("button").prop('disabled', false);
 				ifStartpagina = (id1 == "groepen") ? null : $("input[name='input']").val(null).focus();
 			}
 		});

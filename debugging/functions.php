@@ -291,7 +291,7 @@
 	// Section 8 - END
 	
 	// Section 8 - Delete Assignments
-	function deleteAssignments($variable){
+	function deleteAssignments($variable = null){
 		
 		$group	  			 = $_SESSION["group"];
 		$operator 			 = $_SESSION["operator"];
