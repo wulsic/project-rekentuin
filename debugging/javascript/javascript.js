@@ -8,7 +8,7 @@
 	var aMinutes = 2; // assignment minutes. Time limit per assignments
 	var aMinutes = 0; // assignment seconds. Time limit per assignments
 
-	// Section 1.3 - Initialization multiple variables and functions for each ID in the hierachy of index.php
+	// Section 1.3 - Initialize multiple variables and functions for each ID in the hierachy of index.php
 	var myFunctions = {
 		"startpagina": {
 			dataSend:
@@ -251,6 +251,15 @@ function modal(id, val, text){
 			closeAnswerModal();
 	}}
 	
+	/*if (this === document.activeElement){
+		$(document).keyup(function(e) {
+			if (e.keyCode==13){
+				$(modalId).hide();
+			}
+		})
+	}*/
+
+
 	/*$(document).keyup(function(e) {
 		if (e.keyCode==13){
 			$(modalId).hide();

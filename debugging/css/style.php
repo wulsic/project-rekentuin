@@ -3,55 +3,100 @@
 	require_once "../ajax.php";
 ?>
 
-@media only screen and (min-width:368px){
+@media only screen and (min-width:320px){
 	h1 {
-		font-size:3em;margin:0px;
+		font-size: 2.5em;margin:0px;
 	}
 	label {
-		padding:7px;
+		padding: 7px;
+	}
+	table {
+	    margin-top: 20px;
+		font-size: 11px;
 	}
 	.backwards {
 		margin: -15px !important;
 		font-size: 1.5em !important;
 	}
-	#restart {
-		width: 361px !important;
-		font-size: 2em !important;
-		height: 75px !important;;
-	}
 	#results {
-		width: 230px !important;
-		font-size: 2em !important;
+		margin-left: 0 !important;
+		margin-right: auto;
+		font-size: 1.5em !important;
+		border-top-left-radius: 0px !important;
+		border-bottom-left-radius: 0px !important;
+	}
+	#oefen {
+		margin-left: auto !important;
+		margin-right: 0 !important;
+		border-top-right-radius: 0px !important;
+		border-bottom-right-radius: 0px !important;
+		font-size: 1.5em !important;
+	}
+	#restart {
+		width: 175px !important;
+		font-size: 1.5em !important;
+		height: 97px !important;
+		margin: -11px !important;
+		font-size: 1.5em !important;
+		margin-left: auto !important;
+		margin-right: 0 !important;
+		border-top-right-radius: 0px !important;
+		border-top-left-radius: 0px !important;
+		border-bottom-right-radius: 0px !important;
+	}
+	#results, #oefen {
+		width: 175px !important;
+		font-size: 1.5em !important;
 		height: 75px !important;
 	}
 	#submit {
 		cursor:pointer;
 	}
 	#groepen button, #operators button {
-		margin:6px;
-		font-size:2em;
-		width:400px;
-		height:125px;
+		margin: 6px;
+		font-size: 2em;
+		width: 95%;
+		height: 125px;
 	}
 	#startpagina button {
-		border-radius:5px;
-		border-style:hidden;
-		margin:5px;
-		background-color:white;
-		padding:8px;
+		border-radius: 5px;
+		border-style: hidden;
+		margin: 5px;
+		background-color: white;
+		padding: 8px;
 	}
 	#opdrachtenSelectie button {
-		margin:20px;
-		font-size:2em;
-		width:75px;
-		height:75px;
-		border-radius:20px;
+		margin: 20px;
+		font-size: 2em;
+		width: 75px;
+		height: 75px;
+		border-radius: 20px;
+	}
+	.modal-small {
+		width: 85% !important;
+	}
+	#opdrachtenSelectie {
+		margin-bottom: 40px;
+	}
+}
+@media only screen and (min-width:368px){
+	h1 {
+		font-size: 3em;
+		margin:0px;
+	}
+	#groepen button, #operators button {
+		width: 400px;
 	}
 	.modal-small {
 		width: 87% !important;
 	}
 
 }
+@media only screen and (min-width:600px){
+	
+}
+
+
 
 @media only screen and (min-width:910px){
 	h1 {
@@ -67,21 +112,31 @@
 		transform:scale(1.1);
 	}
 	#groepen button, #operators button {
-		margin:20px;
+		margin:25px !important;
 		font-size:4em;
 		width:250px;
 		height:250px;
 	}
 	.backwards {
-		margin: 20px !important;
+		margin: 25px !important;
 		font-size: 2em !important;
+		margin-bottom: -100px !important;
 	}
 	#opdrachtenSelectie button {
-		margin:20px;
+		margin:20px !important;
 		font-size:3em;
 		width:125px;
 		height:125px;
 	}
+	#restart {
+		margin: 0px;
+		margin-left: 0;
+		margin-right: 0;
+	}
+	#results {
+		border-radius: 20px !important;
+	}
+	
 	.modal-small {
 		width: 87% !important;
 	}
