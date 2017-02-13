@@ -87,7 +87,7 @@
 				 <?php
 					for ($a = 1; $a <= 20; $a++){
 						if ($a == 1) {
-							echo "<div>";
+							echo "<div class='margin-spacer'>";
 						}
 						echo "<button>$a</button>";
 					}

@@ -93,29 +93,55 @@
 
 }
 @media only screen and (min-width:600px){
-	
+	#groepen button, #operators button {
+		/*margin: 25px !important;*/
+		font-size: 2em;
+		width: 200px;
+		height: 200px;
+	}
+	#opdrachtenSelectie button {
+		font-size: 2em;
+		width: 125px;
+		height: 125px;
+	}
+	#opnieuw {
+		height: 95px !important;
+	}
+	#results{
+		margin-top: 0px !important;
+		height: 95px !important;
+		font-size: 2em;
+		border-top-right-radius: 0 !important;
+	}
+	#oefen{
+		margin-top: 0 !important;
+		border-top-left-radius: 0 !important;
+	}
 }
 
+@media only screen and (min-width:800px){
 
-
-@media only screen and (min-width:910px){
-	h1 {
-		font-size:4em;
-	}
-	label {
-		padding:9px;
-	}
 	button {
 		transition: all .2s ease-in-out;
 	}
 	button:hover {
 		transform:scale(1.1);
 	}
+}
+
+@media only screen and (min-width:1190px){
+	h1 {
+		font-size: 3em;
+	}
+	label {
+		padding: 9px;
+	}
+
 	#groepen button, #operators button {
-		margin:25px !important;
-		font-size:4em;
-		width:250px;
-		height:250px;
+		margin: 25px !important;
+		font-size: 3em;
+		width: 200px;
+		height: 200px;
 	}
 	.backwards {
 		margin: 25px !important;
@@ -132,9 +158,20 @@
 		margin: 0px;
 		margin-left: 0;
 		margin-right: 0;
+		border-radius: 20px !important;
+		font-size: 2em !important;
+		width: 365px !important;
+		height: 85px !important;
 	}
 	#results {
 		border-radius: 20px !important;
+		width: 235px !important;
+		font-size: 2em !important;
+	}
+	#oefen {
+		font-size: 2em !important;
+		border-radius: 20px !important;
+		width: 240px !important;
 	}
 	
 	.modal-small {
@@ -147,6 +184,7 @@
 	h1 {font-size:5em;}
 	label {padding:10px;}
 }
+
 body {
 	margin: 0;
 	font-family: Dyslexie;
@@ -246,6 +284,10 @@ table {
 	color: black;
 }
 
+.margin-spacer{
+	margin-top: 35px;
+}
+
 #yesOrno {
 	width: 200px !important;
 	height: 175px !important;
@@ -319,4 +361,3 @@ table {
 	color: white;
 	background-color:black;
 }
-
