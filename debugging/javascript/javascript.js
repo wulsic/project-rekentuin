@@ -3,9 +3,10 @@
 	var tmpMemory;
 	
 	//Section 1.2 - Minutes / Seconds
-	var minutes = 30;
-    var aMinutes = 2; // assignment minutes. Time limit per assignments
-	var seconds = 0;
+	var minutes  = 30;// Time limit for the test
+	var seconds  = 0; // Time limit for the test
+	var aMinutes = 2; // assignment minutes. Time limit per assignments
+	var aMinutes = 0; // assignment seconds. Time limit per assignments
 
 	// Section 1.3 - Initialization multiple variables and functions for each ID in the hierachy of index.php
 	var myFunctions = {
@@ -51,10 +52,17 @@
 		"opdrachtenSelectie": {
 			dataSend:
 			function(val){
-				dataSend = {
-					functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : (val == "Resultaten") ? "callResultpage" : "callindexCheckerandGenerator",
-					index: (val == "Ja") ? tmpMemory : (val == "Resultaten") ? null : val
-				};
+				if (val == "Resultaten"){
+					dataSend = {
+						functions: "callResultpage"
+					};
+				}
+				else {
+					dataSend = {
+							functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
+							index: (val == "Ja") ? tmpMemory : val
+					};
+				}
 			return dataSend;
 			},
 			success: 
@@ -67,10 +75,17 @@
 		"opdrachten": {
 			dataSend:
 			function(val){
-				dataSend = {
-					functions: "callControlsaveAndassignmentGenerator",
-					antwoord: val
-				};
+				if (val == "callTomoveAssignment"){
+					dataSend = {
+						functions: "callTomoveAssignment"
+					};					
+				}
+				else {
+					dataSend = {
+						functions: "callControlsaveAndassignmentGenerator",
+						antwoord: val
+					};
+				}
 			return dataSend;
 			},
 			success:
