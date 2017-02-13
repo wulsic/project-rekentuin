@@ -89,14 +89,19 @@
 				}
 			return dataSend;
 			},
-			success: (tmpMemory == "moveToassignment") ? null :
+			success:
 			function(data){
-				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
-				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
-					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
-					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
-				});	
+				if (data == "moveToopdrachtSelectie"){
+					tmpMemory = "operators";
+				}
+				else {
+					ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
+					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+						ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
+						ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
+						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
+					});	
+				}
 			}
 		},
 	};
@@ -231,7 +236,6 @@ function aCountdownLoop(){ // Assignment time limit per assignments during the t
 			operatorText = "gedeelddoor";
 		}
 		text = "<p> Je hebt te lang over deze opdracht gedaan, je wordt nu doorverzonden naar opdrachten pagina, " + operatorText + "</p>";
-		tmpMemory = "moveToassignment";
 		modal("opdrachten", "moveToassignment", text, 5000);
 	}
 	else {
