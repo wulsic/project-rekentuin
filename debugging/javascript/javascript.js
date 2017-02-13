@@ -8,7 +8,7 @@
 	var aMinutes = 1; // assignment minutes. Time limit per assignments
 	var aSeconds = 0; // assignment seconds. Time limit per assignments
 
-	// Section 1.3 - Initialization multiple variables and functions for each ID in the hierachy of index.php
+	// Section 1.3 - Initialize multiple variables and functions for each ID in the hierachy of index.php
 	var myFunctions = {
 		"startpagina": {
 			dataSend:
@@ -189,8 +189,8 @@ function usernameVerify(txt) {
 // Section 5 - END
 
 // Section 6 - Time limit for the user making a test.
-function loopIniator(val){
-	minutes = 30
+function loopInitiator(val){
+	minutes = 30;
 	seconds = 0;
 	aMinutes = 1;
 	aSeconds = 0;
@@ -291,6 +291,15 @@ function modal(id, val, text, closeDelay = 2000){
 			closeAnswerModal();
 	}}
 	
+	/*if (this === document.activeElement){
+		$(document).keyup(function(e) {
+			if (e.keyCode==13){
+				$(modalId).hide();
+			}
+		})
+	}*/
+
+
 	/*$(document).keyup(function(e) {
 		if (e.keyCode==13){
 			$(modalId).hide();
@@ -336,7 +345,7 @@ function fadeAnimation(id1, val, data){
 				}
 				
 				$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-				loopIniator();
+				loopInitiator();
 				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 				$("input[name='input']").val(null).focus();
 			}
