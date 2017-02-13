@@ -5,7 +5,7 @@
 	//Section 1.2 - Minutes / Seconds
 	var minutes  = 30;// Time limit for the test
 	var seconds  = 0; // Time limit for the test
-	var aMinutes = 1; // assignment minutes. Time limit per assignments
+	var aMinutes = 5; // assignment minutes. Time limit per assignments
 	var aSeconds = 0; // assignment seconds. Time limit per assignments
 
 	// Section 1.3 - Initialize multiple variables and functions for each ID in the hierachy of index.php
@@ -85,6 +85,13 @@
 			function(data){
 				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+					if (aTimelimitLoop) {
+						clearTimeout(aTimelimitLoop);
+					}
+					aMinutes = 5;
+					aSeconds = 0;
+					aCountdownLoop();
+
 					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
 					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
 					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
@@ -198,11 +205,12 @@ function loopInitiator(val){
 	aCountdownLoop();
 }
 function countDownloop(){
-	if (seconds <= 0 && minutes != 0){
+	seconds--;
+	if (minutes != 0 && seconds <= 0){
 		minutes--;
 		seconds = 59;
 	}
-	if (minutes == 0 && seconds == 0){
+	if (minutes == 0 && seconds <= 0){
 		clearTimeout(timeLimitloop);
 		post("Toets", "operators");
 	}
@@ -210,14 +218,14 @@ function countDownloop(){
 		timeLimitloop = setTimeout(countDownloop, 1000);	
 	}
 	$("#timer").text("Tijd : " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
-	seconds--;
 }
 function aCountdownLoop(){ // Assignment time limit per assignments during the test. Everything with a, like aMinutes is a short version for assignment.
-	if (aSeconds <= 0 && aMinutes != 0){
+	aSeconds--;
+	if ( aMinutes != 0 && aSeconds <= 0){
 		aMinutes--;
-		aSeconds = 2;
+		aSeconds = 59;
 	}
-	if (aMinutes == 0 && aSeconds == 0){
+	if (aMinutes == 0 && aSeconds <= 0){
 		clearTimeout(timeLimitloop);
 		clearTimeout(aTimelimitLoop);
 		var getAssignment = $("#opdrachten").children("form").children("h1").text().replace(/[\d ]/g,"");
@@ -240,7 +248,8 @@ function aCountdownLoop(){ // Assignment time limit per assignments during the t
 	else {
 		aTimelimitLoop = setTimeout(aCountdownLoop, 1000);	
 	}
-	aSeconds--;
+	console.log(aSeconds);
+	console.log(aMinutes);
 }
 // Section 6 - END
 
