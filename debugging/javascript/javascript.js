@@ -167,7 +167,7 @@ function usernameVerify(txt) {
 // Section 5 - END
 
 // Section 6 - Time limit for the user making a test.
-function loopIniator(val){
+function loopInitiator(val){
 	minutes = 30;
 	seconds = 0;
 	ifLoop = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
@@ -281,7 +281,7 @@ function fadeAnimation(id1, val, data){
 				}
 				
 				$("#opdrachten").children("form").children("h1").text(data.replace(/\"/g, ""));
-				loopIniator();
+				loopInitiator();
 				$("#opdrachten").fadeIn("slow").css("display", "inline-flex");
 				$("input[name='input']").val(null).focus();
 			}
