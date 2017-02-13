@@ -95,7 +95,7 @@
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 			
 			// Section 4.1.2 - Check for already made assignments
-			if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
+			if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
 				
 				// Section 4.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
 				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $operator || empty($_SESSION["numbers"])){
@@ -111,9 +111,9 @@
 			else {
 				
 				// Section 4.1.3-1 - Put all sessions into a more readable variable
-				$assignment	= $_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index][0];
-				$outcome	= $_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index][2];
-				$answer		= $_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index][3];
+				$assignment	= $_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index][0];
+				$outcome	= $_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index][2];
+				$answer		= $_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index][3];
 				
 				$text = "<p> Je hebt deze som al gemaakt </p>
 						<p> Het som was: </p>
@@ -164,8 +164,8 @@
 	// Section 5 - END
 	
 	// Section 6 - Save Assignment
-	function opdrachtOpslaan($opdrachtOftoets, $operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer) {
-		$_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$index] = array($opdracht, "=", $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
+	function opdrachtOpslaan($group, $opdrachtOftoets, $operator, $index, $opdracht, $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer) {
+		$_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index] = array($opdracht, "=", $uitkomst, $antwoord, $opdrachtGoedofFout, $opdrachtTimer);
 	}
 	// Section 6 - END
 	
@@ -179,14 +179,18 @@
 		}
 	}
 	function cijferBerekenen(){
+		
+		$group			 = $_SESSION["group"];
 		$operator 		 = $_SESSION["operator"];
 		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+		
 		//Array keys search all keys, array column sends back single column of input. That input is 4, because at index 4 there lies the value we need: "fout" or "goed". Array column return that value as an array([0] = "fout/goed").
 		//Array keys then search that returned array for "fout" or "goed" and return an array with the key as value(array([0] = 1)). Using count, it count's how many keys are in the returned array from array keys.
 		//Array Keys: http://php.net/manual/en/function.array-keys.php | Array Column: http://php.net/manual/en/function.array-column.php . Refer to debug.php for testing these 2 functions if you still don't understand.
-		$fout = count(array_keys(array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4), "fout")); // Source: http://www.php.net/manual/en/function.array-search.php#106904 at User Contributed Notes: user xfoxawy
-		$goed = count(array_keys(array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4), "goed"));
+		
+		$fout = count(array_keys(array_column($opdrachtOpslaan[$group][$opdrachtOftoets][$operator], 4), "fout")); // Source: http://www.php.net/manual/en/function.array-search.php#106904 at User Contributed Notes: user xfoxawy
+		$goed = count(array_keys(array_column($opdrachtOpslaan[$group][$opdrachtOftoets][$operator], 4), "goed"));
 		$CountedAssignments = $fout + $goed;
 		$c = 10 - ($fout * 0.5); //Var C is Het cijfer
 		if ($CountedAssignments == 20){
@@ -218,15 +222,19 @@
 	
 	// Section 8 - Test Page
 	function oefenToets(){
+				
+		$group	  		 = $_SESSION["group"];
+		$operator 		 = $_SESSION["operator"];
+		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+		
 		$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
 		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
 		$text3 = "<p> Je heb de oefentoets al gemaakt. </p> <p> wil je deze oefentoets opnieuw maken? </p>";
-		$operator = $_SESSION["operator"];
-		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
-		if (isset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
+		
+		if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$cijfer = cijferBerekenen();
-			if (count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){
-				if (empty($_SESSION["opdrachtOpslaan"]["Oefentoets"][$operator])){
+			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){
+				if (empty($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"][$operator])){
 					$_SESSION["opdrachtOftoets"] = "Oefentoets";
 					return indexCheckerandGenerator(1);
 				}
@@ -254,14 +262,18 @@
 		}
 	}
 	function testPage(){// Test is such a pain in the frigin ass.
-		$text = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
-		$text2 = array("popup", "<p> Maak eerst plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>");
-		$operator = $_SESSION["operator"];
+	
+		$group	  		 = $_SESSION["group"];
+		$operator 		 = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
-		if (isset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
+		
+		$text  = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
+		$text2 = array("popup", "<p> Maak eerst plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>");
+		
+		if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			// If you want to debug, use this: count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) != 20
-			if (count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["+"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["-"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["*"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["/"]) == 20){
-				if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
+			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets]["+"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["-"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["*"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["/"]) == 20){
+				if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
 					return $text;
 				}
 				else {
@@ -280,31 +292,31 @@
 	
 	// Section 8 - Delete Assignments
 	function deleteAssignments($variable){
-		$_SESSION["debug"] = $variable;
-		$index 	  = (isset($_SESSION["index"])) ? $_SESSION["index"] : null;
-		$group	  = $_SESSION["group"];
-		$operator = $_SESSION["operator"];
-		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+		
+		$group	  			 = $_SESSION["group"];
+		$operator 			 = $_SESSION["operator"];
+		$opdrachtOftoets 	 = $_SESSION["opdrachtOftoets"];
+		$index 	  			 = (isset($_SESSION["index"])) ? $_SESSION["index"] : null;
 		$_SESSION["numbers"] = range(1,20);	
 		
 		if ($variable != "Opnieuw beginnen"){
 			if ($operator != "Toets" && $variable != "oefentoets"){
-				unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator][$_POST["index"]]);
+				unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$_POST["index"]]);
 				$_SESSION["index"] = $variable;
 			}
 			else {
 				if ($variable == "oefentoets"){
-					unset($_SESSION["opdrachtOpslaan"]["Oefentoets"][$operator]);
+					unset($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"][$operator]);
 				}
 				else {
-					unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]);					
+					unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]);					
 				}
 			}
 			$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
 			return $_SESSION["opdracht"][0];
 		}
 		else {
-			unset($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]);
+			unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets]);
 			return array("popup", "<p> De opdrachten en oefentoets zijn gewist. </p>");
 		}
 
@@ -313,11 +325,14 @@
 
 	// Section 9 - Result page
 	function resultPage(){
-		$operator = $_SESSION["operator"];
+		
+		$group	  	 	 = $_SESSION["group"];
+		$operator 		 = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
-		$cijferEnFouten = cijferBerekenen();
-		$reactie = $cijferEnFouten['reactie'];
-		$aantalFouten = $cijferEnFouten['fouten'];
+		
+		$cijferEnFouten  = cijferBerekenen();
+		$reactie 		 = $cijferEnFouten['reactie'];
+		$aantalFouten 	 = $cijferEnFouten['fouten'];
 		
 		if ($operator == "+") {
 			$operatorText = "Plus";
@@ -333,33 +348,35 @@
 		}
 			
 		
-		if (empty($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator])){
+		if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
 		}
 		else {
 			
 			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
-			ksort ($opdrachtOpslaan[$opdrachtOftoets][$operator]);
+			ksort ($opdrachtOpslaan[$group][$opdrachtOftoets][$operator]);
 				$table = "<table>
 						<tr>
-							<td> $opdrachtOftoets $operatorText </td>
-							<td colspan='3'> Aantal fouten: $aantalFouten</td>
-							<td colspan='7'> $reactie </td>
+							<td colspan='5' class='text-center'> Groep: $group | $opdrachtOftoets $operatorText </td>
+							<td colspan='2'> Aantal fouten: $aantalFouten</td>
+						</tr>
+						<tr>
+
+							<td colspan='7' class='text-center'> $reactie </td>
 						</tr>
 						<tr>
 							<td> Opdracht </td>
-							<td style='padding-right:20px;'> Som </td>
-							<td style='padding-right:20px;'> </td>
+							<td colspan='2' class='text-center' style='margin-right:20px;'> Som </td>
 							<td> Uitkomst </td>
 							<td> Jouw Antwoord </td>
 							<td> Goed of Fout </td>
 							<td> Jouw tijd</td>
 						</tr>";
-			foreach ($opdrachtOpslaan[$opdrachtOftoets][$operator] as $key => $value) {
+			foreach ($opdrachtOpslaan[$group][$opdrachtOftoets][$operator] as $key => $value) {
 			$table 	.= "<tr>
-							<td> $key</td>";
+							<td>  $key </td>";
 			foreach ($value as $key2) {
-				  $table .= "<td> $key2 </td>";
+				$table .= " <td> $key2 </td>";
 			}
 			$table  .= "</tr>";
 			}

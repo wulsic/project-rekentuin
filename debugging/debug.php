@@ -3,7 +3,7 @@
 	echo "<br/>
 			<table>";
 				foreach ($_SESSION as $key => $value) {
-					if ($key == "username" || $key == "operator" || $key == "oldOperator" || $key == "group" || $key == "index" || $key == "som" || $key == "uitkomst" || $key == "timestart"){
+					if ($key == "username" || $key == "operator" || $key == "oldOperator" || $key == "group" || $key == "index" || $key == "som" || $key == "uitkomst" || $key == "timestart" || $key == "opdrachtOftoets"){
 					echo "<tr>
 						<td> $key</td>
 						<td> $value</td>";
@@ -23,7 +23,7 @@
 						echo "</tr>";
 						foreach ($value as $key2 => $value2){
 							echo "<tr>";
-							echo "<td> $key2</td>";
+							echo "<td> group $key2</td>";
 							echo "</tr>";
 							foreach ($value2 as $key3 => $value3){
 								echo "<tr>";
@@ -32,8 +32,13 @@
 								foreach ($value3 as $key4 => $value4){
 									echo "<tr>";
 									echo "<td> $key4</td>";
+									echo "</tr>";
 									foreach ($value4 as $key5 => $value5){
-										echo "<td> $value5</td>";
+										echo "<tr>";
+										echo "<td> $key5</td>";
+										foreach ($value5 as $key6 => $value6){
+											echo "<td> $value6</td>";
+										}
 									}
 								}
 						echo "</tr>";
@@ -44,10 +49,11 @@
 	echo "</table>";
 	echo "<br />";
 	if (isset($_SESSION["opdrachtOpslaan"])){
+		$group 			 = $_SESSION["group"];
+		$operator 		 = $_SESSION["operator"];
 		$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
-		$operator = $_SESSION["operator"];
-		$array_column = array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4);
+		$array_column	 = array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4);
 		echo "array column: ";
 		print_r($array_column);
 		$array_keys = array_keys(array_column($opdrachtOpslaan[$opdrachtOftoets][$operator], 4), "fout");

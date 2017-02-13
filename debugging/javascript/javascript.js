@@ -5,8 +5,8 @@
 	//Section 1.2 - Minutes / Seconds
 	var minutes  = 30;// Time limit for the test
 	var seconds  = 0; // Time limit for the test
-	var aMinutes = 2; // assignment minutes. Time limit per assignments
-	var aMinutes = 0; // assignment seconds. Time limit per assignments
+	var aMinutes = 1; // assignment minutes. Time limit per assignments
+	var aSeconds = 0; // assignment seconds. Time limit per assignments
 
 	// Section 1.3 - Initialization multiple variables and functions for each ID in the hierachy of index.php
 	var myFunctions = {
@@ -75,9 +75,10 @@
 		"opdrachten": {
 			dataSend:
 			function(val){
-				if (val == "callTomoveAssignment"){
+				if (val == "moveToassignment"){
 					dataSend = {
-						functions: "callTomoveAssignment"
+						functions: "callTomoveAssignment",
+						operator: $("#opdrachten").children("form").children("h1").text().replace(/[\w ]/g,"")
 					};					
 				}
 				else {
@@ -90,12 +91,17 @@
 			},
 			success:
 			function(data){
-				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
-				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
-					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
-					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
-					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
-				});
+				if (data == "moveToopdrachtSelectie"){
+					tmpMemory = "operators";
+				}
+				else {
+					ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
+					$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+						ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
+						ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
+						$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
+					});	
+				}
 			}
 		},
 	};
@@ -115,6 +121,7 @@ $(document).ready(function(){
 	});
 	// Section 2.3 - On button click
 	$("button").click(function(){
+
 		if ($(this).attr("class") == "backwards"){
 			if ($(this).parent().attr("id") == null){
 				id = $(this).parent().parent().attr("id");
@@ -183,16 +190,19 @@ function usernameVerify(txt) {
 
 // Section 6 - Time limit for the user making a test.
 function loopIniator(val){
-	minutes = 30;
+	minutes = 30
 	seconds = 0;
-	ifLoop = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
+	aMinutes = 1;
+	aSeconds = 0;
+	ifLoop  = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
+	ifLoop2 = (typeof(aTimelimitLoop) == "undefined") ? null : clearTimeout(aTimelimitloop);
 	countDownloop();
+	aCountdownLoop();
 }
 function countDownloop(){
-	seconds--;
 	if (seconds <= 0 && minutes != 0){
+		minutes--;
 		seconds = 59;
-		minutes--
 	}
 	if (minutes == 0 && seconds == 0){
 		clearTimeout(timeLimitloop);
@@ -202,18 +212,45 @@ function countDownloop(){
 		timeLimitloop = setTimeout(countDownloop, 1000);	
 	}
 	$("#timer").text("Tijd : " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
+	seconds--;
 }
-function testAtimeLimit(){ //  Time limit per assignments
+function aCountdownLoop(){ // Assignment time limit per assignments during the test. Everything with a, like aMinutes is a short version for assignment.
+	if (aSeconds <= 0 && aMinutes != 0){
+		aMinutes--;
+		aSeconds = 2;
+	}
+	if (aMinutes == 0 && aSeconds == 0){
+		clearTimeout(timeLimitloop);
+		clearTimeout(aTimelimitloop);
+		var getAssignment = $("#opdrachten").children("form").children("h1").text().replace(/[\w ]/g,"");
+		if (getAssignment == "+"){
+			operatorText = "plus";
+		}
+		else if (getAssignment == "-") {
+			operatorText = "min";
+		}
+		else if (getAssignment == "x") {
+			operatorText = "keer";
+		}
+		else if (getAssignment == ":") {
+			operatorText = "gedeelddoor";
+		}
+		text = "<p> Je hebt te lang over deze opdracht gedaan, je wordt nu doorverzonden naar opdrachten pagina, " + operatorText + "</p>";
+		modal("opdrachten", "moveToassignment", text, 5000);
+	}
+	else {
+		aTimelimitloop = setTimeout(aCountdownLoop, 1000);	
+	}
+	aSeconds--;
 }
 // Section 6 - END
 
 // Section 7 - Popup function modal()
-function modal(id, val, text){
+function modal(id, val, text, closeDelay = 2000){
 
 	//  Section 7.1 - Set variables
 	var modal = $("#" + id + "modal");
 	var modalId = document.getElementById(id + "modal");
-	var closeDelay = 2000; // 2 second delay
 	
 	// Section 7.2 - Enable / Disable X button or yes and no button	
 	ifEresults  = (pageVisibility("#startpagina") || val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets") ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
@@ -237,6 +274,9 @@ function modal(id, val, text){
 	function closeAnswerModal() {
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
+			if (val == "moveToassignment"){
+				post("moveToassignment", "opdrachten");
+			}
 			whenNottoRemove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();
 		});
 		$("input[name='input']").focus();
@@ -282,7 +322,7 @@ function post(val, id) {
 }
 
 function fadeAnimation(id1, val, data){
-	if (id1 == "opdrachten") {
+	if (id1 == "opdrachten" && val != "moveToassignment") {
 		myFunctions[id1].success(data);
 	}
 	else {
@@ -302,6 +342,9 @@ function fadeAnimation(id1, val, data){
 			}
 			else {
 				ifFunction = (typeof(myFunctions[id1].success) == "function") ? myFunctions[id1].success(data) : null;
+				if (val == "moveToassignment"){
+					id1 = "operators";
+				}
 				$($("#" + id1).next()).fadeIn("slow").css("display", "inline-flex");
 				ifStartpagina = (id1 == "groepen") ? null : $("input[name='input']").val(null).focus();
 			}
