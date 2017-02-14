@@ -85,6 +85,7 @@
 			function(data){
 				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
+					
 					if (aTimelimitLoop) {
 						clearTimeout(aTimelimitLoop);
 					}
@@ -260,7 +261,7 @@ function modal(id, val, text, closeDelay = 2000){
 	var modal = $("#" + id + "modal");
 	var modalId = document.getElementById(id + "modal");
 	
-	// Section 7.2 - Enable / Disable X button or yes and no button	
+	// Section 7.2 - Enable / Disable X button or yes and no button
 	ifEresults  = (pageVisibility("#startpagina") || val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets") ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
 	ifEresults2 = 				(val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets")				      ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
 	
@@ -371,10 +372,10 @@ function fadeAnimation(id1, val, data){
 				ifFunction = (typeof(myFunctions[id1].success) == "function") ? myFunctions[id1].success(data) : null;
 				id1 = (val == "moveToassignment") ? "operators" : id1;
 				$($("#" + id1).next()).fadeIn("slow").css("display", "inline-flex");
-				$("button").prop('disabled', false);
 				ifStartpagina = (id1 == "groepen") ? null : $("input[name='input']").val(null).focus();
 			}
 		});
 	}
+	$("button").prop('disabled', false);
 }
 // Section 8 - END
