@@ -43,7 +43,7 @@
 		border-radius: 0 0 0 20px !important;
 	}
 	#results, #oefen {
-		width: 175px !important;
+		width: 170px !important;
 		font-size: 1.5em !important;
 		height: 75px !important;
 	}
@@ -159,10 +159,11 @@
 		border-radius: 20px !important;
 		font-size: 2em !important;
 		width: 365px !important;
-		height: 85px !important;
+		height: 75px !important;
 	}
 	#results {
 		border-radius: 20px !important;
+		height: 75px !important;
 		width: 235px !important;
 		font-size: 2em !important;
 	}
@@ -283,7 +284,7 @@ table {
 }
 
 .margin-spacer{
-	margin-top: 35px;
+	margin-top: 50px;
 }
 
 #yesOrno {
