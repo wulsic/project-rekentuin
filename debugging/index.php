@@ -108,6 +108,7 @@
 		<!--Section 5 - Assignment Page-->
 		<div id="opdrachten">
 			<button class="backwards">Ga terug</button>
+			<p id="timer">Tijd: 00:00 </p>
 			<form class="div-center text-center" method="post" action="" >
 				<h1 class="text-center"></h1>
 				<input type="number" name="input" autocomplete="off" required>

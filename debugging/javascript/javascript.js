@@ -3,11 +3,11 @@
 	var tmpMemory;
 	
 	//Section 1.2 - Minutes / Seconds
-	var minutes  = 30;// Time limit for the test
-	var seconds  = 0; // Time limit for the test
-	var aMinutes = 5; // assignment minutes. Time limit per assignments
-	var aSeconds = 0; // assignment seconds. Time limit per assignments
-
+	var minutes;// Time limit for the test
+	var seconds; // Time limit for the test
+	var aMinutes; // assignment minutes. Time limit per assignments
+	var aSeconds; // assignment seconds. Time limit per assignments
+	
 	// Section 1.3 - Initialize multiple variables and functions for each ID in the hierachy of index.php
 	var myFunctions = {
 		"startpagina": {
@@ -86,12 +86,11 @@
 				ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets" ) ? null : modal("opdrachten", null, data[1]) ;
 				$("#opdrachten").children("form").children("h1").fadeOut("fast", function(){
 					
-					if (aTimelimitLoop) {
+/*					if (aTimelimitLoop) {
 						clearTimeout(aTimelimitLoop);
-					}
-					aMinutes = 5;
-					aSeconds = 0;
-					aCountdownLoop();
+					}*/
+					loopInitiator("reset", null, null);
+					//aCountdownLoop();
 
 					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
 					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
@@ -115,8 +114,7 @@
 
 // Section 2 - On DOM (page) ready.
 $(document).ready(function(){
-	// Section 2.1 - Append timer to id="Opdrachten"
-	$("#opdrachten").children("button").after("<p id='timer'> Tijd : " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2) +"</p>");
+
 	// Section 2.1 - Fade in
 	$("#startpagina").fadeIn("slow").css("display", "inline-flex");
 	// Section 2.2 - Form submit
@@ -127,7 +125,7 @@ $(document).ready(function(){
 	});
 	// Section 2.3 - On button click
 	$("button").click(function(){
-		$("button").prop('disabled', true);
+		//$("button").prop('disabled', true);
 		if ($(this).attr("class") == "backwards"){
 			if ($(this).parent().attr("id") == null){
 				id = $(this).parent().parent().attr("id");
@@ -138,7 +136,7 @@ $(document).ready(function(){
 			$("#" + id).fadeOut("slow", function(){
 				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
-				$("button").prop('disabled', false);
+				//$("button").prop('disabled', false);
 			});
 		}
 		else if ($(this).attr("id") == "over" || $(this).attr("id") == "uitleg"){
@@ -195,40 +193,33 @@ function usernameVerify(txt) {
 // Section 5 - END
 
 // Section 6 - Time limit for the user making a test.
-function loopInitiator(val){
-	minutes = 30;
-	seconds = 0;
-	aMinutes = 1;
-	aSeconds = 0;
-	ifLoop  = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
-	ifLoop2 = (typeof(aTimelimitLoop) == "undefined") ? null : clearTimeout(aTimelimitLoop);
-	countDownloop();
-	aCountdownLoop();
+function loopInitiator(setOrreset = "set", setMinutes = 30, setSeconds = 0, setAminutes = 5, setAseconds = 0){
+	if (setOrreset == "set" || setOrreset == "reset"){
+		if (setMinutes != null && setSeconds != null){
+			minutes  = setMinutes;// Time limit for the test
+			seconds  = setSeconds; // Time limit for the test
+		}
+		aMinutes = setAminutes; // assignment minutes. Time limit per assignments
+		aSeconds = setAseconds; // assignment seconds. Time limit per assignments
+	}
+	if (setOrreset == "set"){
+		ifLoop  = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
+		countDownloop();		
+	}
 }
 function countDownloop(){
 	seconds--;
+	aSeconds--;
 	if (minutes != 0 && seconds <= 0){
 		minutes--;
 		seconds = 59;
 	}
-	if (minutes == 0 && seconds <= 0){
-		clearTimeout(timeLimitloop);
-		post("Toets", "operators");
-	}
-	else {
-		timeLimitloop = setTimeout(countDownloop, 1000);	
-	}
-	$("#timer").text("Tijd : " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
-}
-function aCountdownLoop(){ // Assignment time limit per assignments during the test. Everything with a, like aMinutes is a short version for assignment.
-	aSeconds--;
-	if ( aMinutes != 0 && aSeconds <= 0){
+	if (aMinutes != 0 && aSeconds <= 0){
 		aMinutes--;
 		aSeconds = 59;
 	}
 	if (aMinutes == 0 && aSeconds <= 0){
 		clearTimeout(timeLimitloop);
-		clearTimeout(aTimelimitLoop);
 		var getAssignment = $("#opdrachten").children("form").children("h1").text().replace(/[\d ]/g,"");
 		if (getAssignment == "+"){
 			operatorText = "plus";
@@ -246,11 +237,14 @@ function aCountdownLoop(){ // Assignment time limit per assignments during the t
 		modal("opdrachten", "moveToassignment", text, 5000);
 		console.log("call");
 	}
-	else {
-		aTimelimitLoop = setTimeout(aCountdownLoop, 1000);	
+	else if (minutes == 0 && seconds <= 0){
+		clearTimeout(timeLimitloop);
+		post("Toets", "operators");
 	}
-	console.log(aSeconds);
-	console.log(aMinutes);
+	else {
+		timeLimitloop = setTimeout(countDownloop, 1000);	
+	}
+	$("#timer").text("Tijd: " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
 }
 // Section 6 - END
 
@@ -285,11 +279,11 @@ function modal(id, val, text, closeDelay = 2000){
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
 			if (val == "moveToassignment"){
-				$("button").prop('disabled', true);
+				//$("button").prop('disabled', true);
 				post("moveToassignment", "moveToassignment");
 			}
 			else {
-				$("button").prop('disabled', false);
+				//$("button").prop('disabled', false);
 			}
 			whenNottoRemove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();
 		});
@@ -376,6 +370,6 @@ function fadeAnimation(id1, val, data){
 			}
 		});
 	}
-	$("button").prop('disabled', false);
+	//$("button").prop('disabled', false);
 }
 // Section 8 - END
