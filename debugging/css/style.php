@@ -4,6 +4,10 @@
 ?>
 
 @media only screen and (min-width:320px){
+	body {
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 	h1 {
 		font-size: 2.5em;margin:0px;
 	}
@@ -22,28 +26,21 @@
 		margin-left: 0 !important;
 		margin-right: auto;
 		font-size: 1.5em !important;
-		border-top-left-radius: 0px !important;
-		border-bottom-left-radius: 0px !important;
+		border-radius: 0 20px 20px 0 !important;
 	}
 	#oefen {
 		margin-left: auto !important;
 		margin-right: 0 !important;
-		border-top-right-radius: 0px !important;
-		border-bottom-right-radius: 0px !important;
+		border-radius: 20px 0 0 20px !important;
 		font-size: 1.5em !important;
 	}
 	#restart {
 		width: 175px !important;
 		font-size: 1.5em !important;
 		height: 95px !important;
-		margin: -11px !important;
+		margin: 0 0 -11px auto !important;
 		font-size: 1.5em !important;
-		margin-top: 0px !important;
-		margin-left: auto !important;
-		margin-right: 0 !important;
-		border-top-right-radius: 0px !important;
-		border-top-left-radius: 0px !important;
-		border-bottom-right-radius: 0px !important;
+		border-radius: 0 0 0 20px !important;
 	}
 	#results, #oefen {
 		width: 175px !important;
