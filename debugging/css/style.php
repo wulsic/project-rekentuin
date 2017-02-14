@@ -151,7 +151,12 @@
 		margin-top: 50px !important;
 		font-size: 16px;
 	}
-
+	#timer{
+		display: block;
+		margin-top: 100px;
+		margin-left: 36px;
+		font-size: 28px;
+	}
 	#groepen button, #operators button {
 		margin: 20px !important;
 		font-size: 4em;
@@ -171,9 +176,6 @@
 		height:125px;
 	}
 	#restart {
-		margin: 0px;
-		margin-left: 0;
-		margin-right: 0;
 		border-radius: 20px !important;
 		font-size: 2em !important;
 		width: 365px !important;
