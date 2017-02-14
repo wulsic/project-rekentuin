@@ -35,9 +35,10 @@
 	#restart {
 		width: 175px !important;
 		font-size: 1.5em !important;
-		height: 97px !important;
+		height: 95px !important;
 		margin: -11px !important;
 		font-size: 1.5em !important;
+		margin-top: 0px !important;
 		margin-left: auto !important;
 		margin-right: 0 !important;
 		border-top-right-radius: 0px !important;
