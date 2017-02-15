@@ -1,7 +1,8 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link href="css/style.php" rel="stylesheet" type="text/css">
+		<link href="css/style.css" rel="stylesheet" type="text/css">
+		<link href="css/dynamicColours.php" rel="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title> Debugging Page - Opdrachten </title>
 		<!-- jquery version 3.1.1-->
@@ -58,11 +59,11 @@
 				<button class="backwards">Ga terug</button>
 				<h1 class="text-center"> kies je oefening </h1>
 				<div class="text-center div-center">
-					<button>+</button>
-					<button>-</button>
-					<button>:</button>
-					<button>x</button>
-					<button>Toets</button>
+					<button id="plus"	>+</button>
+					<button id="min"	>-</button>
+					<button id="gedeeld">:</button>
+					<button id="keer"	>x</button>
+					<button id="toets"	>Toets</button>
 				</div>
 				<!-- Section 4.1 - Test already made response popup -->
 				<div id="operatorsmodal" class="modal">
@@ -89,7 +90,7 @@
 						if ($a == 1) {
 							echo "<div class='margin-spacer'>";
 						}
-						echo "<button>$a</button>";
+						echo "<button id='$a'>$a</button>";
 					}
 					echo "</div>"
 				 ?>
