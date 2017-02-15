@@ -95,7 +95,7 @@
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 			
 			// Section 4.1.2 - Check for already made assignments
-			if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
+			//if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
 				
 				// Section 4.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
 				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $operator || empty($_SESSION["numbers"])){
@@ -106,9 +106,9 @@
 				$indexChecker = indexChecker($index);
 				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
 				return $_SESSION["opdracht"][0];	
-			}
+			//}
 			// Section 4.1.3 - Return array for a popup when the assignment is already made.
-			else {
+			/*else {
 				
 				// Section 4.1.3-1 - Put all sessions into a more readable variable
 				$assignment	= $_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index][0];
@@ -123,7 +123,7 @@
 						<p> wil je deze som opnieuw maken? </p>";
 						
 				return array("popup", $text);
-			}
+			}*/
 		}
 		else {
 			return "operator not set";
@@ -223,15 +223,19 @@
 	// Section 8 - Test Page
 	function oefenToets(){
 				
-		$group	  		 = $_SESSION["group"];
+		/*$group	  		 = $_SESSION["group"];
 		$operator 		 = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 		
 		$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
 		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
-		$text3 = "<p> Je heb de oefentoets al gemaakt. </p> <p> wil je deze oefentoets opnieuw maken? </p>";
+		$text3 = "<p> Je heb de oefentoets al gemaakt. </p> <p> wil je deze oefentoets opnieuw maken? </p>";*/
 		
-		if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
+		//Debug
+		$_SESSION["opdrachtOftoets"] = "Oefentoets";
+		return indexCheckerandGenerator(1);
+		
+		/*if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$cijfer = cijferBerekenen();
 			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){
 				if (empty($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"][$operator])){
@@ -259,7 +263,7 @@
 		}
 		else {
 			return array("popup", $text1);
-		}
+		}*/
 	}
 	function testPage(){// Test is such a pain in the frigin ass.
 	
@@ -348,10 +352,10 @@
 		}
 			
 		
-		if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
+		/*if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
 		}
-		else {
+		else {*/
 			
 			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 			ksort ($opdrachtOpslaan[$group][$opdrachtOftoets][$operator]);
@@ -381,7 +385,7 @@
 			$table  .= "</tr>";
 			}
 			$table .= "</table> <br />";
-		}
+		//}
 		return $table;			
 	}
 	// Section 9 - END

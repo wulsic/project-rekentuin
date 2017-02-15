@@ -106,7 +106,7 @@
 		
 		// Section 7 - check whether result page is empty.
 		elseif ($functions == "callResultpage"){
-			$group			 = $_SESSION["group"];
+			/*$group			 = $_SESSION["group"];
 			$operator 		 = $_SESSION["operator"];
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 			if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
@@ -117,16 +117,16 @@
 				if (count($opdrachtOpslaan[$group][$opdrachtOftoets][$operator]) != 20){
 					echo json_encode(array("popup", "<p> Je hebt nog niet alle opdrachten gemaakt. </p>")); // echo popup and text whenever the total made assingments is not 20
 				}
-				else {
+				else {*/
 					$table = resultPage();
-					if (isset($opdrachtOpslaan[$group]["Oefentoets"][$operator])){
+					/*if (isset($opdrachtOpslaan[$group]["Oefentoets"][$operator])){
 						$_SESSION["opdrachtOftoets"] = "Oefentoets";
 						$table .= resultPage();
 						$_SESSION["opdrachtOftoets"] = "Opdracht";						
-					}
+					}*/
 					echo json_encode(array("table", $table));
-				}
-			}
+				/*}
+			}*/
 		}
 		// Section 7 - END
 	}
