@@ -95,10 +95,10 @@
 			// Section 5.3 - Generate text base of right or wrong of the assignments.
 			if ($operator != "Toets"){
 				if ($opdrachtControle == "goed"){
-					$text = "<p>Ja, {$username} jouw antwoord is goed! {$som} = {$uitkomst} </p>" ;	
+					$text = "<p>Goedzo {$username} jouw antwoord is goed! {$som} = {$uitkomst} </p>" ;	
 				}
 				else {
-					$text = "<p>Jammer, {$username} jouw antwoord is niet goed. {$som} = {$uitkomst} </p>" ;
+					$text = "<p>Helaas {$username} jouw antwoord is niet goed. {$som} = {$uitkomst} </p>" ;
 				}
 			}
 			
