@@ -127,6 +127,9 @@ $(document).ready(function(){
 			else {
 				id = $(this).parent().attr("id");	
 			}
+			if ($("#" + id).prev().attr("id") == "opdrachtenSelectie") {
+				post(null, "operators");
+			}
 			$("#" + id).fadeOut("slow", function(){
 				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
@@ -316,7 +319,7 @@ function post(val, id) {
 	   type: "POST",
 	   url: "ajax.php", // The url where the post is going to be send and the response orginate.
 	   data: myFunctions[id].dataSend(val, id),
-	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten" || val == "Resultaten" || val == "Toets") ? "JSON" : "text",
+	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten" || id == "operators" || val == "dynamicColours" || val == "Resultaten" || val == "Toets") ? "JSON" : "text",
 	   success: function(data){
 		   if (data[0] == "popup"){
 			   tmpMemory = (data[2] == null) ? tmpMemory : data[2];
@@ -326,12 +329,20 @@ function post(val, id) {
 			   createTable(id, data[1]);
 		   }
 		   else {
-			   fadeAnimation(id, val, data);	   
+				if (data[0] == "colour" && data[1] != null) {
+					var idShorten = $("#opdrachtenSelectie").children(".text-center").children(".margin-spacer");
+					for (let [key, value] of Object.entries(data[1])){
+						ifExist = (idShorten.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten.children(":contains("+ key +"):first").css("border-color", value);
+					}
+				}
+				else if (data[0] == "colour") {
+					$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");
+				}
+			   ifVal = (val == null) ? null : fadeAnimation(id, val, data);
 		   }
 	   }
 	});
 }
-
 function fadeAnimation(id1, val, data){
 	if (id1 == "opdrachten" && val != "moveToassignment") {
 		myFunctions[id1].success(data);

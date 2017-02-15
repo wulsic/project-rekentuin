@@ -18,8 +18,10 @@
 		
 		// Section 2 - Assign Operator
 		elseif ($functions == "callRekundigeoperator"){
-			$operator = $_POST["operator"];
-			setOperator($operator);
+			if ($_POST["operator"] != null){
+				$operator = $_POST["operator"];
+				setOperator($operator);	
+			}
 			if ($operator == "Toets"){
 				$_SESSION["opdrachtOftoets"] = "Toets";
 				$testPage = testPage();
@@ -30,6 +32,27 @@
 			}
 			else {
 				$_SESSION["opdrachtOftoets"] = "Opdracht";
+				if (isset($_SESSION["opdrachtOpslaan"])){
+					
+					$whatToreturn	 = array(0 => "colour");
+					$group			 = $_SESSION["group"];
+					$operator		 = $_SESSION["operator"];
+					$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
+					$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+					
+					foreach ($opdrachtOpslaan[$group][$opdrachtOftoets][$operator] as $key => $value){
+						if (in_array("goed",$value)){
+							$whatToreturn[1][$key] = "green";
+						}
+						else {
+							$whatToreturn[1][$key] = "red";
+						}
+					}
+				}
+				else {
+					$whatToreturn = array(0 => "empty");
+				}
+				echo json_encode($whatToreturn);
 			}
 		}
 		// Section 2 - END
@@ -129,5 +152,7 @@
 			}*/
 		}
 		// Section 7 - END
+		elseif ($functions == "colour"){
+		}
 	}
 ?>

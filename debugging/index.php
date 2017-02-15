@@ -2,7 +2,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<link href="css/style.css" rel="stylesheet" type="text/css">
-		<link href="css/dynamicColours.php" rel="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title> Debugging Page - Opdrachten </title>
 		<!-- jquery version 3.1.1-->
@@ -90,7 +89,7 @@
 						if ($a == 1) {
 							echo "<div class='margin-spacer'>";
 						}
-						echo "<button id='$a'>$a</button>";
+						echo "<button>$a</button>";
 					}
 					echo "</div>"
 				 ?>
