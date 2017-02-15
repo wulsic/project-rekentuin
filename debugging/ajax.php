@@ -152,7 +152,5 @@
 			}*/
 		}
 		// Section 7 - END
-		elseif ($functions == "colour"){
-		}
 	}
 ?>
