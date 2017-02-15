@@ -331,7 +331,7 @@ function post(val, id) {
 		   else {
 				if (data[0] == "colour" && data[1] != null) {
 					var idShorten = $("#opdrachtenSelectie").children(".text-center").children(".margin-spacer");
-					for (let [key, value] of Object.entries(data[1])){
+					for (let [key, value] of Object.entries(data[1])){ // Source : https://github.com/babel/babel-loader/issues/84
 						ifExist = (idShorten.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten.children(":contains("+ key +"):first").css("border-color", value);
 					}
 				}
