@@ -35,7 +35,7 @@
 			return $operator[mt_rand(0,3)];			
 		}
 	}
-	function opdrachtGenerator($niveau, $rekundigeOperator) {
+	function opdrachtGenerator($niveau, $rekundigeoperator) {
 		// Section 3.2 - Number Generator
 		if ($niveau == 4){
 			$max = 10;
@@ -49,16 +49,16 @@
 		else {
 			return false;
 		}
-		$min = ($rekundigeOperator == "*" || $rekundigeOperator == "") ? 1 : 0;
+		$min = ($rekundigeoperator == "*" || $rekundigeoperator == "") ? 1 : 0;
 		$getal1 = mt_rand($min, $max);
 		$getal2 = mt_rand($min, $max);
 		
 		// Section 3.3 - Operator Picker
-		if ($rekundigeOperator == "+") {
+		if ($rekundigeoperator == "+") {
 			$uitkomst = $getal1 + $getal2;
 			$som = "$getal1 + $getal2";
 		}
-		elseif ($rekundigeOperator == "-") {
+		elseif ($rekundigeoperator == "-") {
 			if ($getal1 < $getal2) {
 				$tmpgetal = $getal1;
 				$getal1 = $getal2;
@@ -67,7 +67,7 @@
 			$uitkomst = $getal1 - $getal2;
 			$som = "$getal1 - $getal2";	
 		}
-		elseif ($rekundigeOperator == "*") {
+		elseif ($rekundigeoperator == "*") {
 			$uitkomst = $getal1 * $getal2;
 			$som = "$getal1 x $getal2";
 		}
@@ -116,7 +116,7 @@
 				$answer		= $_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index][3];
 				
 				$text = "<p> Je hebt deze som al gemaakt </p>
-						<p> De som was: </p>
+						<p> Het som was: </p>
 						<p> {$assignment} = {$outcome} </p>
 						<p> Jouw antwoord was: </p>
 						<p> {$answer} </p>
@@ -229,11 +229,7 @@
 		
 		$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
 		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
-<<<<<<< Updated upstream
-		$text3 = "<p> Je heb de oefentoets al gemaakt. </p> <p> wil je deze oefentoets opnieuw maken? </p>";*/
-=======
-		$text3 = "<p> Je heb de oefentoets al gemaakt. </p> <p> Wil je de oefentoets opnieuw maken? </p>";
->>>>>>> Stashed changes
+		$text3 = "<p> Je hebt de oefentoets al gemaakt. </p> <p> wil je deze opnieuw maken? </p>";*/
 		
 		//Debug
 		$_SESSION["opdrachtOftoets"] = "Oefentoets";
@@ -269,7 +265,7 @@
 			return array("popup", $text1);
 		}*/
 	}
-	function testPage(){// Test is such a pain in the frigin ass.
+	function testPage(){// Test is such a fricking pain in the ass.
 	
 		$group	  		 = $_SESSION["group"];
 		$operator 		 = $_SESSION["operator"];
@@ -354,6 +350,7 @@
 		elseif ($operator == "/") {
 			$operatorText = "Gedeelddoor";
 		}
+			
 		
 		/*if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
