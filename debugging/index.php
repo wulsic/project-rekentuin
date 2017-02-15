@@ -51,7 +51,7 @@
 					<button>groep 6</button>
 				</div>
 			</div>
-		<!--Section 2 - END->
+		<!--Section 2 - END-->
 		
 		<!--Section 3 - Operator Select Page -->
 			<div id="operators">
