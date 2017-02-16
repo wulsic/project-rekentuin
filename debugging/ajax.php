@@ -18,10 +18,8 @@
 		
 		// Section 2 - Assign Operator
 		elseif ($functions == "callRekundigeoperator"){
-			if ($_POST["operator"] != null){
 				$operator = $_POST["operator"];
-				setOperator($operator);	
-			}
+				$isNull = ($operator == null) ? null : setOperator($operator);
 			if ($operator == "Toets"){
 				$_SESSION["opdrachtOftoets"] = "Toets";
 				$testPage = testPage();
