@@ -116,7 +116,7 @@
 				$answer		= $_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index][3];
 				
 				$text = "<p> Je hebt deze som al gemaakt </p>
-						<p> Het som was: </p>
+						<p> De som was: </p>
 						<p> {$assignment} = {$outcome} </p>
 						<p> Jouw antwoord was: </p>
 						<p> {$answer} </p>
@@ -210,7 +210,7 @@
 				$reactie = "Goed gedaan!";
 			}
 			elseif ($c >= 5.5 && $c < 6){
-				$reactie = "Je deed het goed maar nog een beetje bij spijkeren";
+				$reactie = "Je deed het goed, maar nog een beetje bij spijkeren";
 			}
 			elseif ($c >= 0 && $c < 5.5){
 				$reactie = "Net niet goed, jammer. Blijf oefenen";
@@ -232,7 +232,7 @@
 		
 		$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
 		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
-		$text3 = "<p> Je hebt de oefentoets al gemaakt. </p> <p> wil je deze opnieuw maken? </p>";
+		$text3 = "<p> Je hebt de oefentoets al gemaakt. </p> <p> Wil je deze opnieuw maken? </p>";
 		
 		/*Debug
 		$_SESSION["opdrachtOftoets"] = "Oefentoets";
@@ -364,7 +364,7 @@
 			
 		
 		if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
-			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
+			$table = "<p> Je hebt geen 1 van de vragen beantwoordt. </p>";
 		}
 		else {
 			
