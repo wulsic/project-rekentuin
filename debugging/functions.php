@@ -95,7 +95,7 @@
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 			
 			// Section 4.1.2 - Check for already made assignments
-			//if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
+			if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
 				
 				// Section 4.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
 				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $operator || empty($_SESSION["numbers"])){
@@ -106,9 +106,9 @@
 				$indexChecker = indexChecker($index);
 				$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
 				return $_SESSION["opdracht"][0];	
-			//}
+			}
 			// Section 4.1.3 - Return array for a popup when the assignment is already made.
-			/*else {
+			else {
 				
 				// Section 4.1.3-1 - Put all sessions into a more readable variable
 				$assignment	= $_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index][0];
@@ -123,7 +123,7 @@
 						<p> wil je deze som opnieuw maken? </p>";
 						
 				return array("popup", $text);
-			}*/
+			}
 		}
 		else {
 			return "operator not set";
@@ -191,8 +191,14 @@
 		
 		$fout = count(array_keys(array_column($opdrachtOpslaan[$group][$opdrachtOftoets][$operator], 4), "fout")); // Source: http://www.php.net/manual/en/function.array-search.php#106904 at User Contributed Notes: user xfoxawy
 		$goed = count(array_keys(array_column($opdrachtOpslaan[$group][$opdrachtOftoets][$operator], 4), "goed"));
+		
 		$CountedAssignments = $fout + $goed;
 		$c = 10 - ($fout * 0.5); //Var C is Het cijfer
+		
+		if (empty($_SESSION["cijferOpslaan"][$group]["Oefentoets"][$operator]) && $opdrachtOftoets == "Oefentoets" || $opdrachtOftoets == "Toets"){
+			$_SESSION["cijferOpslaan"][$group][$opdrachtOftoets][$operator] = $c;
+		}
+		
 		if ($CountedAssignments == 20){
 			if ($c == 10){
 				$reactie = "School heeft geen zin meer voor jou.";
@@ -206,11 +212,8 @@
 			elseif ($c >= 5.5 && $c < 6){
 				$reactie = "Je deed het goed maar nog een beetje bij spijkeren";
 			}
-			elseif ($c >= 4 && $c < 5.5){
+			elseif ($c >= 0 && $c < 5.5){
 				$reactie = "Net niet goed, jammer. Blijf oefenen";
-			}
-			elseif ($c >= 0 && $c < 4){
-				$reactie = "Maak de oefeningen goed overnieuw en probeer nogmaals";
 			}
 		}
 		else {
@@ -223,19 +226,19 @@
 	// Section 8 - Test Page
 	function oefenToets(){
 				
-		/*$group	  		 = $_SESSION["group"];
+		$group	  		 = $_SESSION["group"];
 		$operator 		 = $_SESSION["operator"];
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 		
 		$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
 		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
-		$text3 = "<p> Je hebt de oefentoets al gemaakt. </p> <p> wil je deze opnieuw maken? </p>";*/
+		$text3 = "<p> Je hebt de oefentoets al gemaakt. </p> <p> wil je deze opnieuw maken? </p>";
 		
-		//Debug
+		/*Debug
 		$_SESSION["opdrachtOftoets"] = "Oefentoets";
-		return indexCheckerandGenerator(1);
+		return indexCheckerandGenerator(1);*/
 		
-		/*if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
+		if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$cijfer = cijferBerekenen();
 			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){
 				if (empty($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"][$operator])){
@@ -263,7 +266,7 @@
 		}
 		else {
 			return array("popup", $text1);
-		}*/
+		}
 	}
 	function testPage(){// Test is such a fricking pain in the ass.
 	
@@ -272,12 +275,17 @@
 		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 		
 		$text  = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
-		$text2 = array("popup", "<p> Maak eerst plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>");
+		$text2 = array("popup", "<p> Maak eerst plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>", "errorToets");
 		
-		if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
-			// If you want to debug, use this: count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets][$operator]) != 20
-			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets]["+"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["-"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["*"]) == 20 && count($_SESSION["opdrachtOpslaan"][$opdrachtOftoets]["/"]) == 20){
-				if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
+		if (!empty($_SESSION["cijferOpslaan"][$group]["Oefentoets"])){
+			
+			$cijferPlus 	   = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"];
+			$cijferMin 		   = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"];
+			$cijferKeer 	   = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"];
+			$cijferGedeelddoor = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"];
+			
+			if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){
+				if (!empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
 					return $text;
 				}
 				else {
@@ -289,7 +297,7 @@
 			}
 		}
 		else {
-				return indexCheckerandGenerator(1);	
+			return $text2;
 		}
 	}
 	// Section 8 - END
@@ -313,7 +321,7 @@
 					unset($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"][$operator]);
 				}
 				else {
-					unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]);					
+					unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]);
 				}
 			}
 			$_SESSION["opdracht"] = opdrachtGenerator($group, rekundigeOperator($operator));
@@ -321,7 +329,7 @@
 		}
 		else {
 			unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets]);
-			return array("popup", "<p> De opdrachten en oefentoets zijn gewist. </p>");
+			return array("popup", "<p> De opdrachten en oefentoets zijn gewist. </p>", $operator);
 		}
 
 	}
@@ -350,12 +358,15 @@
 		elseif ($operator == "/") {
 			$operatorText = "Gedeelddoor";
 		}
+		else {
+			$operatorText = "Toets";
+		}
 			
 		
-		/*if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
+		if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$table = "<p> Je hebt geen 1 van de vragen beantwoord. </p>";
 		}
-		else {*/
+		else {
 			
 			$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 			ksort ($opdrachtOpslaan[$group][$opdrachtOftoets][$operator]);
@@ -385,7 +396,7 @@
 			$table  .= "</tr>";
 			}
 			$table .= "</table> <br />";
-		//}
+		}
 		return $table;			
 	}
 	// Section 9 - END

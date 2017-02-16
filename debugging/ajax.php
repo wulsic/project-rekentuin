@@ -29,7 +29,6 @@
 				echo json_encode(array("table", resultPage()));
 			}
 			else {
-				$_SESSION["opdrachtOftoets"] = "Opdracht";
 				if (isset($_SESSION["opdrachtOpslaan"])){
 					
 					$whatToreturn	 = array(0 => "colour");
@@ -38,19 +37,59 @@
 					$opdrachtOpslaan = $_SESSION["opdrachtOpslaan"];
 					$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 					
-					foreach ($opdrachtOpslaan[$group][$opdrachtOftoets][$operator] as $key => $value){
-						if (in_array("goed",$value)){
-							$whatToreturn[1][$key] = "green";
+					if (!empty($opdrachtOpslaan[$group][$opdrachtOftoets][$operator]) || !empty($opdrachtOpslaan[$group]["Toets"]["Toets"])){
+						if ($opdrachtOftoets == "Opdracht"){
+							foreach ($opdrachtOpslaan[$group]["Opdracht"][$operator] as $key => $value){
+								if (in_array("goed",$value)){
+									$whatToreturn[1][$key] = "3px solid green";
+								}
+								else {
+									$whatToreturn[1][$key] = "3px solid red";
+								}
+							}
+							if (isset($opdrachtOpslaan[$group]["Oefentoets"][$operator])){
+								$c = $_SESSION["cijferOpslaan"][$group]["Oefentoets"][$operator];
+								if (count($opdrachtOpslaan[$group]["Oefentoets"][$operator]) == 20){
+									if ($operator == "*"){
+										$operator = "x";
+									}
+									elseif($operator == "/"){
+										$operator = ":";
+									}
+									if ($c >= 0 && $c < 5.5) {
+										$whatToreturn[2]["Oefentoets"] = "3px solid red";
+										$whatToreturn[3][$operator] = "3px solid red";
+									}
+									else {
+										$whatToreturn[2]["Oefentoets"] = "3px solid green";
+										$whatToreturn[3][$operator] = "3px solid green";			
+									}
+								}
+							}
 						}
-						else {
-							$whatToreturn[1][$key] = "red";
+						elseif ($opdrachtOftoets == "Toets"){
+							$c = $_SESSION["cijferOpslaan"][$group]["Toets"][$operator];
+							if (count($opdrachtOpslaan[$group]["Toets"][$operator]) == 20){
+								if ($c >= 0 && $c < 5.5) {
+									$whatToreturn[3][$operator] = "3px solid red";
+								}
+								else {
+									$whatToreturn[3][$operator] = "3px solid green";
+								}
+							}
 						}
+					}
+					else {
+						$whatToreturn = array(0 => "empty");
 					}
 				}
 				else {
 					$whatToreturn = array(0 => "empty");
 				}
 				echo json_encode($whatToreturn);
+				if (empty($_SESSION["opdrachtOftoets"]) || $_SESSION["opdrachtOftoets"] != "Opdracht"){
+					$_SESSION["opdrachtOftoets"] = "Opdracht";
+				}
 			}
 		}
 		// Section 2 - END
@@ -83,6 +122,8 @@
 			$uitkomst 		 = $_SESSION["opdracht"][1];
 			$timestart 		 = $_SESSION["opdracht"][2];
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+
+
 			$timeDifference  = $timeStop - $timestart;
 		
 			// Section 5.2 - Call functions.
@@ -91,7 +132,7 @@
 			$indexChecker 	   = indexChecker("");
 			
 			// Section 5.3 - Generate text base of right or wrong of the assignments.
-			if ($operator != "Toets"){
+			if ($operator != "Toets" && $opdrachtOftoets != "Oefentoets"){
 				if ($opdrachtControle == "goed"){
 					$text = "<p>Goedzo {$username} jouw antwoord is goed! {$som} = {$uitkomst} </p>" ;	
 				}
@@ -103,11 +144,24 @@
 			// Section 5.4 - Check whether indexChecker returns "eNumber".
 			if ($indexChecker == "eNumber"){
 				echo json_encode(array("table", resultPage()));
-				$_SESSION["opdrachtOftoets"] = "Opdracht";
+				if ($opdrachtOftoets == "Oefentoets"){
+					$cijferOefentoets = $_SESSION["cijferOpslaan"][$group]["Oefentoets"][$operator];
+					if ($cijferOefentoets < 5.5){
+						unset($_SESSION["opdrachtOpslaan"][$group]["Opdracht"][$operator]);
+					}
+					$_SESSION["opdrachtOftoets"] = "Opdracht";
+				}
+				elseif ($opdrachtOftoets == "Toets"){
+					$cijferToets = $_SESSION["cijferOpslaan"][$group]["Toets"][$operator];	
+					if ($cijferToets < 5.5) {
+						unset($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"]);
+					}
+				}
+	
 			}
 			else {
 				$newsom = opdrachtGenerator($_SESSION["group"], rekundigeOperator($operator) );
-				$returnArray = ($operator == "Toets") ?  $newsom[0] : array($newsom[0], $text);
+				$returnArray = ($operator == "Toets" || $opdrachtOftoets == "Oefentoets") ?  $newsom[0] : array($newsom[0], $text);
 				echo json_encode($returnArray);
 				$_SESSION["opdracht"] = $newsom;
 			}
@@ -127,7 +181,7 @@
 		
 		// Section 7 - check whether result page is empty.
 		elseif ($functions == "callResultpage"){
-			/*$group			 = $_SESSION["group"];
+			$group			 = $_SESSION["group"];
 			$operator 		 = $_SESSION["operator"];
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 			if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
@@ -138,16 +192,16 @@
 				if (count($opdrachtOpslaan[$group][$opdrachtOftoets][$operator]) != 20){
 					echo json_encode(array("popup", "<p> Je hebt nog niet alle opdrachten gemaakt. </p>")); // echo popup and text whenever the total made assingments is not 20
 				}
-				else {*/
+				else {
 					$table = resultPage();
-					/*if (isset($opdrachtOpslaan[$group]["Oefentoets"][$operator])){
+					if (isset($opdrachtOpslaan[$group]["Oefentoets"][$operator])){
 						$_SESSION["opdrachtOftoets"] = "Oefentoets";
 						$table .= resultPage();
 						$_SESSION["opdrachtOftoets"] = "Opdracht";						
-					}*/
+					}
 					echo json_encode(array("table", $table));
-				/*}
-			}*/
+				}
+			}
 		}
 		// Section 7 - END
 	}

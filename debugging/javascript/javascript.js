@@ -88,7 +88,7 @@
 					loopInitiator("reset", null, null); // Reset assignment timer per assignment
 					ifToets2 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input'], input[type='submit']").prop('disabled', false) : null;
 					ifToets4 = (tmpMemory == "Toets" || tmpMemory == "Oefentoets" || tmpMemory == "oefentoets") ? $("input[name='input']").val(null).focus() : null;
-					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets") ? data : data[0]).fadeIn("fast");
+					$("#opdrachten").children("form").children("h1").text(ifToets = (tmpMemory == "Toets" || tmpMemory == "Oefentoets") ? data : data[0]).fadeIn("fast");
 				});
 			}
 		},
@@ -119,7 +119,6 @@ $(document).ready(function(){
 	});
 	// Section 2.3 - On button click
 	$("button").click(function(){
-		//$("button").prop('disabled', true);
 		if ($(this).attr("class") == "backwards"){
 			if ($(this).parent().attr("id") == null){
 				id = $(this).parent().parent().attr("id");
@@ -127,13 +126,14 @@ $(document).ready(function(){
 			else {
 				id = $(this).parent().attr("id");	
 			}
-			if ($("#" + id).prev().attr("id") == "opdrachtenSelectie") {
+			if ($("#" + id).prev().attr("id") == "opdrachtenSelectie" || $("#" + id).prev().attr("id") == "opdrachten") {
 				post(null, "operators");
 			}
+			$("button").prop('disabled', true);
 			$("#" + id).fadeOut("slow", function(){
 				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
-				//$("button").prop('disabled', false);
+				$("button").prop('disabled', false);
 			});
 		}
 		else if ($(this).attr("id") == "over" || $(this).attr("id") == "uitleg"){
@@ -165,6 +165,7 @@ function pageVisibility(id1){
 
 function createTable(id1, table){
 	$("#" + id1).fadeOut("slow", function(){
+		$("button").prop('disabled', false);
 		$("#uitslag").children("p").remove();
 		$("#uitslag").children("br").remove();
 		$("#uitslag").children("table").remove();
@@ -253,16 +254,28 @@ function modal(id, val, text, closeDelay = 2000){
 	var modalId = document.getElementById(id + "modal");
 	
 	// Section 7.2 - Enable / Disable X button or yes and no button
-	ifEresults  = (pageVisibility("#startpagina") || val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets") ? modal.children(".modal-content").children("span").css("display", "block")  : modal.children(".modal-content").children("span").css("display", "none");
-	ifEresults2 = 				(val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets")				      ? modal.children(".modal-content").children("button").css("display", "none") : modal.children(".modal-content").children("button").css("display", "inline-block");
+	if (pageVisibility("#startpagina") || val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets" || tmpMemory == "errorToets"){
+		modal.children(".modal-content").children("span").css("display", "block");
+	}
+	else {
+		modal.children(".modal-content").children("span").css("display", "none");
+	}
+	if (val == "Resultaten" || val == "Opnieuw beginnen" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets" || tmpMemory == "errorToets"){
+		modal.children(".modal-content").children("button").css("display", "none");
+	}
+	else {
+		modal.children(".modal-content").children("button").css("display", "inline-block");
+	}
 	
 	// Section 7.3 - Popup fade in
-	modal.fadeIn("fast");
+	modal.fadeIn("fast", function(){
+		$("button").prop('disabled', false);
+	});
 	
 	// Section 7.4 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" && id != "uitleg"){
 		$("input[name='input']").val(null);
-		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten")) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);
+		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten") || pageVisibility("#operators") ) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);
 		if (pageVisibility("#opdrachten") || pageVisibility("#operators") || val == "Resultaten" || val == "Opnieuw beginnen" || tmpMemory == "Oefentoets" ){
 			if (typeof(pClosedelay) != "undefined"){
 				clearTimeout(pClosedelay);
@@ -276,11 +289,11 @@ function modal(id, val, text, closeDelay = 2000){
 		$("input[name='input'], input[type='submit']").prop('disabled', false);
 		modal.fadeOut("fast", function(){
 			if (val == "moveToassignment"){
-				//$("button").prop('disabled', true);
+				$("button").prop('disabled', true);
 				post("moveToassignment", "moveToassignment");
 			}
 			else {
-				//$("button").prop('disabled', false);
+				$("button").prop('disabled', false);
 			}
 			whenNottoRemove = (pageVisibility("#startpagina")) ? null : modal.children(".modal-content").children("p").remove();
 		});
@@ -321,7 +334,14 @@ function post(val, id) {
 	   data: myFunctions[id].dataSend(val, id),
 	   dataType: (id == "opdrachtenSelectie" || id == "opdrachten" || id == "operators" || val == "dynamicColours" || val == "Resultaten" || val == "Toets") ? "JSON" : "text",
 	   success: function(data){
+			ifOpdracht = (id == "opdracht") ? null : $("button").prop('disabled', true);
 		   if (data[0] == "popup"){
+				if (tmpMemory == "Opnieuw beginnen"){
+					console.log($("#operators").children(".div-center").children("button:contains("+ data[2] +")"));
+					$("#operators").children(".div-center").children("button:contains("+ data[2] +")").removeAttr("style");
+					$("#oefen").removeAttr("style");
+					$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");
+				}
 			   tmpMemory = (data[2] == null) ? tmpMemory : data[2];
 			   modal(id, val, data[1]);
 		   }
@@ -329,13 +349,27 @@ function post(val, id) {
 			   createTable(id, data[1]);
 		   }
 		   else {
-				if (data[0] == "colour" && data[1] != null) {
-					var idShorten = $("#opdrachtenSelectie").children(".text-center").children(".margin-spacer");
-					for (let [key, value] of Object.entries(data[1])){ // Source : https://github.com/babel/babel-loader/issues/84
-						ifExist = (idShorten.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten.children(":contains("+ key +"):first").css("border-color", value);
+				if (data[0] == "colour") {
+					if (data[1] != null){
+						var idShorten = $("#opdrachtenSelectie").children(".text-center").children(".margin-spacer");
+						for (let [key, value] of Object.entries(data[1])){ // Source : https://github.com/babel/babel-loader/issues/84
+							ifExist = (idShorten.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten.children(":contains("+ key +"):first").css("border", value);
+						}
+					}
+					if (data[2] != null){
+						for (let [key, value] of Object.entries(data[2])){ // Source : https://github.com/babel/babel-loader/issues/84
+							ifExist = ($("#oefen").attr("style") == true) ? null : $("#oefen").css("border", value);
+						}
+					}
+					if (data[3] != null){
+						var idShorten2 = $("#operators").children(".div-center");
+						for (let [key, value] of Object.entries(data[3])){ // Source : https://github.com/babel/babel-loader/issues/84
+							ifExist = (idShorten2.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten2.children(":contains("+ key +"):first").css("border", value);
+						}
 					}
 				}
-				else if (data[0] == "colour") {
+				else if (data[0] == "empty") {
+					$("#oefen").removeAttr("style");
 					$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");
 				}
 			   ifVal = (val == null) ? null : fadeAnimation(id, val, data);
@@ -350,6 +384,7 @@ function fadeAnimation(id1, val, data){
 	else {
 		id1 = (val == "moveToassignment") ? "opdrachten" : id1;
 		$("#" + id1).fadeOut("slow", function(){
+			$("button").prop('disabled', false);
 			id1 = (val == "moveToassignment") ? "moveToassignment" : id1;
 			$("input[name='input'], input[type='submit']").prop('disabled', false);
 			if (val == "Toets" || val == "Oefentoets" || val == "Ja" && id1 != "opdrachtenSelectie"){
@@ -375,6 +410,5 @@ function fadeAnimation(id1, val, data){
 			}
 		});
 	}
-	//$("button").prop('disabled', false);
 }
 // Section 8 - END

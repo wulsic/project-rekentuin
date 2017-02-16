@@ -68,6 +68,7 @@
 				<!-- Section 4.1 - Test already made response popup -->
 				<div id="operatorsmodal" class="modal">
 					<div class="modal-content modal-medium">
+						<span class="close">&times;</span>
 						<button id="yesOrno">Ja</button>
 						<button id="yesOrno">Nee</button>
 						<button id="resultatenKnop">Resultaten</button>
