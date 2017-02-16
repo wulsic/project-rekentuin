@@ -378,3 +378,6 @@ table {
 	color: white;
 	background-color:black;
 }
+#uitslag {
+	overflow-y: auto;
+}
