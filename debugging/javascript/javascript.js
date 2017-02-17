@@ -35,32 +35,52 @@
 		},
 		"operators": {
 			dataSend:
-			function(val){
+			function(val, id){
 				if (val == ":"){
 					var val = val.replace(":", "/");
 				}
 				else if (val == "x"){
 					var val = val.replace("x", "*");
 				};
-				dataSend = {
-					functions: (val == "Ja") ? "delete" : "callRekundigeoperator",
-					operator: (val == "Ja") ? tmpMemory : val
-				};
+				if (val == "Ja") {
+					dataSend = {
+						functions: "delete",
+						buttonId: tmpMemory
+					};					
+				}
+				else {
+					dataSend = {
+						functions: "callRekundigeoperator",
+						operator: val
+					};
+				}
 			return dataSend;
 			}
 		},
 		"opdrachtenSelectie": {
 			dataSend:
-			function(val){
+			function(val, id){
+				console.log(val);
 				if (val == "Resultaten"){
 					dataSend = {
 						functions: "callResultpage"
 					};
 				}
+				else if (val == "Opnieuw beginnen") {
+					dataSend = {
+						functions: "delete"
+					};
+				}
+				else if (val == "Ja"){
+					dataSend = {
+						functions: "delete",
+						buttonId: tmpMemory
+					};
+				}
 				else {
 					dataSend = {
-							functions: (val == "Ja" || val == "Opnieuw beginnen") ? "delete" : "callindexCheckerandGenerator",
-							index: (val == "Ja") ? tmpMemory : val
+							functions: "callindexCheckerandGenerator",
+							index: val
 					};
 				}
 			return dataSend;
@@ -108,7 +128,7 @@
 
 // Section 2 - On DOM (page) ready.
 $(document).ready(function(){
-
+	
 	// Section 2.1 - Fade in
 	$("#startpagina").fadeIn("slow").css("display", "inline-flex");
 	// Section 2.2 - Form submit
@@ -210,13 +230,14 @@ function loopInitiator(setOrreset = "set", setMinutes = 30, setSeconds = 0, setA
 function countDownloop(){
 	seconds--;
 	aSeconds--;
+	$("#timer").text("Tijd: " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
 	if (minutes != 0 && seconds <= 0){
 		minutes--;
 		seconds = 59;
 	}
 	if (aMinutes != 0 && aSeconds <= 0){
 		aMinutes--;
-		aSeconds = 59;
+		aSeconds = 1;
 	}
 	if (aMinutes == 0 && aSeconds <= 0){
 		clearTimeout(timeLimitloop);
@@ -244,7 +265,6 @@ function countDownloop(){
 	else {
 		timeLimitloop = setTimeout(countDownloop, 1000);	
 	}
-	$("#timer").text("Tijd: " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
 }
 // Section 6 - END
 
@@ -356,7 +376,7 @@ function post(val, id) {
 					if (data[1] != null){
 						var idShorten = $("#opdrachtenSelectie").children(".text-center").children(".margin-spacer");
 						for (let [key, value] of Object.entries(data[1])){ // Source : https://github.com/babel/babel-loader/issues/84
-							ifExist = (idShorten.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten.children(":contains("+ key +"):first").css("border", value);
+							idShorten.children(":contains("+ key +"):first").css("border", value);
 						}
 					}
 					if (data[2] != null){

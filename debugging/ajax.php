@@ -97,22 +97,19 @@
 		
 		// Section 3 - Assign index and call the generator for the first assignment
 		elseif ($functions == "callindexCheckerandGenerator") {
-				echo ($_POST["index"] == "Oefentoets") ? json_encode(oefenToets()) : json_encode(indexCheckerandGenerator($_POST["index"]));
+			$index = $_POST["index"];
+			$_SESSION["debug"] = $index;
+			if ($_SESSION["debug"] != "Oefentoets") {
+				echo json_encode(indexCheckerandGenerator($index));
+			}
+			else {
+				echo json_encode(oefenToets());
+			}
 		}
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
 		elseif ($functions == "delete"){
-			if (isset($_POST["index"])){
-				if ($_POST["index"] == "oefentoets"){
-					$_SESSION["opdrachtOftoets"] = "Oefentoets";
-				}
-			}
-			if (isset($_POST["operator"])){
-				if ($_POST["operator"] == "Toets"){
-					$_SESSION["opdrachtOftoets"] = "Toets";
-				}
-			}		
-			echo $whatToreturn = (isset($_POST["index"])) ? json_encode(deleteAssignments($_POST["index"])) : json_encode(deleteAssignments(null));
+			echo $whatToreturn = (isset($_POST["buttonId"])) ? json_encode(deleteAssignments($_POST["buttonId"])) : json_encode(deleteAssignments("Opnieuw beginnen"));
 		}
 		// Section 4 - END
 		
@@ -128,16 +125,16 @@
 			$operator 		 = $_SESSION["operator"];
 			$som			 = $_SESSION["opdracht"][0];
 			$uitkomst 		 = $_SESSION["opdracht"][1];
-			$timeStart 		 = $_SESSION["opdracht"][2];
+			$timestart 		 = $_SESSION["opdracht"][2];
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 
 
-			$timeDifference  = $timeStop - $timeStart;
+			$timeDifference  = $timeStop - $timestart;
 		
 			// Section 5.2 - Call functions.
 			$opdrachtControle  = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan   = opdrachtOpslaan($group, $opdrachtOftoets, $operator, $index , $som, $uitkomst, $antwoord, $opdrachtControle, date("i:s",$timeDifference));		
-			$indexChecker 	   = indexChecker();
+			$indexChecker 	   = indexChecker("");
 			
 			// Section 5.3 - Generate text base of right or wrong of the assignments.
 			if ($operator != "Toets" && $opdrachtOftoets != "Oefentoets"){
@@ -155,14 +152,16 @@
 				if ($opdrachtOftoets == "Oefentoets"){
 					$cijferOefentoets = $_SESSION["cijferOpslaan"][$group]["Oefentoets"][$operator];
 					if ($cijferOefentoets < 5.5){
-						unset($_SESSION["opdrachtOpslaan"][$group]["Opdracht"][$operator]);
+						//unset($_SESSION["opdrachtOpslaan"][$group]["Opdracht"][$operator]);
+						deleteAssignments();
 					}
 					$_SESSION["opdrachtOftoets"] = "Opdracht";
 				}
 				elseif ($opdrachtOftoets == "Toets"){
 					$cijferToets = $_SESSION["cijferOpslaan"][$group]["Toets"][$operator];	
 					if ($cijferToets < 5.5) {
-						unset($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"]);
+						//unset($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"]);
+						deleteAssignments();
 					}
 				}
 	
@@ -178,11 +177,13 @@
 		
 		// Section 6 - Move to assignment page based on the operator when the timer runs out.
 		elseif ($functions == "callTomoveAssignment"){
-			$group	  					 = $_SESSION["group"];
-			$operator 					 = $_POST["operator"];
-			$opdrachtOftoets 	 		 = $_SESSION["opdrachtOftoets"];
-			$_SESSION["opdrachtOftoets"] = "Opdracht";
-			unset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]);
+			$operator 		 = $_POST["operator"];
+			$group	  		 = $_SESSION["group"];
+			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+			if ($opdrachtOftoets == "Oefentoets") {
+				$_SESSION["opdrachtOftoets"] = "Opdracht";
+			}
+			deleteAssignments();
 			setOperator($operator);
 		}
 		// Section 6 - END
