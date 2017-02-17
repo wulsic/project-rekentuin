@@ -246,8 +246,9 @@ function countDownloop(){
 			$("#operators").children(".div-center").children("button:contains("+ getAssignment +")").removeAttr("style");
 			$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");			
 		}
-		else {
-			
+		else { // Untested
+			$("#oefen").removeAttr("style");
+			$("#operators").children(".div-center").children("button:contains("+ getAssignment +")").removeAttr("style");
 		}
 		if (getAssignment == "+"){
 			operatorText = "plus";
