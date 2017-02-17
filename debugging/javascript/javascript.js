@@ -289,7 +289,7 @@ function modal(id, val, text, closeDelay = 2000){
 	else {
 		modal.children(".modal-content").children("span").css("display", "none");
 	}
-	if (val == "Resultaten" || val == "Opnieuw beginnen" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets" || tmpMemory == "errorToets"){
+	if (val == "Resultaten" || val == "Opnieuw beginnen" || id == "opdrachten" || tmpMemory == "Oefentoets" || tmpMemory == "errorToets"){
 		modal.children(".modal-content").children("button").css("display", "none");
 	}
 	else {
