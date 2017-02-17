@@ -116,7 +116,7 @@
 			function(){
 				dataSend = {
 					functions: "callTomoveAssignment",
-					operator: $("#opdrachten").children("form").children("h1").text().replace(/[\w ]/g,"")
+					operator: $("#opdrachten").children("form").children("h1").text().replace(/[\d ]/g,"")
 				};
 			return dataSend;
 			},
@@ -241,6 +241,14 @@ function countDownloop(){
 	if (aMinutes == 0 && aSeconds <= 0){
 		clearTimeout(timeLimitloop);
 		var getAssignment = $("#opdrachten").children("form").children("h1").text().replace(/[\d ]/g,"");
+		if (tmpMemory == "Oefentoets"){
+			$("#oefen").removeAttr("style");
+			$("#operators").children(".div-center").children("button:contains("+ getAssignment +")").removeAttr("style");
+			$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");			
+		}
+		else {
+			
+		}
 		if (getAssignment == "+"){
 			operatorText = "plus";
 		}
@@ -310,7 +318,6 @@ function modal(id, val, text, closeDelay = 2000){
 		modal.fadeOut("fast", function(){
 			if (val == "moveToassignment"){
 				$("button").prop('disabled', true);
-				$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");
 				post("moveToassignment", "moveToassignment");
 			}
 			else {
