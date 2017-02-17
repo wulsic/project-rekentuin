@@ -131,7 +131,8 @@ $(document).ready(function(){
 			}
 			$("button").prop('disabled', true);
 			$("#" + id).fadeOut("slow", function(){
-				id = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
+				id 		  = (tmpMemory == "Toets") ? "opdrachtenSelectie" : (id == "uitslag") ? "opdrachten" : id;
+				tmpMemory = (tmpMemory == "Toets") ? null : tmpMemory;
 				$($("#" + id).prev()).fadeIn("slow").css("display", "inline-flex");
 				$("button").prop('disabled', false);
 			});
@@ -364,6 +365,12 @@ function post(val, id) {
 					if (data[3] != null){
 						var idShorten2 = $("#operators").children(".div-center");
 						for (let [key, value] of Object.entries(data[3])){ // Source : https://github.com/babel/babel-loader/issues/84
+							ifExist = (idShorten2.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten2.children(":contains("+ key +"):first").css("border", value);
+						}
+					}
+					if (data[4] != null){
+						var idShorten2 = $("#groepen").children(".div-center");
+						for (let [key, value] of Object.entries(data[4])){ // Source : https://github.com/babel/babel-loader/issues/84
 							ifExist = (idShorten2.children(":contains("+ key +"):first").attr("style") == true) ? null : idShorten2.children(":contains("+ key +"):first").css("border", value);
 						}
 					}

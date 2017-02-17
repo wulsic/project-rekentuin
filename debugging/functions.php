@@ -268,37 +268,37 @@
 			return array("popup", $text1);
 		}
 	}
-	function testPage(){// Test is such a fricking pain in the ass.
+	function toets(){// Test is such a fricking pain in the ass.
 	
-		$group	  		 = $_SESSION["group"];
-		$operator 		 = $_SESSION["operator"];
-		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+		$group = $_SESSION["group"];
 		
-		$text  = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
-		$text2 = array("popup", "<p> Maak eerst plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>", "errorToets");
+		/*$text  = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
+		$text2 = array("popup", "<p> Maak eerst de oefentoetsen van plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>", "errorToets");
+		$text3 = array("popup", "<p> Heb je de oefentoetsen goed gemaakt? Als ze rood zijn, moet je het opnieuw maken. </p>", "errorToets");
 		
 		if (!empty($_SESSION["cijferOpslaan"][$group]["Oefentoets"])){
 			
-			$cijferPlus 	   = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"];
-			$cijferMin 		   = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"];
-			$cijferKeer 	   = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"];
-			$cijferGedeelddoor = $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"];
+			$cijferPlus 	   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"] : null;
+			$cijferMin 		   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"] : null;
+			$cijferKeer 	   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"] : null;
+			$cijferGedeelddoor = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"] : null;
 			
-			if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){
-				if (!empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) && isset($_SESSION["number"])){
+			if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){*/
+				if (!empty($_SESSION["opdrachtOpslaan"][$group]["Toets"]["Toets"]) && isset($_SESSION["number"])){
 					return $text;
 				}
 				else {
+					$_SESSION["opdrachtOftoets"] = "Toets";
 					return indexCheckerandGenerator(1);
 				}
-			}
+			/*}
 			else {
-				return $text2;
+				return $text3;
 			}
 		}
 		else {
 			return $text2;
-		}
+		}*/
 	}
 	// Section 8 - END
 	
