@@ -228,15 +228,15 @@
 				
 		$group	  		 = $_SESSION["group"];
 		$operator 		 = $_SESSION["operator"];
-		//$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
+		$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 		
-		//$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
-		//$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
+		$text1 = "<p> Je moet alle 20 opdrachten maken met minder dan 10 fouten voordat je de oefentoets mag maken. </p>";
+		$text2 = "<p> Je moet minder dan 10 fouten hebben voordat je de oefentoets mag maken. </p>";
 		$text3 = "<p> Je hebt de oefentoets al gemaakt. </p> <p> Wil je deze opnieuw maken? </p>";
 		
-		/*if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
+		if (isset($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator])){
 			$cijfer = cijferBerekenen();
-			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){*/
+			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){
 				if (empty($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"][$operator])){
 					$_SESSION["opdrachtOftoets"] = "Oefentoets";
 					return indexCheckerandGenerator(1);
@@ -250,7 +250,7 @@
 						return indexCheckerandGenerator(1);
 					}
 				}
-		/*	}
+			}
 			else {
 				if ($cijfer["fouten"] > 10){
 					return array("popup", $text2);
@@ -262,7 +262,7 @@
 		}
 		else {
 			return array("popup", $text1);
-		}*/
+		}
 	}
 	function toets(){// Test is such a fricking pain in the ass.
 	
@@ -272,14 +272,14 @@
 		$text2 = array("popup", "<p> Maak eerst de oefentoetsen van plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>", "errorToets");
 		$text3 = array("popup", "<p> Heb je de oefentoetsen goed gemaakt? Als ze rood zijn, moet je het opnieuw maken. </p>", "errorToets");
 		
-		/*if (!empty($_SESSION["cijferOpslaan"][$group]["Oefentoets"])){
+		if (!empty($_SESSION["cijferOpslaan"][$group]["Oefentoets"])){
 			
 			$cijferPlus 	   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"] : null;
 			$cijferMin 		   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"] : null;
 			$cijferKeer 	   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"] : null;
-			$cijferGedeelddoor = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"] : null*/
+			$cijferGedeelddoor = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"] : null
 			
-			//if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){
+			if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){
 				if (empty($_SESSION["opdrachtOpslaan"][$group]["Toets"]["Toets"])){
 					$_SESSION["opdrachtOftoets"] = "Toets";
 					return indexCheckerandGenerator(1);
@@ -293,14 +293,14 @@
 						return indexCheckerandGenerator(1);
 					}
 				}
-			/*}
+			}
 			else {
 				return $text3;
 			}
 		}
 		else {
 			return $text2;
-		}*/
+		}
 	}
 	// Section 8 - END
 	
