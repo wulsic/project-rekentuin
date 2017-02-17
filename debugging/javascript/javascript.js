@@ -230,15 +230,15 @@ function loopInitiator(setOrreset = "set", setMinutes = 30, setSeconds = 0, setA
 function countDownloop(){
 	seconds--;
 	aSeconds--;
-	$("#timer").text("Tijd: " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
-	if (minutes != 0 && seconds <= 0){
+	if (minutes != 0 && seconds < 0){
 		minutes--;
 		seconds = 59;
 	}
-	if (aMinutes != 0 && aSeconds <= 0){
+	if (aMinutes != 0 && aSeconds < 0){
 		aMinutes--;
-		aSeconds = 1;
+		aSeconds = 59;
 	}
+	$("#timer").text("Tijd: " + ("00" + minutes).substr(-2) + ":" + ("00" + seconds).substr(-2));
 	if (aMinutes == 0 && aSeconds <= 0){
 		clearTimeout(timeLimitloop);
 		var getAssignment = $("#opdrachten").children("form").children("h1").text().replace(/[\d ]/g,"");
