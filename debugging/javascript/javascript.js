@@ -313,6 +313,7 @@ function modal(id, val, text, closeDelay = 2000){
 		modal.fadeOut("fast", function(){
 			if (val == "moveToassignment"){
 				$("button").prop('disabled', true);
+				$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");
 				post("moveToassignment", "moveToassignment");
 			}
 			else {
@@ -360,7 +361,6 @@ function post(val, id) {
 			ifOpdracht = (id == "opdracht") ? null : $("button").prop('disabled', true);
 		   if (data[0] == "popup"){
 				if (tmpMemory == "Opnieuw beginnen"){
-					console.log($("#operators").children(".div-center").children("button:contains("+ data[2] +")"));
 					$("#operators").children(".div-center").children("button:contains("+ data[2] +")").removeAttr("style");
 					$("#oefen").removeAttr("style");
 					$("#opdrachtenSelectie").children(".text-center").children(".margin-spacer").children("button").removeAttr("style");
