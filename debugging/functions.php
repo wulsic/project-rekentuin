@@ -132,7 +132,7 @@
 	// Section 4 - END
 	
 	// Section 5 - Index Checker
-	function indexChecker($index){
+	function indexChecker($index = null){
 		
 		// Section 5.1 - Set session index
 		if (!empty($index)) {

@@ -137,7 +137,7 @@
 			// Section 5.2 - Call functions.
 			$opdrachtControle  = opdrachtControleren($antwoord, $uitkomst);
 			$opdrachtOpslaan   = opdrachtOpslaan($group, $opdrachtOftoets, $operator, $index , $som, $uitkomst, $antwoord, $opdrachtControle, date("i:s",$timeDifference));		
-			$indexChecker 	   = indexChecker("");
+			$indexChecker 	   = indexChecker();
 			
 			// Section 5.3 - Generate text base of right or wrong of the assignments.
 			if ($operator != "Toets" && $opdrachtOftoets != "Oefentoets"){
