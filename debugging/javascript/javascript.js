@@ -120,6 +120,7 @@ $(document).ready(function(){
 	// Section 2.3 - On button click
 	$("button").click(function(){
 		if ($(this).attr("class") == "backwards"){
+			ifLoop  = (typeof(timeLimitloop) == "undefined") ? null : clearTimeout(timeLimitloop);
 			if ($(this).parent().attr("id") == null){
 				id = $(this).parent().parent().attr("id");
 			}
