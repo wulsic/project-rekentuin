@@ -97,14 +97,7 @@
 		
 		// Section 3 - Assign index and call the generator for the first assignment
 		elseif ($functions == "callindexCheckerandGenerator") {
-			$index = $_POST["index"];
-			$_SESSION["debug"] = $index;
-			if ($_SESSION["debug"] != "Oefentoets") {
-				echo json_encode(indexCheckerandGenerator($index));
-			}
-			else {
-				echo json_encode(oefenToets());
-			}
+			echo ($_POST["index"] == "Oefentoets") ? json_encode(oefenToets()) : json_encode(indexCheckerandGenerator($_POST["index"]));
 		}
 		
 		// Section 4 - Delete all assignment based on operator or operator + index

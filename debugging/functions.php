@@ -95,7 +95,7 @@
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 			
 			// Section 4.1.2 - Check for already made assignments
-			if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index]) || $operator == "Toets"){
+			if (empty($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator][$index]) || $opdrachtOftoets == "Toets" || $opdrachtOftoets == "Oefentoets"){
 				
 				// Section 4.1.2-1 - Set session numbers if numbers is empty or the old operator is not the same as the current one.
 				if (isset($_SESSION["oldOperator"]) && $_SESSION["oldOperator"] != $operator || empty($_SESSION["numbers"])){
@@ -238,7 +238,6 @@
 			$cijfer = cijferBerekenen();
 			if (count($_SESSION["opdrachtOpslaan"][$group][$opdrachtOftoets][$operator]) == 20 && $cijfer["fouten"] < 10){*/
 				if (empty($_SESSION["opdrachtOpslaan"][$group]["Oefentoets"][$operator])){
-
 					$_SESSION["opdrachtOftoets"] = "Oefentoets";
 					return indexCheckerandGenerator(1);
 				}
