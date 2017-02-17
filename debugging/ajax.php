@@ -128,11 +128,11 @@
 			$operator 		 = $_SESSION["operator"];
 			$som			 = $_SESSION["opdracht"][0];
 			$uitkomst 		 = $_SESSION["opdracht"][1];
-			$timestart 		 = $_SESSION["opdracht"][2];
+			$timeStart 		 = $_SESSION["opdracht"][2];
 			$opdrachtOftoets = $_SESSION["opdrachtOftoets"];
 
 
-			$timeDifference  = $timeStop - $timestart;
+			$timeDifference  = $timeStop - $timeStart;
 		
 			// Section 5.2 - Call functions.
 			$opdrachtControle  = opdrachtControleren($antwoord, $uitkomst);
