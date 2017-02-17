@@ -147,9 +147,9 @@
 		font-size: 16px;
 	}
 	#timer{
-		display: block;
-		margin-top: 100px;
-		margin-left: 36px;
+		position: fixed;
+		top: 65px;
+		left: 35px;
 		font-size: 28px;
 	}
 	#groepen button, #operators button {
