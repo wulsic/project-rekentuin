@@ -277,7 +277,7 @@
 			$cijferPlus 	   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["+"] : null;
 			$cijferMin 		   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["-"] : null;
 			$cijferKeer 	   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"] : null;
-			$cijferGedeelddoor = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"] : null
+			$cijferGedeelddoor = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"] : null;
 			
 			if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){
 				if (empty($_SESSION["opdrachtOpslaan"][$group]["Toets"]["Toets"])){
