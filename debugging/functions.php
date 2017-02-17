@@ -213,7 +213,7 @@
 				$reactie = "Je deed het goed, maar nog een beetje bij spijkeren";
 			}
 			elseif ($c >= 0 && $c < 5.5){
-				$reactie = "Net niet goed, jammer. Blijf oefenen";
+				$reactie = "Net niet goed, jammer! Blijf oefenen!";
 			}
 		}
 		else {
@@ -272,7 +272,7 @@
 	
 		$group = $_SESSION["group"];
 		
-		/*$text  = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
+		$text  = array("popup", "<p> Je hebt deze toets al gemaakt </p> <p> wil je deze toets opnieuw maken? </p>");
 		$text2 = array("popup", "<p> Maak eerst de oefentoetsen van plus, min, keer en gedeeld door af voordat je deze toets mag maken. </p>", "errorToets");
 		$text3 = array("popup", "<p> Heb je de oefentoetsen goed gemaakt? Als ze rood zijn, moet je het opnieuw maken. </p>", "errorToets");
 		
@@ -283,22 +283,22 @@
 			$cijferKeer 	   = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["*"] : null;
 			$cijferGedeelddoor = (isset($_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"])) ? $_SESSION["cijferOpslaan"][$group]["Oefentoets"]["/"] : null;
 			
-			if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){*/
-				if (!empty($_SESSION["opdrachtOpslaan"][$group]["Toets"]["Toets"]) && isset($_SESSION["number"])){
+			if ($cijferPlus > 5.5 && $cijferMin > 5.5 && $cijferKeer > 5.5 && $cijferGedeelddoor > 5.5){
+				if (!empty($_SESSION["opdrachtOpslaan"][$group]["Toets"]["Toets"])){
 					return $text;
 				}
 				else {
 					$_SESSION["opdrachtOftoets"] = "Toets";
 					return indexCheckerandGenerator(1);
 				}
-			/*}
+			}
 			else {
 				return $text3;
 			}
 		}
 		else {
 			return $text2;
-		}*/
+		}
 	}
 	// Section 8 - END
 	
@@ -359,7 +359,7 @@
 			$operatorText = "Gedeelddoor";
 		}
 		else {
-			$operatorText = "Toets";
+			$operatorText = null;
 		}
 			
 		

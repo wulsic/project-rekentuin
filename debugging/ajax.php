@@ -102,9 +102,16 @@
 		
 		// Section 4 - Delete all assignment based on operator or operator + index
 		elseif ($functions == "delete"){
-			if ($_POST["index"] == "oefentoets"){
-				$_SESSION["opdrachtOftoets"] = "Oefentoets";
+			if (isset($_POST["index"])){
+				if ($_POST["index"] == "oefentoets"){
+					$_SESSION["opdrachtOftoets"] = "Oefentoets";
+				}
 			}
+			if (isset($_POST["operator"])){
+				if ($_POST["operator"] == "Toets"){
+					$_SESSION["opdrachtOftoets"] = "Toets";
+				}
+			}		
 			echo $whatToreturn = (isset($_POST["index"])) ? json_encode(deleteAssignments($_POST["index"])) : json_encode(deleteAssignments(null));
 		}
 		// Section 4 - END

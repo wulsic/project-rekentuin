@@ -44,7 +44,7 @@
 				};
 				dataSend = {
 					functions: (val == "Ja") ? "delete" : "callRekundigeoperator",
-					operator: (val == "Ja") ? null : val
+					operator: (val == "Ja") ? tmpMemory : val
 				};
 			return dataSend;
 			}
@@ -275,9 +275,10 @@ function modal(id, val, text, closeDelay = 2000){
 	
 	// Section 7.4 - Set text when it's id is not the same as over and uitleg
 	if (id != "over" && id != "uitleg"){
+		console.log(tmpMemory);
 		$("input[name='input']").val(null);
 		ifTestalreadyMade = (pageVisibility("#opdrachtenSelectie") || pageVisibility("#opdrachten") || pageVisibility("#operators") ) ?  modal.children(".modal-content").children("span").after(text) : modal.children(".modal-content").prepend(text);
-		if (pageVisibility("#opdrachten") || pageVisibility("#operators") || val == "Resultaten" || val == "Opnieuw beginnen" || tmpMemory == "Oefentoets" ){
+		if (pageVisibility("#opdrachten") || val == "Resultaten" || val == "Opnieuw beginnen" || tmpMemory == "Oefentoets" || tmpMemory == "errorToets" ){
 			if (typeof(pClosedelay) != "undefined"){
 				clearTimeout(pClosedelay);
 			}
