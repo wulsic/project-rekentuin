@@ -388,6 +388,7 @@ function post(val, id) {
 }
 function fadeAnimation(id1, val, data){
 	if (id1 == "opdrachten" && val != "moveToassignment") {
+		$("button").prop('disabled', false);
 		myFunctions[id1].success(data);
 	}
 	else {
